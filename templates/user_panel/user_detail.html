@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail-{{ user.id }}</title>
+</head>
+<body>
+
+<h1>Kullanıcı Bilgileri</h1>
+<code>NOT : True : EVET , FALSE : HAYIR Anlamı taşımaktadır.</code>
+<hr>
+Kullaıcı Adı : {{ user.username }}
+<hr>
+AD : {{ user.first_name }}, {{ user.last_name }}
+<hr>
+Son Giriş :  {{ user.last_login }}
+<hr>
+Super Kullanıcı mı ? : {{ user.is_superuser }}
+<hr>
+Aktif Kullanıcı mı ? : {{ user.is_active }}
+<hr>
+Yetkili mi ? : {{ user.is_staff }}
+<hr>
+Özel Yetkileri Var Mı ? : {{ user.get_all_permissions }}
+<hr>
+Kullanıcı Onaylandı mı? : {{ user.is_authenticated }}
+<hr>
+Grup yetkisi : {{ gp }}
+</body>
+</html>

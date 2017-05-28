@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail-{{ group.id }}</title>
+</head>
+<body>
+
+<h1>Group Bilgileri</h1>
+<hr>
+Grup Adı : {{ group.name }}
+<hr>
+Grup Üyeleri : {% for user in user_list %}////{{ user.username }}&nbsp&nbsp&nbsp&nbsp{% endfor %}
+<hr>
+Grup Yetkileri :  {% for content,permission in permission_list %}<li>{{ content }} &nbsp&nbsp&nbsp&nbsp  {{ permission }} </li>{% endfor %}
+
+</body>
+</html>

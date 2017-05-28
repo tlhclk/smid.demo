@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Parent</title>
+</head>
+<body>
+<h1>{{ parent.parent_name }}</h1>
+<form method="POST" class="post-formparent">{% csrf_token %}
+
+<input type="hidden" name="csrfmiddlewaretoken" value="XfDrb79r7kuBpf8kFU7PW1yL6ntKhweGW7MZq65t3ljG5GqOTUFuuqUqxZQ032A0">
+
+<p>
+    <label for="id_student_id">Student Id</label>
+    <input type="text" name="student_id" value="{{ parent.student_id }}" required id="id_student_id">
+</p>
+<p>
+    <label for="id_parent_name">Parent Name</label>
+    <input type="text" name="parent_name" value="{{ parent.parent_name }}" required id="id_parent_name">
+</p>
+<p>
+    <label for="id_parent_lastname">Parent Last Name</label>
+    <input type="text" name="parent_lastname" value="{{ parent.parent_lastname }}" required id="id_parent_lastname">
+</p>
+<p>
+    <label for="id_parent_TCN">Parent TCN</label>
+    <input type="text" name="parent_TCN" value="{{ parent.parent_TCN }}" required id="id_parent_TCN">
+</p>
+<p>
+    <label for="id_parent_phone">Parent Phone</label>
+    <input type="tel" name="parent_phone" value="{{ parent.parent_phone }}" required id="id_parent_phone">
+</p>
+<p>
+    <label for="id_parent_email">Parent Email</label>
+    <input type="email" name="parent_email" value="{{ parent.parent_email }}" required id="id_parent_email">
+</p>
+<p>
+    <label for="id_relative_degree">Relative Degree</label>
+    <input type="text" name="relative_degree" value="{{ parent.relative_degree }}" required id="id_relative_degree">
+</p>
+<p>
+    <label for="id_parent_job">Parent Job</label>
+    <input type="text" name="parent_job" value="{{ parent.parent_job }}" required id="id_parent_job">
+</p>
+    <button type="submit" class="save btn btn-default">Edit/Save</button>
+</form>
+</body>
+</html>
