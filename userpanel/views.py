@@ -20,9 +20,10 @@ def log_in(request):
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('../')
+            return redirect('../login')
 
-        return render(request, "user_panel/default_form.html", {"form": form,'user': user,'title':title})
+        #return render(request, "user_panel/deneme.html", {"form": form,'user': user,'title':title})
+        return render(request, "static/pages/examples/login.html", {"form": form, 'user': user, 'title': title})
     else:
         return HttpResponse('Already an user singed in: ' + str(request.user))
 

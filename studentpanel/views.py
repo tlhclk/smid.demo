@@ -30,7 +30,7 @@ def detail_student(request,student_id):
     user = User.objects.get(username=student.student_email)
     user_perms = request.user.has_perm('student_panel.list_stucentinfomodel')
     #return render(request, 'student_panel/detail_student.html', {'student': student, 'user':user, 'user_perms':user_perms})
-    return render(request, 'SmartDorms/pages/examples/profil.html',{'student': student, 'user': user, 'user_perms': user_perms})
+    return render(request, 'static/pages/examples/profil.html',{'student': student, 'user': user, 'user_perms': user_perms})
 
 def table_student(request):
     database_info=StudentInfoModel.objects.all()
