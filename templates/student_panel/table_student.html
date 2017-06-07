@@ -45,9 +45,9 @@ $(document).ready(function(){
         </tr>
     </thead>
     <tbody>
-    {% for student in databaseinfo %}
+    {% for student in student_list %}
           <tr><td>
-              {% if user_perms %}
+              {% if view_pro_per %}
                 <a href="/student_panel/student/{{ student.id }}/">{{ student.id }}</a>
                   {% else %}
                   {{ student.id }}

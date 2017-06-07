@@ -24,8 +24,11 @@
 <h1>{{ student.blood_type }}</h1>
 <h1>{{ student.health_notes }}</h1>
 <h1>{{ student.special_notes }}</h1>
-{% if user_perms %}
-<img src="/../../media/{{ student.file_field }}" alt="profile-pic" height="400">
+{% if show %}
+<h1>{{ user.groups.values.first.name }}</h1>
+{% endif %}
+{% if student.file_field %}
+    <img src="/../../media/{{ student.file_field }}" alt="profile-pic" height="400">
 {% endif %}
 </body>
 </html>

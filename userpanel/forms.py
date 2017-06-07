@@ -22,8 +22,8 @@ class UserLoginForm(forms.Form):
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Email Adresi')
-    password = forms.CharField(widget=forms.PasswordInput, label='Sifre')
-    password2 = forms.CharField(widget=forms.PasswordInput, label='Sifre Onay')
+    password = forms.CharField(widget=forms.PasswordInput, label='Sifre',max_length=200)
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Sifre Onay',max_length=200)
     groups = []
     groups1 = Group.objects.all()
     for gro in groups1:
@@ -34,18 +34,22 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = [
             'username',
+            'first_name',
+            'last_name',
             'password',
             'password2',
             'email',
             'group_choice',
         ]
+
     def clean_password(self):
-        email = self.cleaned_data.get("email")
+        email = self.cleaned_data.items()
+        print email
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
-        print password,password2
-        if password != password2:
-            raise forms.ValidationError("Sifreler ayni olmali")
+        print password, password2
+        # if password != password2:
+        # raise forms.ValidationError("Sifreler ayni olmali")
         return self.cleaned_data
 
 class PermissionForm(forms.ModelForm):

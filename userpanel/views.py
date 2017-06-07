@@ -20,10 +20,11 @@ def log_in(request):
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('../login')
+            return redirect('../')
 
         #return render(request, "user_panel/deneme.html", {"form": form,'user': user,'title':title})
-        return render(request, "static/pages/examples/login.html", {"form": form, 'user': user, 'title': title})
+        #return render(request, "user_panel/login.html", {"form": form, 'user': user, 'title': title})
+        return render(request,'staticasdqW/pages/examples/login.html')
     else:
         return HttpResponse('Already an user singed in: ' + str(request.user))
 
@@ -32,57 +33,72 @@ def log_out(request):
     return redirect('../../')
 
 def user_add(request):#register
-    title = "Register"
-    form = UserRegistrationForm(request.POST or None)
     if request.user.has_perm('auth.add_user'):
-        if form.is_valid():
-            user = form.save(commit=False)
-            password = form.cleaned_data.get('password')
-            user.set_password(password)
-            group = form.cleaned_data.get('group_choice')
-            user.save()
-            print group
-            user.groups.add(group[0])
-
-        return render(request, "user_panel/default_form.html", {"form": form,"title": title})
+        title = "Register"
+        form = UserRegistrationForm()
+        if request.method=='POST':
+            form = UserRegistrationForm(request.POST or None)
+            if form.is_valid():
+                #user = form.save(commit=False)
+                password = form.cleaned_data.get('password')
+                password2=form.cleaned_data.get('password2')
+                #user.set_password(password)
+                group = form.cleaned_data.get('group_choice')
+                #user.save()
+                print (group)
+                #user.groups.add(group[0])
+        #return render(request, "user_panel/default_form.html", {"form": form,"title": title})
+        return render(request, "user_panel/register.html",{'form':form,"title": title})
     else:
-        return HttpResponse('has no autharization')
+        return HttpResponse('You has no autharization to add user')
 
 def user_detail(request,user_id):
-    user=User.objects.get(pk=user_id)
-    if str(user.username) != 'AnonymousUser':
-        return render(request,'user_panel/user_detail.html',{'user':user})
-    else: return HttpResponse('You are Anonymous,you have nothing')
+    if request.user.has_perm('auth.view_user'):
+        user=User.objects.get(pk=user_id)
+        if str(user.username) != 'AnonymousUser':
+            return render(request,'user_panel/user_detail.html',{'user':user})
+        else: return HttpResponse('You are Anonymous,you have nothing')
+    else: return HttpResponse('You has no authorization to view user detail')
 
 def user_table(request):
-    user_list=User.objects.all()
-    return render(request,'user_panel/user_table.html',{'user_list':user_list})
+    if request.user.has_perm('auth.view_user'):
+        user_list=User.objects.all()
+        return render(request,'user_panel/user_table.html',{'user_list':user_list})
+    else: return HttpResponse('You has no authorization to view user table')
 
 def user_delete(request,user_id):
-    user=User.objects.get(pk=user_id)
-    user.delete()
-    return redirect('../../user_table/')
+    if request.user.has_perm('auth.delete_user'):
+        user=User.objects.get(pk=user_id)
+        user.delete()
+        return redirect('../../user_table/')
+    else: return HttpResponse('You has no authorization to delete user')
 
 def group_detail(request,group_id):
-    group=Group.objects.get(pk=group_id)
-    permission_list=[]
-    user_list=User.objects.filter(groups=group)
-    for perm in group.permissions.all():
-        permission_list.append((perm.content_type,str(perm.codename)))
-    return render(request,'user_panel/group_detail.html',{'group':group,'permission_list':permission_list,'user_list':user_list})
+    if request.user.has_perm('auth.view_group'):
+        group=Group.objects.get(pk=group_id)
+        permission_list=[]
+        user_list=User.objects.filter(groups=group)
+        for perm in group.permissions.all():
+            permission_list.append((perm.content_type,str(perm.codename)))
+        return render(request,'user_panel/group_detail.html',{'group':group,'permission_list':permission_list,'user_list':user_list})
+    else: return HttpResponse('You has no authorization to view group detail')
 
 def group_table(request):
-    group_list=Group.objects.all()
-    return render(request,'user_panel/group_table.html',{'group_list':group_list})
+    if request.user.has_perm('auth.view_group'):
+        group_list=Group.objects.all()
+        return render(request,'user_panel/group_table.html',{'group_list':group_list})
+    else: return HttpResponse('You has no authorization to view group table')
 
 def group_delete(request,group_id):
-    group=Group.objects.get(pk=group_id)
-    group.delete()
-    return redirect('../../group_table/')
+    if request.user.has_perm('auth.delete_group'):
+        group=Group.objects.get(pk=group_id)
+        group.delete()
+        return redirect('../../group_table/')
+    else: return HttpResponse('You has no authorization to delete group')
 
 def permission_add(request):
-    title='Permission Add'
     if request.user.has_perm('auth.add_permission'):
+        title='Permission Add'
         form =PermissionForm()
         if request.method=='POST':
             form = PermissionForm(request.POST or None)
@@ -94,17 +110,20 @@ def permission_add(request):
                 new_permission = Permission(name=permission_desc,codename=permission_codename,content_type_id=content)
                 new_permission.save()
         return render(request, 'user_panel/default_form.html', {'form': form,'title':title})
-
-    else: return HttpResponse('You have no auth to create new permission')
+    else: return HttpResponse('You have no authorization to create new permission')
 
 def permission_table(request):
-    permission_list=Permission.objects.all()
-    return render(request,'user_panel/permission_table.html',{'permission_list':permission_list,'content_type':ContentType})
+    if request.user.has_perm('auth.view_permission'):
+        permission_list=Permission.objects.all()
+        return render(request,'user_panel/permission_table.html',{'permission_list':permission_list,'content_type':ContentType})
+    else: return HttpResponse('You have no authorization to view permission table')
 
 def permission_delete(request,permission_id):
-    permission=Permission.objects.get(pk=permission_id)
-    permission.delete()
-    return redirect('../../permission_table/')
+    if request.user.has_perm('auth.delete_permission'):
+        permission=Permission.objects.get(pk=permission_id)
+        permission.delete()
+        return redirect('../../permission_table/')
+    else: return HttpResponse('You have no authorization to delete permission')
 
 def remover(request):
     title='Remover'
@@ -117,27 +136,27 @@ def remover(request):
                 print (user_id)
                 selection = User.objects.get(pk=user_id)
                 selection.delete()
-            else: return HttpResponse('User has no authorization to delete any user')
+            else: return HttpResponse('You has no authorization to delete any user')
         elif remover_choice=='2':
             if request.user.has_perm('auth.delete_permission'):
                 permission_id = form.cleaned_data.get('permission_choice')
                 print (permission_id)
                 selection = Permission.objects.get(pk=permission_id)
                 selection.delete()
-            else: return HttpResponse('User has no authorization to delete any permission')
+            else: return HttpResponse('You has no authorization to delete any permission')
         elif remover_choice=='3':
             if request.user.has_perm('auth.delete_group'):
                 group_id = form.cleaned_data.get('group_choice')
                 print (group_id)
                 selection = Group.objects.get(pk=group_id)
                 selection.delete()
-            else: return HttpResponse('User has no authorization to delete any group')
+            else: return HttpResponse('You has no authorization to delete any group')
         else: pass
     return render(request,'user_panel/default_form.html',{'form':form,'title':title})
 
 def user_permission_add(request):
-    title='User Permission Add'
     if request.user.has_perm('auth.change_permission'):
+        title='User Permission Add'
         form = UserPermissionForm(request.POST or None)
         if form.is_valid():
             user_id = form.cleaned_data.get('user_choice')
@@ -157,8 +176,8 @@ def user_permission_add(request):
         return HttpResponse('has no auth for changing permissions')
 
 def group_permission_add(request):
-    title='Group Permssion Add'
     if request.user.has_perm('auth.change_permission'):
+        title='Group Permssion Add'
         form = GroupPermissionForm(request.POST or None)
         if form.is_valid():
             group_id = form.cleaned_data.get('group_choice')
