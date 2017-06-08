@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth import authenticate,get_user_model
 from django.contrib.auth.models import User,Group,Permission,ContentType
+from django.contrib.auth import (authenticate, get_user_model, password_validation,)
 
+UserModel=get_user_model()
 
 class UserLoginForm(forms.Form):
     username = forms.CharField()
@@ -20,37 +21,30 @@ class UserLoginForm(forms.Form):
 
             return super(UserLoginForm, self).clean()
 
+
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Email Adresi')
-    password = forms.CharField(widget=forms.PasswordInput, label='Sifre',max_length=200)
-    password2 = forms.CharField(widget=forms.PasswordInput, label='Sifre Onay',max_length=200)
-    groups = []
-    groups1 = Group.objects.all()
-    for gro in groups1:
-        groups.append((gro.id, gro.name))
-    group_choice = forms.ChoiceField(label='Group', choices=groups, required=False)
+    password = forms.CharField(widget=forms.PasswordInput, label='Password',strip=False)
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Password Confirmation',strip=False)
 
     class Meta:
-        model = User
+        model = UserModel
         fields = [
-            'username',
             'first_name',
             'last_name',
             'password',
             'password2',
             'email',
-            'group_choice',
         ]
 
-    def clean_password(self):
-        email = self.cleaned_data.items()
-        print email
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-        print password, password2
-        # if password != password2:
-        # raise forms.ValidationError("Sifreler ayni olmali")
-        return self.cleaned_data
+    def clean_password2(self):
+        password = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password and password2 and password != password2:
+            raise forms.ValidationError("The two password fields didn't match.",code='password_mismatch',)
+        self.instance.username = self.cleaned_data.get('username')
+        password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
+        return password2
 
 class PermissionForm(forms.ModelForm):
     content_list = []

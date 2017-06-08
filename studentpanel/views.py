@@ -2,8 +2,10 @@ from django.shortcuts import  render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core import mail
+from django.contrib.auth import hashers
 from .forms import StudentInfoForm,ParentInfoForm
 from .models import StudentInfoModel,ParentInfoModel
+import random
 
 
 def options_menu(request):
@@ -15,12 +17,12 @@ def add_stundent(request):
         if request.method == "POST":
             formstudent = StudentInfoForm(request.POST, request.FILES)
             if formstudent.is_valid():
+                formstudent.save()
                 if request.user.has_perm('auth.add_user'):
                     first_name = formstudent.cleaned_data.get('student_name')
                     last_name = formstudent.cleaned_data.get('student_lastname')
                     email = formstudent.cleaned_data.get('student_email')
                     new_user_add(first_name, last_name, email)
-                formstudent.save()
             return redirect('/student_panel/')
         return render(request, 'student_panel/add_student.html', {'formstudent': formstudent})
     else:
@@ -108,10 +110,9 @@ def delete_student(request,student_id):
 
 # user add and sending mail
 def new_user_add(first_name,last_name,email):
-    student_user_list=User.objects.filter(groups__name='Student').order_by('-id')
-    new_pass=User.objects.make_random_password()
-    new_user=User(username=email,first_name=first_name,last_name=last_name,email=email)
-    new_user.id = student_user_list[0].id+1
+    new_id = User.objects.filter(groups__name='Student').order_by('-id')[0].id+1
+    new_pass = User.objects.make_random_password(10)
+    new_user=User(id=new_id,username=email,first_name=first_name,last_name=last_name,email=email)
     new_user.groups.add(1)
     new_user.set_password(new_pass)
     new_user.save()

@@ -28,69 +28,90 @@
 	               	</div>
 	            </div>
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="POST" action="user_table">
-
+					<form class="form-horizontal" method="POST">
+                        {% csrf_token %}
+{#						<div class="form-group">#}
+{#							<label for="id_username" class="cols-sm-2 control-label">Username</label>#}
+{#							<div class="cols-sm-10">#}
+{#								<div class="input-group">#}
+{#									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>#}
+{#									<input type="text" class="form-control" name="username" id="id_username"  placeholder="Enter your Username"/>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
 						<div class="form-group">
-							<label for="name" class="cols-sm-2 control-label">Your Name</label>
+							<label for="id_first_name" class="cols-sm-2 control-label">Your Name</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+									<input type="text" class="form-control" name="first_name" id="id_first_name"  placeholder="Enter your Name"/>
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<label for="id_last_name" class="cols-sm-2 control-label">Your Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="last_name" id="id_last_name"  placeholder="Enter your Last Name"/>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="id_email" class="cols-sm-2 control-label">Your Email</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+									<input type="email" class="form-control" name="email" id="id_email"  placeholder="Enter your Email"/>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="username" class="cols-sm-2 control-label">Username</label>
+							<label for="id_password" class="cols-sm-2 control-label">Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password" id="id_password"  placeholder="Password"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="id_password2" class="cols-sm-2 control-label">Confirm Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password2" id="id_password2"  placeholder="Confirm your Password"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="id_group_choice" class="cols-sm-2 control-label">Group Selection</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>
+                                    <select name="group_choice" id="id_group_choice">
+                                        <option value="1">Student</option>
+                                        <option value="2">Manager</option>
+                                        <option value="4">Accountant</option>
+                                        <option value="5">Personel</option>
+                                    </select>
 								</div>
 							</div>
 						</div>
-
-						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Password</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
-								</div>
-							</div>
-						</div>
-
 						<div class="form-group ">
-							<button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+							<button type="submit" class="save btn btn-default">Register</button>
 						</div>
-						<div class="login-register">
-				            <a href="user_panel/../login">Login</a>
-				         </div>
 					</form>
+
+                    <div class="login-register">
+                        <a href="login">Login</a>
+                     </div>
 				</div>
 			</div>
 		</div>
 
-		<script type="text/javascript" src={% static 'bootstrap.js'%}></script>
 	</body>
 </html>

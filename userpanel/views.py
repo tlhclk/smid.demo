@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth import(authenticate,login,logout)
 from django.contrib.auth.models import User,Group,Permission,ContentType
 from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,UserGroupForm,UserPermissionForm,GroupPermissionForm,RemoverForm
+from studentpanel import views
+
 
 def options_menu(request):
     return render(request,'user_panel/options_menu.html')
@@ -34,21 +36,29 @@ def log_out(request):
 
 def user_add(request):#register
     if request.user.has_perm('auth.add_user'):
-        title = "Register"
         form = UserRegistrationForm()
         if request.method=='POST':
             form = UserRegistrationForm(request.POST or None)
             if form.is_valid():
-                #user = form.save(commit=False)
+                user = form.save(commit=False)
                 password = form.cleaned_data.get('password')
-                password2=form.cleaned_data.get('password2')
-                #user.set_password(password)
-                group = form.cleaned_data.get('group_choice')
-                #user.save()
-                print (group)
-                #user.groups.add(group[0])
-        #return render(request, "user_panel/default_form.html", {"form": form,"title": title})
-        return render(request, "user_panel/register.html",{'form':form,"title": title})
+                user.set_password(password)
+                user.username=form.cleaned_data.get('email')
+                user.save()
+            # username = request.POST['username']
+            # password = request.POST['password']
+            # password2 = request.POST['password2']
+            # first_name = request.POST['first_name']
+            # last_name = request.POST['last_name']
+            # email = request.POST['email']
+            # group = request.POST['group_choice']
+            # if password2 == password:
+            #     views.new_user_add(first_name,last_name,email,password,username,group)
+            # else:
+            #     print 'error'
+
+        return render(request, "user_panel/register.html")
+        #return render(request, "user_panel/register.html",{'form':form,"title": title})
     else:
         return HttpResponse('You has no autharization to add user')
 
