@@ -2,10 +2,8 @@ from django.shortcuts import  render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core import mail
-from django.contrib.auth import hashers
-from .forms import StudentInfoForm,ParentInfoForm
-from .models import StudentInfoModel,ParentInfoModel
-import random
+from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
 
 
 def options_menu(request):
@@ -19,12 +17,14 @@ def add_stundent(request):
             if formstudent.is_valid():
                 formstudent.save()
                 if request.user.has_perm('auth.add_user'):
+                    id=formstudent.cleaned_data.get('id')
                     first_name = formstudent.cleaned_data.get('student_name')
                     last_name = formstudent.cleaned_data.get('student_lastname')
                     email = formstudent.cleaned_data.get('student_email')
-                    new_user_add(first_name, last_name, email)
+                    new_user_add(first_name, last_name, email,id,group_id='1')
             return redirect('/student_panel/')
-        return render(request, 'student_panel/add_student.html', {'formstudent': formstudent})
+        student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
+        return render(request, 'student_panel/add_student.html', {'formstudent': formstudent,'new_id':student_new_id})
     else:
         return HttpResponse('You has no authorization to add a student')
 
@@ -66,7 +66,7 @@ def edit_student(request,student_id):
             student.school_name=request.POST['school_name']
             student.education_year=request.POST['education_year']
             student.health_notes=request.POST['health_notes']
-            student.file_field=request.FILES['file_field']
+            if len(request.FILES) is not 0:student.file_field=request.FILES['file_field']
             student.save()
             return redirect('../../student_panel/student/%s'%student_id)
         return render(request,'student_panel/edit_student.html',{'student':student})
@@ -100,23 +100,24 @@ def edit_student(request,student_id):
 def delete_student(request,student_id):
     if request.user.has_perm('studentpanel.delete_studentinfomodel'):
         student=StudentInfoModel.objects.get(pk=student_id)
+        parent=ParentInfoModel.objects.filter(student_id=student_id)
         student.delete()
         if request.user.has_perm('auth.delete_user'):
-            if User.objects.get(username=student.student_email):
+            if len(User.objects.filter(username=student.student_email))!=0:
                 user = User.objects.get(username=student.student_email)
                 user.delete()
         return redirect('../student_table/')
     else: return HttpResponse('You has no authorization to delete a student')
 
 # user add and sending mail
-def new_user_add(first_name,last_name,email):
-    new_id = User.objects.filter(groups__name='Student').order_by('-id')[0].id+1
+def new_user_add(first_name,last_name,email,id,group_id):
     new_pass = User.objects.make_random_password(10)
-    new_user=User(id=new_id,username=email,first_name=first_name,last_name=last_name,email=email)
-    new_user.groups.add(1)
+    new_user=User(id=id,username=email,first_name=first_name,last_name=last_name,email=email)
     new_user.set_password(new_pass)
     new_user.save()
+    new_user.groups.add(group_id)
     send_a_email(email,new_pass)
+
 
 def send_a_email(email,new_pass):
     subj = 'New Password'
@@ -151,12 +152,17 @@ def table_parent(request):
     else: return HttpResponse('You has no authorization to view parent info list')
 
 def edit_parent(request,parent_id):
-    if request.user.has_perm('studentpanel.change_profile'):
-        pass
-    elif request.user.has_perm('studentpanel.change_parentinfomodel'):
+    if request.user.has_perm('studentpanel.change_parentinfomodel'):
         if request.method == "POST":
+            parent = ParentInfoModel.objects.get(pk=parent_id)
+            parent.parent_name=request.POST['parent_name']
+            parent.parent_lastname=request.POST['parent_lastname']
+            parent.parent_job=request.POST['parent_job']
+            parent.parent_email=request.POST['parent_email']
+            parent.parent_phone=request.POST['parent_phone']
+            parent.save()
             return redirect('../parent_table/')
-        parent = ParentInfoModel.objects.get( pk=parent_id)
+        parent = ParentInfoModel.objects.get(pk=parent_id)
         return render(request,'student_panel/edit_parent.html',{'parent':parent,'student':parent})
     else: return HttpResponse('You has no authorization to change parent info')
 
@@ -166,3 +172,77 @@ def delete_parent(request,parent_id):
         parent.delete()
         return redirect('../parent_table/')
     else: return HttpResponse('You has no authorization to delete a parent')
+
+def add_personal(request):
+    if request.user.has_perm('studentpanel.add_personalinfomodel'):
+        formpersonal = PersonalInfoForm()
+        if request.method == "POST":
+            formpersonal = PersonalInfoForm(request.POST, request.FILES)
+            if formpersonal.is_valid():
+                formpersonal.save()
+                if request.user.has_perm('auth.add_user'):
+                    id=formpersonal.cleaned_data.get('id')
+                    first_name = formpersonal.cleaned_data.get('personal_name')
+                    last_name = formpersonal.cleaned_data.get('personal_lastname')
+                    email = formpersonal.cleaned_data.get('personal_email')
+                    new_user_add(first_name, last_name, email,id,group_id=3)
+            return redirect('/student_panel/')
+        #print (PersonalInfoModel.objects.all().order_by('-id')[0])
+        personal_new_id = int(PersonalInfoModel.objects.all().order_by('-id')[0].id)+1
+        return render(request, 'student_panel/add_personal.html', {'formpersonal': formpersonal,'new_id':personal_new_id})
+    else:
+        return HttpResponse('You has no authorization to add a personal')
+
+def detail_personal(request,personal_id):
+    if request.user.has_perm('studentpanel.view_profile'):
+        personal = PersonalInfoModel.objects.get( pk=personal_id)
+        try:
+            user = User.objects.get(pk=personal_id)
+            show=True
+            return render(request, 'student_panel/detail_personal.html', {'personal': personal, 'user': user,'show':show})
+        except:
+            return HttpResponse('There is no user as: %s <a href="../"> Go back</a>' % personal.personal_email)
+
+        #return render(request, 'static/pages/examples/profil.html',{'personal': personal, 'user': user, 'user_perms': user_perms})
+    elif request.user.has_perm('studentpanel.view_personalinfomodel'):
+        personal = PersonalInfoModel.objects.get( pk=personal_id)
+        user = User.objects.get(username=personal.personal_email)
+        parent = ParentInfoModel.objects.filter(personal_id=personal_id)
+        return render(request, 'student_panel/detail_personal.html', {'personal': personal, 'user':user,'parent':parent})
+    else: return HttpResponse('You has no authorization to view personal profile <a href="../"> Go back</a>')
+
+def table_personal(request):
+    if request.user.has_perm('studentpanel.view_personalinfomodel'):
+        view_pro_per=request.user.has_perm('personalpanel.view_profile')
+        personal_list=PersonalInfoModel.objects.all()
+        return render(request, 'student_panel/table_personal.html', {'personal_list':personal_list,'view_pro_per':view_pro_per})
+    else: return HttpResponse('You has no authorization to view personal info list')
+
+def edit_personal(request,personal_id):
+    if request.user.has_perm('studentpanel.change_personalinfomodel'):
+        if request.method == "POST":
+            personal = PersonalInfoModel.objects.get(pk=personal_id)
+            personal.personal_name=request.POST['personal_name']
+            personal.personal_lastname=request.POST['personal_lastname']
+            personal.personal_phone=request.POST['personal_phone']
+            personal.personal_email=request.POST['personal_email']
+            personal.personal_startday=request.POST['personal_startday']
+            personal.personal_endday=request.POST['personal_endday']
+            personal.personal_city=request.POST['personal_city']
+            personal.personal_town=request.POST['personal_town']
+            personal.personal_adress=request.POST['personal_adress']
+            personal.health_notes=request.POST['health_notes']
+            personal.special_notes=request.POST['special_notes']
+            personal.image_field=request.POST['image_field']
+            personal.save()
+            return redirect('../personal_table/')
+        personal = PersonalInfoModel.objects.get(pk=personal_id)
+        return render(request,'student_panel/edit_personal.html',{'personal':personal})
+    else: return HttpResponse('You has no authorization to change personal info')
+
+def delete_personal(request,personal_id):
+    if request.user.has_perm('studentpanel.delete_personalinfomodel'):
+        personal=PersonalInfoModel.objects.get(pk=personal_id)
+        personal.delete()
+        return redirect('../personal_table/')
+    else: return HttpResponse('You has no authorization to delete a personal')

@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Personal</title>
+</head>
+<body>
+<h1>Add Personal</h1>
+    <form method="POST" class="post-formpersonal" enctype="multipart/form-data">
+        <input type='hidden' name='csrfmiddlewaretoken' value='18dXtQrnVRTolYIX4fzmlNlBaKTLkv0T0DZsDvuFd05RWDWvpPzIbZ6rPo0pdjy2' />
+        <p><label for="id_id">Personal Id:</label> <input type="text" name="id" value={{ personal.id }} required id="id_id" maxlength="7" readonly/> <span class="helptext">ID</span></p>
+<p><label for="id_personal_tcn">TC No:</label> <input type="text" name="personal_tcn" value={{ personal.personal_tcn }} required id="id_personal_tcn" maxlength="11" readonly/> <span class="helptext">11 digit</span></p>
+<p><label for="id_personal_name">Personal Name:</label> <input type="text" name="personal_name" value={{ personal.personal_name }} required id="id_personal_name" maxlength="200" /> <span class="helptext">Personal Name</span></p>
+<p><label for="id_personal_lastname">Personal Last Name:</label> <input type="text" name="personal_lastname" value={{ personal.personal_lastname }} required id="id_personal_lastname" maxlength="200" /> <span class="helptext">Personal Last Name</span></p>
+<p><label for="id_personal_phone">Phone Number:</label> <input type="tel" name="personal_phone" value={{ personal.personal_phone }} required id="id_personal_phone" /> <span class="helptext">+905553332211</span></p>
+<p><label for="id_personal_email">Personal Email:</label> <input type="email" name="personal_email" value={{ personal.personal_email }} required id="id_personal_email" maxlength="254" /> <span class="helptext">aaaaa@aaaa.aaa</span></p>
+<p><label for="id_personal_birthday">Birthday:</label> <input type="text" name="personal_birthday" value={{ personal.personal_birthday }} required id="id_personal_birthday" readonly/> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_personal_startday">Start Day:</label> <input type="text" name="personal_startday" value={{ personal.personal_startday }} required id="id_personal_startday" /><input type="hidden" name="initial-personal_startday" value="2017-06-17" id="initial-id_personal_startday" /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_personal_endday">Quit Day:</label> <input type="text" name="personal_endday" id="id_personal_endday" /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_personal_city">Personal City:</label> <select name="personal_city" id="id_personal_city">
+    <option value={{ personal.personal_city }}>{{ personal.city_name }}</option>
+  <option value="01">Adana</option>
+
+  <option value="02">Adıyaman</option>
+
+  <option value="03">Afyon</option>
+
+  <option value="04">Ağrı</option>
+
+  <option value="05">Amasya</option>
+
+  <option value="06">Ankara</option>
+
+  <option value="07">Antalya</option>
+
+  <option value="08">Artvin</option>
+
+  <option value="09">Aydın</option>
+
+  <option value="10">Balıkesir</option>
+
+  <option value="11">Bilecik</option>
+
+  <option value="12">Bingöl</option>
+
+  <option value="13">Bitlis</option>
+
+  <option value="14">Bolu</option>
+
+  <option value="15">Burdur</option>
+
+  <option value="16">Bursa</option>
+
+  <option value="17">Çanakkale</option>
+
+  <option value="18">Çankırı</option>
+
+  <option value="19">Çorum</option>
+
+  <option value="20">Denizli</option>
+
+  <option value="21">Diyarbakır</option>
+
+  <option value="22">Edirne</option>
+
+  <option value="23">Elazığ</option>
+
+  <option value="24">Erzincan</option>
+
+  <option value="25">Erzurum</option>
+
+  <option value="26">Eskişehir</option>
+
+  <option value="27">Gaziantep</option>
+
+  <option value="28">Giresun</option>
+
+  <option value="29">Gümüşhane</option>
+
+  <option value="30">Hakkari</option>
+
+  <option value="31">Hatay</option>
+
+  <option value="32">Isparta</option>
+
+  <option value="33">Mersin</option>
+
+  <option value="34">İstanbul</option>
+
+  <option value="35">İzmir</option>
+
+  <option value="36">Kars</option>
+
+  <option value="37">Kastamonu</option>
+
+  <option value="38">Kayseri</option>
+
+  <option value="39">Kırklareli</option>
+
+  <option value="40">Kırşehir</option>
+
+  <option value="41">Kocaeli</option>
+
+  <option value="42">Konya</option>
+
+  <option value="43">Kütahya</option>
+
+  <option value="44">Malatya</option>
+
+  <option value="45">Manisa</option>
+
+  <option value="46">Kahramanmaraş</option>
+
+  <option value="47">Mardin</option>
+
+  <option value="48">Muğla</option>
+
+  <option value="49">Muş</option>
+
+  <option value="50">Nevşehir</option>
+
+  <option value="51">Niğde</option>
+
+  <option value="52">Ordu</option>
+
+  <option value="53">Rize</option>
+
+  <option value="54">Sakarya</option>
+
+  <option value="55">Samsun</option>
+
+  <option value="56">Siirt</option>
+
+  <option value="57">Sinop</option>
+
+  <option value="58">Sivas</option>
+
+  <option value="59">Tekirdağ</option>
+
+  <option value="60">Tokat</option>
+
+  <option value="61">Trabzon</option>
+
+  <option value="62">Tunceli</option>
+
+  <option value="63">Şanlıurfa</option>
+
+  <option value="64">Uşak</option>
+
+  <option value="65">Van</option>
+
+  <option value="66">Yozgat</option>
+
+  <option value="67">Zonguldak</option>
+
+  <option value="68">Aksaray</option>
+
+  <option value="69">Bayburt</option>
+
+  <option value="70">Karaman</option>
+
+  <option value="71">Kırıkkale</option>
+
+  <option value="72">Batman</option>
+
+  <option value="73">Şırnak</option>
+
+  <option value="74">Bartın</option>
+
+  <option value="75">Ardahan</option>
+
+  <option value="76">Iğdır</option>
+
+  <option value="77">Yalova</option>
+
+  <option value="78">Karabük</option>
+
+  <option value="79">Kilis</option>
+
+  <option value="80">Osmaniye</option>
+
+  <option value="81">Düzce</option>
+
+</select> <span class="helptext">City Where Personal From</span></p>
+<p><label for="id_personal_town">Personal Town:</label> <input type="text" name="personal_town" value={{ personal.personal_town }} required id="id_personal_town" maxlength="20" /> <span class="helptext">Town Where Personal From</span></p>
+<p><label for="id_personal_adress">Personal Address:</label> <input type="text" name="personal_adress" value={{ personal.personal_adress }} required id="id_personal_adress" maxlength="50" /> <span class="helptext">Distinct, Street, Building No, Flat No</span></p>
+<p><label for="id_blood_type">Blood Type:</label> <select name="blood_type" id="id_blood_type" disabled>
+    <option selected value={{ personal.blood_type }} >{{ personal.blood_type_name }}</option>
+  <option value="0">0 rh +</option>
+
+  <option value="1">0 rh -</option>
+
+  <option value="2">A rh +</option>
+
+  <option value="3">A rh -</option>
+
+  <option value="4">B rh +</option>
+
+  <option value="5">B rh -</option>
+
+  <option value="6">AB rh+</option>
+
+  <option value="7">AB rh-</option>
+
+</select> <span class="helptext">Blood Type</span></p>
+<p><label for="id_health_notes">Health Notes:</label> <input type="text" name="health_notes" id="id_health_notes" maxlength="100" value={{ personal.health_notes }} /> <span class="helptext">Health Notes</span></p>
+<p><label for="id_special_notes">Special Notes:</label> <input type="text" name="special_notes" id="id_special_notes" maxlength="100" value={{ personal.special_notes }} /> <span class="helptext">Special Notes</span></p>
+<p><label for="id_image_field">Image Upload:</label> <input type="file" name="image_field" id="id_image_field" value={{ personal.image_path }}/> <span class="helptext">Profile Image Path</span></p>
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+</body>
+</html>

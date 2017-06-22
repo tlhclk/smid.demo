@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from .forms import FixtureInfoForm,RoomInfoForm
 from .models import FixtureInfoModel,RoomInfoModel
+from studentpanel.models import StudentInfoModel
 
 def options_menu(request):
     return render(request,'fixture_panel/options_menu.html')
@@ -45,11 +46,15 @@ def add_room(request):
 
 def table_room(request):
     room_list=RoomInfoModel.objects.all()
+
     return render(request,'fixture_panel/room_table.html',{'room_list':room_list})
 
 def room_detail(request,room_no):
     room=RoomInfoModel.objects.get(pk=room_no)
-    return render(request,'fixture_panel/room_detail.html',{'room':room})
+    room_people=RoomInfoModel.room_people_list[int(room.room_people)-1]
+    room_type=RoomInfoModel.room_type_list[int(room.room_type)-1]
+    student_list=StudentInfoModel.objects.filter(room_number=room.room_no)
+    return render(request,'fixture_panel/room_detail.html',{'room':room,'room_people':room_people,'room_type':room_type,'student_list':student_list})
 
 def edit_room(request,room_no):
     pass

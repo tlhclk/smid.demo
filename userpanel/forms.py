@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User,Group,Permission,ContentType
-from django.contrib.auth import (authenticate, get_user_model, password_validation,)
+from django.contrib.auth import (authenticate, get_user_model, password_validation)
 
 UserModel=get_user_model()
 
@@ -20,7 +20,6 @@ class UserLoginForm(forms.Form):
                 raise forms.ValidationError("Sifre yanlis veya eksik")
 
             return super(UserLoginForm, self).clean()
-
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Email Adresi')
@@ -104,9 +103,9 @@ class GroupPermissionForm(forms.Form):
         group_id = self.cleaned_data.get('group_choice')
         permission_list = self.cleaned_data.get('permission_choice')
         kullanici = Group.objects.get(pk=group_id)
-        for per in permission_list:
-           if kullanici.has_perm(per):
-               raise forms.ValidationError('user already has the permission %s'%per)
+        #for per in permission_list:
+           #if kullanici.has_perm(per):
+               #raise forms.ValidationError('user already has the permission %s'%per)
         return group_id, permission_list
 
 class RemoverForm(forms.Form):
@@ -127,3 +126,9 @@ class RemoverForm(forms.Form):
     user_choice = forms.ChoiceField(label='User', choices=user_list, required=False)
     permission_choice = forms.ChoiceField(label='Permission', choices=permission_list, required=False)
     group_choice = forms.ChoiceField(label='Group', choices=group_list, required=False)
+
+class AddGroup(forms.Form):
+    group_name=forms.CharField(label='Group Name',)
+    class Meta:
+        model=Group
+        fields=['group_name']

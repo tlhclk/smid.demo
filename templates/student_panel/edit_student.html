@@ -16,7 +16,7 @@
 <p><label for="id_student_birthday">Birthday:</label> <input type="text" name="student_birthday" required id="id_student_birthday" value={{ student.student_birthday.year }}-{{ student.student_birthday.month }}-{{ student.student_birthday.day }} /> <span class="helptext">1990-12-31</span></p>
 <p><label for="id_student_regday">Registration Day:</label> <input type="text" name="student_regday" value={{ student.student_regday.year }}-{{ student.student_regday.month }}-{{ student.student_regday.day }} required id="id_student_regday" /><input type="hidden" name="initial-student_regday" value="2017-06-01" id="initial-id_student_regday" /> <span class="helptext">1990-12-31</span></p>
 <p><label for="id_student_city">Student City:</label><select name="student_city" id="id_student_city">
-    <option value={{ student.student_city }}>{{ student.student_city }}</option>
+    <option value={{ student.student_city }}>{{ student.city_name }}</option>
   <option value="01">Adana</option>
 
   <option value="02">Adıyaman</option>
@@ -218,7 +218,7 @@
 
 </select> <span class="helptext">Student Accommodation Type</span></p>
 <p><label for="id_birth_place">Birth City:</label> <select name="birth_place" id="id_birth_place">
-    <option value={{ student.student_city }}>{{ student.student_city }}</option>
+    <option value={{ student.student_city }}>{{ student.birth_city_name }}</option>
   <option value="01">Adana</option>
 
   <option value="02">Adıyaman</option>
@@ -401,7 +401,7 @@
 
 </select> <span class="helptext">Education Year</span></p>
 <p><label for="id_blood_type">Blood Type:</label> <select name="blood_type" id="id_blood_type">
-    <option value={{ student.blood_type }}>{{ student.blood_type }}</option>
+    <option value={{ student.blood_type }}>{{ student.blood_type_name }}</option>
   <option value="0 rh +">0 rh +</option>
 
   <option value="0 rh -">0 rh -</option>

@@ -1,11 +1,13 @@
 from django import forms
-from .models import StudentInfoModel,ParentInfoModel
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from fixturepanel.models import RoomInfoModel
 
 class StudentInfoForm(forms.ModelForm):
-
     class Meta:
         model=StudentInfoModel
-        fields=('student_tcn',
+        fields=(
+                'id',
+                'student_tcn',
                 'student_name',
                 'student_lastname',
                 'student_phone',
@@ -25,10 +27,24 @@ class StudentInfoForm(forms.ModelForm):
                 'file_field',
                 )
 
+    # def clean_room_number(self):
+    #     print self.cleaned_data.get('room_number')
+    #     room_max = int(RoomInfoModel.objects.get(pk=self.cleaned_data.get('room_number')).room_people)
+    #     room_people = len(StudentInfoModel.objects.filter(room_number=self.cleaned_data.get('room_number')))
+    #
+    #     if room_people <=room_max:
+    #         print (room_people, room_max)
+    #     else:
+    #         raise forms.ValidationError('Room has no quota',code='Room overload')
+    #
+    #
+
+
 class ParentInfoForm(forms.ModelForm):
     class Meta:
         model=ParentInfoModel
-        fields=('student_id',
+        fields=('id',
+                'student_id',
                 'parent_name',
                 'parent_lastname',
                 'parent_TCN',
@@ -38,10 +54,26 @@ class ParentInfoForm(forms.ModelForm):
                 'parent_job',
                 )
 
-
 # sehirler
-# oda listesi
 # okul adi
 
-class ParentEditForm(forms.Form):
-    pass
+class PersonalInfoForm(forms.ModelForm):
+    class Meta:
+        model=PersonalInfoModel
+        fields=('id',
+                'personal_tcn',
+                'personal_name',
+                'personal_lastname',
+                'personal_phone',
+                'personal_email',
+                'personal_birthday',
+                'personal_startday',
+                'personal_endday',
+                'personal_city',
+                'personal_town',
+                'personal_adress',
+                'blood_type',
+                'health_notes',
+                'special_notes',
+                'image_field'
+                )

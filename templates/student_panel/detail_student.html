@@ -5,7 +5,7 @@
     <title>Details - {{ student.student_name }}</title>
 </head>
 <body>
-<h1>{{ student.id }}</h1>
+<h1><a href="../../../user_panel/user/{{ student.id }}/">{{ student.id }}</a></h1>
 <h1>{{ student.student_tcn }}</h1>
 <h1>{{ student.student_name }}</h1>
 <h1>{{ student.student_lastname }}</h1>
@@ -25,7 +25,7 @@
 <h1>{{ student.health_notes }}</h1>
 <h1>{{ student.special_notes }}</h1>
 {% if show %}
-<h1>{{ user.groups.values.first.name }}</h1>
+<h1><a href="../../../user_panel/group/{{ user.groups.values.first.id }}/">{{ user.groups.values.first.name }}</a></h1>
 {% endif %}
 {% if student.file_field %}
     <img src="/../../media/{{ student.file_field }}" alt="profile-pic" height="400">

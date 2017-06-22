@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details - {{ personal.personal_name }}</title>
+</head>
+<body>
+<h1><a href="../../../user_panel/user/{{ personal.id }}/">{{ personal.id }}</a></h1>
+<h1>{{ personal.personal_tcn }}</h1>
+<h1>{{ personal.personal_name }}</h1>
+<h1>{{ personal.personal_lastname }}</h1>
+<h1>{{ personal.personal_phone }}</h1>
+<h1>{{ personal.personal_email }}</h1>
+<h1>{{ personal.personal_bday }}</h1>
+<h1>{{ personal.personal_startday }}</h1>
+<h1>{{ personal.personal_endday }}</h1>
+<h1>{{ personal.personal_city }}</h1>
+<h1>{{ personal.personal_town }}</h1>
+<h1>{{ personal.personal_adress }}</h1>
+<h1>{{ personal.blood_type }}</h1>
+<h1>{{ personal.health_notes }}</h1>
+<h1>{{ personal.special_notes }}</h1>
+{% if show %}
+<h1><a href="../../../user_panel/group/{{ user.groups.values.first.id }}/">{{ user.groups.values.first.name }}</a></h1>
+{% endif %}
+{% if personal.image_field %}
+    <img src="/../../media/{{ personal.image_field }}" alt="proimage-pic" height="400">
+{% endif %}
+</body>
+</html>

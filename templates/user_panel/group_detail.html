@@ -12,7 +12,7 @@ Grup Adı : {{ group.name }}
 <hr>
 Grup Üyeleri : {% for user in user_list %}////{{ user.username }}&nbsp&nbsp&nbsp&nbsp{% endfor %}
 <hr>
-Grup Yetkileri :  {% for content,permission in permission_list %}<li>{{ content }} &nbsp&nbsp&nbsp&nbsp  {{ permission }} </li>{% endfor %}
-
+Grup Yetkileri :  <table>{% for perm in group_perm %}<tr><td>{{ perm.content_type }}</td> &nbsp&nbsp&nbsp&nbsp <td>{{ perm.codename }}</td>&nbsp&nbsp&nbsp&nbsp<td>{{ perm.name }}</td></tr>{% endfor %}
+</table>
 </body>
 </html>
