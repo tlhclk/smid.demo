@@ -7,15 +7,17 @@
 </head>
 <body>
 <h1>Add Student</h1>
-    <form method="POST" class="post-formstudent">{% csrf_token %}
+    <form method="POST" class="post-formstudent" enctype="multipart/form-data">{% csrf_token %}
         <p><label for="id_id">Student Id:</label> <input type="text" name="id" value="{{ new_id }}" required id="id_id" maxlength="7" /> <span class="helptext">ID</span></p>
+
+<p><label for="id_student_position">Student Position:</label> <input type="checkbox" name="student_position" id="id_student_position" /> <span class="helptext">In-Out</span></p>
 <p><label for="id_student_tcn">TC No:</label> <input type="text" name="student_tcn" value="00000000000" required id="id_student_tcn" maxlength="11" /> <span class="helptext">11 digit</span></p>
 <p><label for="id_student_name">Student Name:</label> <input type="text" name="student_name" value="Ahmet" required id="id_student_name" maxlength="200" /> <span class="helptext">Student Name</span></p>
 <p><label for="id_student_lastname">Student Last Name:</label> <input type="text" name="student_lastname" value="Yilmaz" required id="id_student_lastname" maxlength="200" /> <span class="helptext">Student Last Name</span></p>
 <p><label for="id_student_phone">Phone Number:</label> <input type="tel" name="student_phone" value="+905553332211" required id="id_student_phone" /> <span class="helptext">+905553332211</span></p>
 <p><label for="id_student_email">Student Email:</label> <input type="email" name="student_email" value="qwe@gam.com" required id="id_student_email" maxlength="254" /> <span class="helptext">aaaaa@aaaa.aaa</span></p>
-<p><label for="id_student_birthday">Birthday:</label> <input type="text" name="student_birthday" value="1990-12-31" required id="id_student_birthday" /> <span class="helptext">1990-12-31</span></p>
-<p><label for="id_student_regday">Registration Day:</label> <input type="text" name="student_regday" value="20/06/2017" required id="id_student_regday" /><input type="hidden" name="initial-student_regday" value="2017-06-20" id="initial-id_student_regday" /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_student_birthday">Birthday:</label> <input type="date" name="student_birthday" value="1990-12-31" required id="id_student_birthday" /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_student_regday">Registration Day:</label> <input type="date" name="student_regday" value="{{ today }}" required id="id_student_regday" /><input type="hidden" name="initial-student_regday" value="2017-06-20" id="initial-id_student_regday" /> <span class="helptext">1990-12-31</span></p>
 <p><label for="id_student_city">Student City:</label> <select name="student_city" id="id_student_city">
   <option value="01">Adana</option>
 
@@ -417,10 +419,10 @@
 </select> <span class="helptext">Blood Type</span></p>
 <p><label for="id_health_notes">Health Notes:</label> <input type="text" name="health_notes" value="-" id="id_health_notes" maxlength="100" /> <span class="helptext">Health Notes</span></p>
 <p><label for="id_special_notes">Special Notes:</label> <input type="text" name="special_notes" value="-" id="id_special_notes" maxlength="100" /> <span class="helptext">Special Notes</span></p>
-<p><label for="id_file_field">Image Upload:</label> <input type="file" name="file_field" id="id_file_field" /> <span class="helptext">Profile Image Path</span></p>
+<p><label for="id_file_field">Image Upload:</label> <input type="file" name="file_field" id="id_file_field" /> <span class="helptext">Add an Image</span></p>
         <button type="submit" class="save btn btn-default">Add Student</button>
     </form>
 
-<h2>tlhclk</h2>
+<h2>{{ request.user }}</h2>
 </body>
 </html>

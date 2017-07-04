@@ -2,8 +2,10 @@ from django.shortcuts import  render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core import mail
-from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm
-from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm,PersonLeaveForm
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel
+from fixturepanel.models import RoomInfoModel
+import datetime
 
 
 def options_menu(request):
@@ -24,23 +26,22 @@ def add_stundent(request):
                     new_user_add(first_name, last_name, email,id,group_id='1')
             return redirect('/student_panel/')
         student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
-        return render(request, 'student_panel/add_student.html', {'formstudent': formstudent,'new_id':student_new_id})
+        return render(request, 'student_panel/add_student.html', {'formstudent': formstudent,'new_id':student_new_id,'today':str(datetime.date.today())})
     else:
         return HttpResponse('You has no authorization to add a student')
 
 def detail_student(request,student_id):
     if request.user.has_perm('studentpanel.view_profile'):
         student = StudentInfoModel.objects.get( pk=student_id)
-        try:
-            user = User.objects.get(username=student.student_email)
-            show=True
-            return render(request, 'student_panel/detail_student.html', {'student': student, 'user': user,'show':show})
-        except:
-            user=None
-            show=True
-            return render(request, 'student_panel/detail_student.html', {'student': student, 'user': user,'show':show})
+        user = User.objects.get(username=student.student_email)
+        show=True
+        leave_boolean=None
+        if len(PersonLeaveModel.objects.filter(leave_person_id=student_id))!=0:
+            for permi in PersonLeaveModel.objects.filter(leave_person_id=student_id):
+                if datetime.datetime.strptime(str(permi.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),'%Y-%m-%d')<=datetime.datetime.strptime(str(permi.leave_end),"%Y-%m-%d"):
+                    leave_boolean=permi.leave_start,permi.leave_end
+        return render(request, 'student_panel/detail_student.html', {'student': student, 'user': user,'show':show,'leave_boolean':leave_boolean})
 
-        #return render(request, 'static/pages/examples/profil.html',{'student': student, 'user': user, 'user_perms': user_perms})
     elif request.user.has_perm('studentpanel.view_studentinfomodel'):
         student = StudentInfoModel.objects.get( pk=student_id)
         user = User.objects.get(username=student.student_email)
@@ -52,11 +53,36 @@ def table_student(request):
     if request.user.has_perm('studentpanel.view_studentinfomodel'):
         view_pro_per=request.user.has_perm('studentpanel.view_profile')
         student_list=StudentInfoModel.objects.all()
-        return render(request, 'student_panel/table_student.html', {'student_list':student_list,'view_pro_per':view_pro_per})
+        all_in,all_all=(len(StudentInfoModel.objects.filter(student_position=True)),len(StudentInfoModel.objects.all()))
+        return render(request, 'student_panel/table_student.html', {'student_list':student_list,'view_pro_per':view_pro_per,'all_in':all_in,'all_all':all_all})
     else: return HttpResponse('You has no authorization to view student info list')
 
 def edit_student(request,student_id):
-    if request.user.has_perm('studentpanel.change_profile'):
+    if request.user.has_perm('studentpanel.change_studentinfomodel'):
+        student = StudentInfoModel.objects.get( pk=student_id)
+        if request.method=='POST':
+            student.student_tcn=request.POST['student_tcn']
+            student.student_name=request.POST['student_name']
+            student.student_lastname=request.POST['student_lastname']
+            student.student_phone=request.POST['student_phone']
+            student.student_email=request.POST['student_email']
+            student.student_birthday=request.POST['student_birthday']
+            student.student_regday=request.POST['student_regday']
+            student.student_city=request.POST['student_city']
+            student.student_town=request.POST['student_town']
+            student.room_number=RoomInfoModel.objects.get(pk=request.POST['room_number'])
+            student.student_type=request.POST['student_type']
+            student.birth_place=request.POST['birth_place']
+            student.school_name=request.POST['school_name']
+            student.education_year=request.POST['education_year']
+            student.blood_type=request.POST['blood_type']
+            student.health_notes=request.POST['health_notes']
+            student.special_notes=request.POST['special_notes']
+            student.file_field=request.FILES['file_field']
+            student.save()
+            return redirect('../../student_panel/student/%s'%student_id)
+        return render(request,'student_panel/edit_student.html',{'student':student})
+    elif request.user.has_perm('studentpanel.change_profile'):
         student = StudentInfoModel.objects.get( pk=student_id)
         if request.method=='POST':
             student.student_phone=request.POST['student_phone']
@@ -71,30 +97,6 @@ def edit_student(request,student_id):
             return redirect('../../student_panel/student/%s'%student_id)
         return render(request,'student_panel/edit_student.html',{'student':student})
 
-    elif request.user.has_perm('studentpanel.change_studentinfomodel'):
-        student = StudentInfoModel.objects.get( pk=student_id)
-        if request.method=='POST':
-            student.student_tcn=request.POST['student_tcn']
-            student.student_name=request.POST['student_name']
-            student.student_lastname=request.POST['student_lastname']
-            student.student_phone=request.POST['student_phone']
-            student.student_email=request.POST['student_email']
-            student.student_birthday=request.POST['student_birthday']
-            student.student_regday=request.POST['student_regday']
-            student.student_city=request.POST['student_city']
-            student.student_town=request.POST['student_town']
-            student.room_number=request.POST['room_number']
-            student.student_type=request.POST['student_type']
-            student.birth_place=request.POST['birth_place']
-            student.school_name=request.POST['school_name']
-            student.education_year=request.POST['education_year']
-            student.blood_type=request.POST['blood_type']
-            student.health_notes=request.POST['health_notes']
-            student.special_notes=request.POST['special_notes']
-            student.file_field=request.FILES['file_field']
-            student.save()
-            return redirect('../../student_panel/student/%s'%student_id)
-        return render(request,'student_panel/edit_student.html',{'student':student})
     else: return HttpResponse('You has no authorization to change student info')
 
 def delete_student(request,student_id):
@@ -118,7 +120,6 @@ def new_user_add(first_name,last_name,email,id,group_id):
     new_user.groups.add(group_id)
     send_a_email(email,new_pass)
 
-
 def send_a_email(email,new_pass):
     subj = 'New Password'
     mesg = 'Thanks for joining our system. \nUsername/E-mail = %s \nYour first password is: %s' % (email, new_pass)
@@ -127,6 +128,15 @@ def send_a_email(email,new_pass):
     if 'gmail' in email:
         to_ma.append(email)
     mail.send_mail(subj, mesg, from_ma, to_ma)
+
+def change_student_position(request,student_id):
+    student=StudentInfoModel.objects.get(pk=student_id)
+    if student.student_position==True:
+        student.student_position=False
+    else:
+        student.student_position=True
+    student.save()
+    return redirect('../../student/%s'%student_id)
 
 def add_parent(request):
     if request.user.has_perm('studentpanel.add_studentinfomodel'):
@@ -161,9 +171,9 @@ def edit_parent(request,parent_id):
             parent.parent_email=request.POST['parent_email']
             parent.parent_phone=request.POST['parent_phone']
             parent.save()
-            return redirect('../parent_table/')
+            return redirect('../../')
         parent = ParentInfoModel.objects.get(pk=parent_id)
-        return render(request,'student_panel/edit_parent.html',{'parent':parent,'student':parent})
+        return render(request,'student_panel/edit_parent.html',{'parent':parent})
     else: return HttpResponse('You has no authorization to change parent info')
 
 def delete_parent(request,parent_id):
@@ -187,7 +197,6 @@ def add_personal(request):
                     email = formpersonal.cleaned_data.get('personal_email')
                     new_user_add(first_name, last_name, email,id,group_id=3)
             return redirect('/student_panel/')
-        #print (PersonalInfoModel.objects.all().order_by('-id')[0])
         personal_new_id = int(PersonalInfoModel.objects.all().order_by('-id')[0].id)+1
         return render(request, 'student_panel/add_personal.html', {'formpersonal': formpersonal,'new_id':personal_new_id})
     else:
@@ -203,7 +212,6 @@ def detail_personal(request,personal_id):
         except:
             return HttpResponse('There is no user as: %s <a href="../"> Go back</a>' % personal.personal_email)
 
-        #return render(request, 'static/pages/examples/profil.html',{'personal': personal, 'user': user, 'user_perms': user_perms})
     elif request.user.has_perm('studentpanel.view_personalinfomodel'):
         personal = PersonalInfoModel.objects.get( pk=personal_id)
         user = User.objects.get(username=personal.personal_email)
@@ -246,3 +254,15 @@ def delete_personal(request,personal_id):
         personal.delete()
         return redirect('../personal_table/')
     else: return HttpResponse('You has no authorization to delete a personal')
+
+def leave_assign(request):
+    leave_form=PersonLeaveForm
+    if request.method=='POST':
+        leave_form = PersonLeaveForm(request.POST)
+        #print leave_form
+        if leave_form.is_valid():
+            leave_form.save()
+    next_id='1710001'#int(PersonleaveModel.objects.all().order_by('-leave_id')[0].id)+1
+    person_list=PersonLeaveModel.person_list
+    #return render(request,'user_panel/default_form.html',{'form':leave_form})
+    return render(request,'student_panel/leave_assign.html',{'formleave':leave_form,'next_id':next_id,'person_list':person_list})

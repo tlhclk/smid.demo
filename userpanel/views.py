@@ -56,6 +56,26 @@ def user_detail(request,user_id):
         else: return HttpResponse('You are Anonymous,you have nothing')
     else: return HttpResponse('You has no authorization to view user detail')
 
+def user_edit(request, user_id):
+    if request.user.has_perm('auth.change_user'):
+        user = User.objects.get(pk=user_id)
+        if request.method == 'POST':
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.email = request.POST['email']
+            user.password = request.POST['password']
+            user.password_check = request.POST['password2']
+            group_choice = request.POST['group_choice']
+            group = Group.objects.get(pk=user.groups.all()[0].id)
+            group.user_set.remove(user)
+            user.groups.add(group_choice)
+            return redirect('../../user_table/')
+        return render(request, 'user_panel/edit_user.html', {'user': user})
+
+
+    else:
+        return HttpResponse('You has no authorization to edit a user profile')
+
 def user_table(request):
     if 1==1:
         user_list=User.objects.all()
@@ -170,7 +190,6 @@ def user_permission_add(request):
                 content = ContentType.objects.get(pk=permission.content_type_id)
                 if user.has_perm('%s.%s'%(content.app_label,permission.codename)):
                     print (user,per,'already has')
-                    pass
                 else:
                     user.user_permissions.add(per)
 
@@ -191,32 +210,9 @@ def group_permission_add(request):
                 permission = Permission.objects.get(pk=per)
                 if permission in group.permissions.all():
                     print permission,'already has'
-                    pass
                 else:
                     print permission.codename,'given'
                     group.permissions.add(per)
             return redirect('../group_table')
         return render(request,'user_panel/default_form.html',{'form':form,'title':title})
     else: return HttpResponse('has no auth for changing permissions, changing groups: '+str(request.user))
-
-def group_user_edit(request):
-    pass
-
-def user_edit(request,user_id):
-    if request.user.has_perm('auth.change_user'):
-        user=User.objects.get(pk=user_id)
-        if request.method=='POST':
-            user.first_name=request.POST['first_name']
-            user.last_name=request.POST['last_name']
-            user.email=request.POST['email']
-            user.password=request.POST['password']
-            user.password_check=request.POST['password2']
-            group_choice=request.POST['group_choice']
-            group=Group.objects.get(pk=user.groups.all()[0].id)
-            group.user_set.remove(user)
-            user.groups.add(group_choice)
-            return redirect('../../user_table/')
-        return render(request,'user_panel/edit_user.html',{'user':user})
-
-
-    else: return HttpResponse('You has no authorization to edit a user profile')

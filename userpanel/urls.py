@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^group_permission_add',views.group_permission_add ,name='Group Permission Add'),
     url(r'^group_add/',views.add_group,name='Group Add'),
     url(r'^user_edit/(?P<user_id>[0-9]+)/',views.user_edit,name='Group Edit'),
+
 ]

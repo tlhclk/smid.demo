@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^personal_table/', views.table_personal, name='personal Table'),
     url(r'^personal_edit/(?P<personal_id>[0-9]+)', views.edit_personal, name='personal Edit'),
     url(r'^personal_delete/(?P<personal_id>[0-9]+)', views.delete_personal, name='personal Delete'),
-
+    url(r'^change_position/(?P<student_id>[0-9]+)/',views.change_student_position,name='change student position'),
+    url(r'^permission_assign/',views.leave_assign,name='Permission Assign')
 ]

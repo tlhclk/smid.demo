@@ -8,13 +8,14 @@
     <h1>{{ student.id }}</h1>
     <form method="POST" class="post-formparent" enctype="multipart/form-data">
         {% csrf_token %}
-        <p><label for="id_student_tcn">TC No:</label> <input type="text" name="student_tcn" value={{ student.student_tcn }} required id="id_student_tcn" maxlength="11" /> <span class="helptext">11 digit</span></p>
+<p><label for="id_student_position">Student Position:</label> <input type="checkbox" name="student_position" id="id_student_position"{% if student.student_position %}checked {% endif %} /> <span class="helptext">In-Out</span></p>
+<p><label for="id_student_tcn">TC No:</label> <input type="text" name="student_tcn" value={{ student.student_tcn }} required id="id_student_tcn" maxlength="11" /> <span class="helptext">11 digit</span></p>
 <p><label for="id_student_name">Student Name:</label> <input type="text" name="student_name" value={{ student.student_name }} required id="id_student_name" maxlength="200" /> <span class="helptext">Student Name</span></p>
 <p><label for="id_student_lastname">Student Last Name:</label> <input type="text" name="student_lastname" value={{ student.student_lastname }} required id="id_student_lastname" maxlength="200" /> <span class="helptext">Student Last Name</span></p>
 <p><label for="id_student_phone">Phone Number:</label> <input type="tel" name="student_phone" value={{ student.student_phone }} required id="id_student_phone" /> <span class="helptext">+905553332211</span></p>
 <p><label for="id_student_email">Student Email:</label> <input type="email" name="student_email" required id="id_student_email" maxlength="254" value={{ student.student_email }} /> <span class="helptext">aaaaa@aaaa.aaa</span></p>
-<p><label for="id_student_birthday">Birthday:</label> <input type="text" name="student_birthday" required id="id_student_birthday" value={{ student.student_birthday.year }}-{{ student.student_birthday.month }}-{{ student.student_birthday.day }} /> <span class="helptext">1990-12-31</span></p>
-<p><label for="id_student_regday">Registration Day:</label> <input type="text" name="student_regday" value={{ student.student_regday.year }}-{{ student.student_regday.month }}-{{ student.student_regday.day }} required id="id_student_regday" /><input type="hidden" name="initial-student_regday" value="2017-06-01" id="initial-id_student_regday" /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_student_birthday">Birthday:</label> <input type="date" name="student_birthday" required id="id_student_birthday" value={{ student.student_birthday.year }}-{{ student.student_birthday.month }}-{{ student.student_birthday.day }} /> <span class="helptext">1990-12-31</span></p>
+<p><label for="id_student_regday">Registration Day:</label> <input type="date" name="student_regday" value={{ student.student_regday.year }}-{{ student.student_regday.month }}-{{ student.student_regday.day }} required id="id_student_regday" /><input type="hidden" name="initial-student_regday" value="2017-06-01" id="initial-id_student_regday" /> <span class="helptext">1990-12-31</span></p>
 <p><label for="id_student_city">Student City:</label><select name="student_city" id="id_student_city">
     <option value={{ student.student_city }}>{{ student.city_name }}</option>
   <option value="01">Adana</option>

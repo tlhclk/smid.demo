@@ -1,5 +1,5 @@
 from django import forms
-from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel
 from fixturepanel.models import RoomInfoModel
 
 class StudentInfoForm(forms.ModelForm):
@@ -7,6 +7,7 @@ class StudentInfoForm(forms.ModelForm):
         model=StudentInfoModel
         fields=(
                 'id',
+                'student_position',
                 'student_tcn',
                 'student_name',
                 'student_lastname',
@@ -36,8 +37,6 @@ class StudentInfoForm(forms.ModelForm):
     #         print (room_people, room_max)
     #     else:
     #         raise forms.ValidationError('Room has no quota',code='Room overload')
-    #
-    #
 
 
 class ParentInfoForm(forms.ModelForm):
@@ -54,8 +53,6 @@ class ParentInfoForm(forms.ModelForm):
                 'parent_job',
                 )
 
-# sehirler
-# okul adi
 
 class PersonalInfoForm(forms.ModelForm):
     class Meta:
@@ -76,4 +73,14 @@ class PersonalInfoForm(forms.ModelForm):
                 'health_notes',
                 'special_notes',
                 'image_field'
+                )
+
+class PersonLeaveForm(forms.ModelForm):
+    class Meta:
+        model=PersonLeaveModel
+        fields=('leave_id',
+                'leave_start',
+                'leave_end',
+                'leave_person_id',
+                'leave_reason',
                 )

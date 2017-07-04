@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Fixture</title>
+</head>
+<body>
+<h1>Edit Fixture</h1>
+    <form method="POST" class="post-formfixture"><input type='hidden' name='csrfmiddlewaretoken' value='PPA88tIl4ZAIrLsDsbGtXdrenxKXF9cDDDRIqrBYL0X1xMqlyjGETbkuX4botsir' />
+        <p><label for="id_fixture_no">Fixture No: :</label> <input type="text" value="{{ fixture.fixture_no }}" name="fixture_no" required id="id_fixture_no" maxlength="10" /></p>
+<p><label for="id_room_no">Room No: :</label> <select name="room_no" required id="id_room_no">
+  <option value="{{ fixture.room_no }}" selected>{{ fixture.room_no }}</option>
+
+  <option value="101">101</option>
+
+  <option value="102">102</option>
+
+  <option value="103">103</option>
+
+  <option value="201">201</option>
+
+  <option value="202">202</option>
+
+  <option value="203">203</option>
+
+  <option value="301">301</option>
+
+  <option value="302">302</option>
+
+  <option value="303">303</option>
+
+  <option value="401">401</option>
+
+  <option value="402">402</option>
+
+  <option value="403">403</option>
+
+</select></p>
+<p><label for="id_fixture_type">Fixture Type:</label> <select name="fixture_type" required id="id_fixture_type">
+  <option value="{{ fixture.fixture_type }}" selected>{{ fixture.fixture_type_name }}</option>
+
+  <option value="1">Box Spring</option>
+
+  <option value="2">Bed</option>
+
+  <option value="3">Wardrobe</option>
+
+  <option value="4">Carpet</option>
+
+  <option value="5">Night Stand</option>
+
+  <option value="6">Tulle</option>
+
+  <option value="7">Veil</option>
+
+  <option value="8">Table</option>
+
+  <option value="9">Chair</option>
+
+  <option value="10">Coat Hanger</option>
+
+  <option value="11">Bookcase</option>
+
+  <option value="12">Lamp</option>
+
+  <option value="13">Klima</option>
+
+  <option value="14">Mirror</option>
+
+</select></p>
+<p><label for="id_fixture_notes">Fixture Notes: :</label> <input type="text" value="{{ fixture.fixture_notes }}" name="fixture_notes" id="id_fixture_notes" maxlength="100" /></p>
+<p><label for="id_fixture_image">Fixture Image: :</label> <input type="file" value="{{ fixture.fixture_image }}" name="fixture_image" id="id_fixture_image" /></p>
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+</body>
+</html>

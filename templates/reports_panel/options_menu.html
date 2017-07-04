@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Attendance</h1>
+<p><label for="id_room_number">Room Number:</label> <select name="room_number" id="id_room_number" onclick="attendance_room()">
+    <option value="">------</option>
+
+  <option value="101">101</option>
+
+  <option value="102">102</option>
+
+  <option value="103">103</option>
+
+  <option value="201">201</option>
+
+  <option value="202">202</option>
+
+  <option value="203">203</option>
+
+  <option value="301">301</option>
+
+  <option value="302">302</option>
+
+  <option value="303">303</option>
+
+  <option value="401">401</option>
+
+  <option value="402">402</option>
+
+  <option value="403">403</option>
+
+</select></p>
+<p><label for="id_student_id">Student Id: </label><select name="student_id" id="id_student_id" onclick="attendance_student()">
+    <option value="">------</option>
+    {% for student in student_list %}
+    <option value="{{ student.id }}">{{ student.full_name }}</option>
+    {% endfor %}
+</select></p>
+<button id="attendance_id"  onclick="window.location.href='/reports_panel/attendance/-'" type="button">Attendance</button>
+<h1>Capacity</h1>
+<p><label for="id_room_no">Room No: </label><select name="room_no" id="id_room_no" onclick="capacity_room()">
+    <option value="">------</option>
+    {% for room in room_list %}
+    <option value="{{ room.room_no }}">{{ room.room_no }}</option>
+    {% endfor %}
+</select></p>
+<button id="capacity_id" onclick="window.location.href='/reports_panel/capacity/'" type="button">Capacity</button>
+</body>
+<script for="id_room_number">
+function attendance_room(){
+    select=document.getElementById("id_room_number");
+    selected_room=select.options[select.selectedIndex].value;
+    attendance_id.innerHTML='Attendance '+selected_room;
+    document.getElementById("attendance_id").setAttribute('onclick',"window.location.href='/reports_panel/attendance/"+selected_room+"-'");
+    document.getElementById("id_student_id").selectedIndex=0;
+
+}
+</script>
+<script for="id_student_id">function attendance_student() {
+    select2=document.getElementById("id_student_id");
+    selected_student=select2.options[select2.selectedIndex].value;
+    attendance_id.innerHTML='Attendance '+selected_student;
+    document.getElementById("attendance_id").setAttribute('onclick',"window.location.href='/reports_panel/attendance/-"+selected_student+"'");
+    document.getElementById("id_room_number").selectedIndex=0;
+}</script>
+<script for="id_room_no">function capacity_room() {
+    select=document.getElementById("id_room_no");
+    selected_room=select.options[select.selectedIndex].value;
+    capacity_id.innerHTML='Capacity '+selected_room;
+    document.getElementById("capacity_id").setAttribute('onclick',"window.location.href='/reports_panel/capacity/"+selected_room+"'");
+}</script>
+</html>

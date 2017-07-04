@@ -3,19 +3,16 @@ import datetime
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from fixturepanel.models import RoomInfoModel
-import os
 
 
 class StudentInfoModel(models.Model):
-    room_number_list=[]
-    for room in RoomInfoModel.objects.all():
-        room_number_list.append((room.room_no,room.room_no))
     year_list=(('Prep','Preparation'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
     city_list = (('01', 'Adana'), ('02', 'Ad\xc4\xb1yaman'), ('03', 'Afyon'), ('04', 'A\xc4\x9fr\xc4\xb1'), ('05', 'Amasya'),('06', 'Ankara'), ('07', 'Antalya'), ('08', 'Artvin'), ('09', 'Ayd\xc4\xb1n'), ('10', 'Bal\xc4\xb1kesir'),('11', 'Bilecik'), ('12', 'Bing\xc3\xb6l'), ('13', 'Bitlis'), ('14', 'Bolu'), ('15', 'Burdur'), ('16', 'Bursa'),('17', '\xc3\x87anakkale'), ('18', '\xc3\x87ank\xc4\xb1r\xc4\xb1'), ('19', '\xc3\x87orum'), ('20', 'Denizli'),('21', 'Diyarbak\xc4\xb1r'), ('22', 'Edirne'), ('23', 'Elaz\xc4\xb1\xc4\x9f'), ('24', 'Erzincan'),('25', 'Erzurum'), ('26', 'Eski\xc5\x9fehir'), ('27', 'Gaziantep'), ('28', 'Giresun'),('29', 'G\xc3\xbcm\xc3\xbc\xc5\x9fhane'), ('30', 'Hakkari'), ('31', 'Hatay'), ('32', 'Isparta'), ('33', 'Mersin'),('34', '\xc4\xb0stanbul'), ('35', '\xc4\xb0zmir'), ('36', 'Kars'), ('37', 'Kastamonu'), ('38', 'Kayseri'),('39', 'K\xc4\xb1rklareli'), ('40', 'K\xc4\xb1r\xc5\x9fehir'), ('41', 'Kocaeli'), ('42', 'Konya'),('43', 'K\xc3\xbctahya'), ('44', 'Malatya'), ('45', 'Manisa'), ('46', 'Kahramanmara\xc5\x9f'), ('47', 'Mardin'),('48', 'Mu\xc4\x9fla'), ('49', 'Mu\xc5\x9f'), ('50', 'Nev\xc5\x9fehir'), ('51', 'Ni\xc4\x9fde'), ('52', 'Ordu'),('53', 'Rize'), ('54', 'Sakarya'), ('55', 'Samsun'), ('56', 'Siirt'), ('57', 'Sinop'), ('58', 'Sivas'),('59', 'Tekirda\xc4\x9f'), ('60', 'Tokat'), ('61', 'Trabzon'), ('62', 'Tunceli'), ('63', '\xc5\x9eanl\xc4\xb1urfa'),('64', 'U\xc5\x9fak'), ('65', 'Van'), ('66', 'Yozgat'), ('67', 'Zonguldak'), ('68', 'Aksaray'), ('69', 'Bayburt'),('70', 'Karaman'), ('71', 'K\xc4\xb1r\xc4\xb1kkale'), ('72', 'Batman'), ('73', '\xc5\x9e\xc4\xb1rnak'),('74', 'Bart\xc4\xb1n'), ('75', 'Ardahan'), ('76', 'I\xc4\x9fd\xc4\xb1r'), ('77', 'Yalova'),('78', 'Karab\xc3\xbck'), ('79', 'Kilis'), ('80', 'Osmaniye'), ('81', 'D\xc3\xbczce'))
     blood_type_list = (('0', '0 rh +'), ('1', '0 rh -'), ('2', 'A rh +'), ('3', 'A rh -'), ('4', 'B rh +'), ('5', 'B rh -'),('6', 'AB rh+'), ('7', 'AB rh-'))
     student_type=(('Guest','Guest'),('Temporary','Temporary'),('Permanent','Permanent'))
 
     id = models.CharField(max_length=7,verbose_name='Student Id',help_text='ID',primary_key=True)
+    student_position= models.BooleanField(verbose_name='Student Position',help_text='In-Out')
     student_tcn = models.CharField(max_length=11,default='00000000000',verbose_name='TC No',help_text='11 digit',unique=True)
     student_name = models.CharField(max_length=200,default='Ahmet',verbose_name='Student Name',help_text='Student Name')
     student_lastname = models.CharField(max_length=200,default='Yilmaz',verbose_name='Student Last Name',help_text='Student Last Name')
@@ -35,7 +32,7 @@ class StudentInfoModel(models.Model):
     blood_type = models.CharField(null=True,max_length=20, choices=blood_type_list, default='0 rh +',verbose_name='Blood Type',help_text='Blood Type')
     health_notes = models.CharField(null=True,blank=True,max_length=100, default='-',verbose_name='Health Notes',help_text='Health Notes')
     special_notes = models.CharField(null=True,blank=True,max_length=100, default='-',verbose_name='Special Notes',help_text='Special Notes')
-    file_field = models.ImageField(null=True,blank=True,upload_to='profile_pic/',default='Desktop/asd.jpg',verbose_name='Image Upload',help_text='Profile Image Path')
+    file_field = models.ImageField(null=True,blank=True,upload_to='profile_pic/',default='Desktop/asd.jpg',verbose_name='Image Upload',help_text='Add an Image')
 
 
     class Meta:
@@ -63,13 +60,13 @@ class StudentInfoModel(models.Model):
 class ParentInfoModel(models.Model):
     id=models.CharField(max_length=50,primary_key=True,verbose_name='Parent Id: ',help_text='Parent Id')
     student_id=models.ForeignKey(StudentInfoModel,null=False,unique=False)
-    parent_name=models.CharField(max_length=20)
-    parent_lastname=models.CharField(max_length=20)
-    parent_TCN=models.CharField(max_length=11)
-    parent_phone=PhoneNumberField()
-    parent_email=models.EmailField()
-    relative_degree=models.CharField(max_length=20)
-    parent_job=models.CharField(max_length=20)
+    parent_name=models.CharField(max_length=20,null=False,verbose_name='Parent Name',help_text='Parent Name')
+    parent_lastname=models.CharField(max_length=20,null=False,verbose_name='Parent Lastname')
+    parent_TCN=models.CharField(max_length=11,null=False,verbose_name='Parent TCN',blank=True)
+    parent_phone=PhoneNumberField(null=False,verbose_name='Parent Phone')
+    parent_email=models.EmailField(null=False,verbose_name='Parent E-mail')
+    relative_degree=models.CharField(max_length=20,null=False,verbose_name='Relative Degree',default='Father')
+    parent_job=models.CharField(max_length=20,blank=True,verbose_name='Parent Job')
 
     class Meta:
         db_table='parent_info'
@@ -84,7 +81,6 @@ class PersonalInfoModel(models.Model):
     student_type=(('Guest','Guest'),('Temporary','Temporary'),('Permanent','Permanent'))
     personal_type=[(1,'Accountant'),(2,''),(3,'')]
     id = models.CharField(max_length=7,verbose_name='Personal Id', help_text='ID', primary_key=True)
-    #id = models.OneToOneField(USER_MODEL,on_delete=models.CASCADE,unique=True,primary_key=True)
     personal_tcn = models.CharField(max_length=11, default='00000000000', verbose_name='TC No', help_text='11 digit',unique=True)
     personal_name = models.CharField(max_length=200, default='Ahmet', verbose_name='Personal Name',help_text='Personal Name')
     personal_lastname = models.CharField(max_length=200, default='Yilmaz', verbose_name='Personal Last Name',help_text='Personal Last Name')
@@ -120,17 +116,24 @@ class PersonalInfoModel(models.Model):
     def blood_type_name(self):
         return self.blood_type_list[int(self.blood_type)][1]
 
-# class DepartmentInfoModel(models.Model):
-#     pass
-#
-# class DepositInfoModel(models.Model):
-#     pass
-#
+    def full_name(self):
+        return '%s %s'% (self.personal_name,self.personal_lastname)
 
 
-# class SchoolInfoModel(models.Model):
-#     school_type_list=[(1,'Primary School'),(2,'High School'),(3,'College'),(4,'University'),(5,'Others')]
-#     school_name=models.CharField(max_length=20)
-#     school_type=models.CharField(max_length=20,choices=school_type_list)
-#     school_city=models.CharField(max_length=20,choices=CityInfoModel.objects.all())
-#     school_town=models.CharField(max_length=20)
+class PersonLeaveModel(models.Model):
+    person_list=[]
+    for student in StudentInfoModel.objects.all():
+        person_list.append((student.id,student.full_name()))
+    for personal in PersonalInfoModel.objects.all():
+        person_list.append((personal.id,personal.full_name()))
+    leave_id=models.CharField(max_length=10,primary_key=True,verbose_name='leave_id: ')
+    leave_person_id=models.CharField(max_length=7,choices=person_list,verbose_name='Permitted Person: ')
+    leave_start=models.DateField(verbose_name='leave Start: ',default='2017-07-02')
+    leave_end=models.DateField(verbose_name='leave End: ',default='2017-07-05')
+    leave_reason=models.CharField(max_length=100,verbose_name='leave Reason: ',blank=True)
+
+    class Meta:
+        db_table='person_leave'
+
+    def __str__(self):
+        return  self.leave_id

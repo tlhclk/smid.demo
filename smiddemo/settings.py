@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'accountpanel',
     'studentpanel',
     'userpanel',
-    'fixturepanel'
+    'fixturepanel',
+    'reportspanel'
 ]
 
 MIDDLEWARE = [

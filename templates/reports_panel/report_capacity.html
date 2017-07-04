@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Capacity Report</title>
+</head>
+<body>
+<h1>Report Type: {{ report_type }}</h1>
+{% if student_list %}
+<h1>Room Capacity: {{ room_capacity }}</h1>
+<h1>Students in The Room:{{ student_list.count }} {% for student in student_list %} <br> {{ student.full_name }}{% endfor %} </h1> {% endif %}
+{% if all_capacity %}
+<h1>Dorm Capacity: {{ all_capacity }}</h1>
+<h1>Number of Student Registered: {{ full_part }}</h1>{% endif %}
+
+</body>
+</html>

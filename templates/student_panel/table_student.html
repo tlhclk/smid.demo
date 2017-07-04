@@ -41,6 +41,7 @@ $(document).ready(function(){
           <th>Last Name</th>
           <th>Email</th>
           <th>Birthdate</th>
+            <th>Attendance</th>
             <th></th>
         </tr>
     </thead>
@@ -52,7 +53,7 @@ $(document).ready(function(){
                   {% else %}
                   {{ student.id }}
               {% endif %}
-          </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td>
+          </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
           <td><button onclick="window.location.href='/student_panel/student_edit/{{ student.id }}'">Edit</button>
           <button onclick="window.location.href='/student_panel/student_delete/{{ student.id }}'">Delete</button></td>
           </tr>
@@ -61,6 +62,7 @@ $(document).ready(function(){
 
     </tbody>
 </table>
-
+{{ all_in }}
+{{ all_all }}
 </body>
 </html>

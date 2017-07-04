@@ -20,5 +20,6 @@ class RoomInfoForm(forms.ModelForm):
                 'room_floor',
                 'room_people',
                 'room_type',
+                'room_desc',
                 'room_image'
                 )

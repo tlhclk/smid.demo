@@ -65,8 +65,6 @@ class PermissionForm(forms.ModelForm):
                     'There is a permission in selected content: %s, %s' % (content, permission_c))
         return self.cleaned_data
 
-class UserGroupForm(forms.Form):
-    pass
 
 class UserPermissionForm(forms.Form):
     permission_list = []

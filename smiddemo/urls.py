@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^user_panel/', include('userpanel.urls')),
     url(r'^student_panel/', include('studentpanel.urls')),
     url(r'^fixture_panel/',include('fixturepanel.urls')),
+    url(r'^reports_panel/',include('reportspanel.urls')),
     #url(r'^accountpanel/', include('accountpanel.urls')),
     url(r'^$',home_page,name='home page'),
     url(r'^admin/', admin.site.urls),
