@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Room Plan</title>
+</head>
+<body>
+<h1>Room Plan</h1>
+{% for room in room_list %}
+    <h2>Room: {{ room.room_no }}</h2>
+    <h2>{{ room.room_floor }}</h2>
+    <h2>{{ room.room_type }}</h2>
+    <h2>{{ room.room_people }}</h2>
+    <h2>{{ room.room_desc }}</h2>
+    <h2>{{ room.room_image }}</h2>
+    <h2>Students in the Room</h2>
+    {% for student in student_list %}
+        {% if room.room_no == student.room_number_id %}
+            <h3>{{ student.full_name }}</h3>
+        {% endif %}
+        {% endfor %}
+{% endfor %}
+</body>
+</html>

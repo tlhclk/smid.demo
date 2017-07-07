@@ -1,0 +1,78 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css">
+
+
+ <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+
+
+<script>
+$(document).ready(function(){
+  $('#myTable').DataTable( {
+    responsive: true,
+    dom: 'Bfrtip',
+    buttons: [
+
+    'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+  ]
+} );
+});
+</script>
+</head>
+<body>
+<table id="myTable" class="display">
+    <thead>
+        <tr>
+          <th>Person ID</th>
+          <th>Person Full Name</th>
+          <th>Person Group</th>
+            <th>Person TCN</th>
+          <th>Person Phone</th>
+          <th>Person Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for student in student_list %}
+          <tr>
+              <td><a href="/student_panel/student/{{ student.id }}/">{{ student.id }}</a></td>
+              <td>{{ student.full_name }}</td><td>{{ student.group }}</td><td>{{ student.student_tcn }} </td>
+              <td>{{ student.student_phone }} </td><td>{{ student.student_email }}</td>
+          <td><button onclick="window.location.href='/student_panel/student_edit/{{ student.id }}'">Edit</button>
+              <button onclick="window.location.href='/student_panel/student_delete/{{ student.id }}'">Delete</button></td></tr>
+    {% endfor %}
+
+    {% for parent in parent_list %}
+          <tr>
+              <td><a href="/parent_panel/parent/{{ parent.id }}/">{{ parent.id }}</a></td>
+              <td>{{ parent.full_name }}</td><td>{{ parent.group }}</td><td>{{ parent.parent_TCN }} </td>
+              <td>{{ parent.parent_phone }} </td><td>{{ parent.parent_email }}</td>
+          <td><button onclick="window.location.href='/parent_panel/parent_edit/{{ parent.id }}'">Edit</button>
+              <button onclick="window.location.href='/parent_panel/parent_delete/{{ parent.id }}'">Delete</button></td></tr>
+    {% endfor %}
+
+    {% for personal in personal_list %}
+          <tr>
+              <td><a href="/student_panel/personal/{{ personal.id }}/">{{ personal.id }}</a></td>
+              <td>{{ personal.full_name }}</td><td>{{ personal.group }}</td><td>{{ personal.personal_tcn }} </td>
+              <td>{{ personal.personal_phone }} </td><td>{{ personal.personal_email }}</td>
+          <td><button onclick="window.location.href='/student_panel/personal_edit/{{ personal.id }}'">Edit</button>
+              <button onclick="window.location.href='/student_panel/personal_delete/{{ personal.id }}'">Delete</button></td></tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+</body>
+</html>

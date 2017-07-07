@@ -2,8 +2,8 @@ from django.shortcuts import  render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core import mail
-from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm,PersonLeaveForm
-from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel
+from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm,PersonLeaveForm,DocumentInfoForm,EntranceLeaveForm,LiabilityInfoForm
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel,DocumentInfoModel,EntranceLeaveModel,LiabilityInfoModel
 from fixturepanel.models import RoomInfoModel
 import datetime
 
@@ -118,16 +118,16 @@ def new_user_add(first_name,last_name,email,id,group_id):
     new_user.set_password(new_pass)
     new_user.save()
     new_user.groups.add(group_id)
-    send_a_email(email,new_pass)
-
-def send_a_email(email,new_pass):
     subj = 'New Password'
     mesg = 'Thanks for joining our system. \nUsername/E-mail = %s \nYour first password is: %s' % (email, new_pass)
-    from_ma = 'tlhclk1312@gmail.com'
+    send_a_email([email],subj,mesg)
+
+def send_a_email(email_list,subject,message,from_ma='tlhclk1312@gmail.com'):
     to_ma = ['tlhclk1312@windowslive.com']
-    if 'gmail' in email:
-        to_ma.append(email)
-    mail.send_mail(subj, mesg, from_ma, to_ma)
+    for email in email_list:
+        if 'gmail' in email:
+            to_ma.append(email)
+    mail.send_mail(subject, message, from_ma, to_ma)
 
 def change_student_position(request,student_id):
     student=StudentInfoModel.objects.get(pk=student_id)
@@ -173,7 +173,8 @@ def edit_parent(request,parent_id):
             parent.save()
             return redirect('../../')
         parent = ParentInfoModel.objects.get(pk=parent_id)
-        return render(request,'student_panel/edit_parent.html',{'parent':parent})
+        return render(request,'user_panel/default_form.html',{'form':ParentInfoForm(instance=parent)})
+        #return render(request,'student_panel/edit_parent.html',{'parent':parent})
     else: return HttpResponse('You has no authorization to change parent info')
 
 def delete_parent(request,parent_id):
@@ -266,3 +267,99 @@ def leave_assign(request):
     person_list=PersonLeaveModel.person_list
     #return render(request,'user_panel/default_form.html',{'form':leave_form})
     return render(request,'student_panel/leave_assign.html',{'formleave':leave_form,'next_id':next_id,'person_list':person_list})
+
+def send_collective_message(request):
+    if request.method=='POST':
+        subject=request.POST['message_subject']
+        message=request.POST['message_content']
+        selected_people=request.POST.getlist('message_people')
+        send_a_email(selected_people,subject,message)
+        return redirect('../../')
+    people_list=StudentInfoModel.objects.all()
+    return render(request,'student_panel/sending_mail_sms.html',{'people_list':people_list})
+
+def attendance_table(request):
+    view_pro_per = request.user.has_perm('studentpanel.view_profile')
+    student_list = StudentInfoModel.objects.filter(student_position=True)
+    all_in, all_all = (len(StudentInfoModel.objects.filter(student_position=True)), len(StudentInfoModel.objects.all()))
+    return render(request, 'student_panel/table_student.html',{'student_list': student_list, 'view_pro_per': view_pro_per, 'all_in': all_in, 'all_all': all_all})
+
+def add_document(request):
+    formdocument=DocumentInfoForm()
+    if request.method=='POST':
+        formdocument=DocumentInfoForm(request.POST,request.FILES)
+        if formdocument.is_valid():
+            formdocument.save()
+        return redirect('../../')
+    return render(request,'user_panel/default_form.html',{'form':formdocument})
+
+def document_detail(request,document_id):
+    document=DocumentInfoModel.objects.get(pk=document_id)
+    return render(request, 'student_panel/document_detail.html', {'document':document})
+
+def table_document(request):
+    document_list=DocumentInfoModel.objects.all()
+    return render(request, 'student_panel/document_table.html', {'document_list':document_list})
+
+def edit_document(request,document_id):
+    formdocument = DocumentInfoForm(instance=DocumentInfoModel.objects.get(pk=document_id))
+    if request.method=='POST':
+        formdocument=DocumentInfoForm(request.POST,request.FILES,instance=DocumentInfoModel.objects.get(pk=document_id))
+        if formdocument.is_valid():
+            formdocument.save()
+            return redirect('../../')
+    return render(request,'user_panel/default_form.html',{'form':formdocument})
+
+def delete_document(request,document_id):
+    document=DocumentInfoModel.objects.get(pk=document_id)
+    document.delete()
+    return redirect('../../')
+
+def add_entrance_leave(request):
+    formel=EntranceLeaveForm()
+    if request.method=='POST':
+        formel=EntranceLeaveForm(request.POST)
+        if formel.is_valid():
+            formel.save()
+            return redirect('../../')
+    return render(request,'user_panel/default_form.html',{'form':formel})
+
+def entranceleave_table(request):
+    record_list=EntranceLeaveModel.objects.all()
+    return render(request, 'student_panel/table_entrancetable.html', {'record_list':record_list})
+
+def liability_add(request):
+    formliability=LiabilityInfoForm()
+    if request.POST:
+        formliability=LiabilityInfoForm(request.POST)
+        if formliability.is_valid():
+            formliability.save()
+            return redirect('../')
+    return render(request,'user_panel/default_form.html',{'form':formliability})
+
+def liability_detail(request,record_no):
+    liability=LiabilityInfoModel.objects.get(pk=record_no)
+    return render(request,'student_panel/detail_liability.html',{'liability':liability})
+
+def liability_table(request):
+    liability_list=LiabilityInfoModel.objects.all()
+    return render(request,'student_panel/table_liability.html',{'liability_list':liability_list})
+
+def liability_edit(request,record_no):
+    formliability=LiabilityInfoForm(instance=LiabilityInfoModel.objects.get(pk=record_no))
+    if request.POST:
+        formliability=LiabilityInfoForm(request.POST,instance=LiabilityInfoModel.objects.get(pk=record_no))
+        if formliability.is_valid():
+            formliability.save()
+        return redirect('../')
+    return render(request,'user_panel/default_form.html',{'form':formliability,'title':'Edit'})
+
+def liability_delete(request,record_no):
+    LiabilityInfoModel.objects.get(pk=record_no).delete()
+    return redirect('../')
+
+def contact_table(request):
+    student_list=StudentInfoModel.objects.all()
+    personal_list=PersonalInfoModel.objects.all()
+    parent_list=ParentInfoModel.objects.all()
+    return render(request, 'student_panel/table_contact.html', {'student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})

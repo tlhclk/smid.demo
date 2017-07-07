@@ -1,5 +1,5 @@
 from django import forms
-from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonLeaveModel,DocumentInfoModel,EntranceLeaveModel,LiabilityInfoModel
 from fixturepanel.models import RoomInfoModel
 
 class StudentInfoForm(forms.ModelForm):
@@ -84,3 +84,38 @@ class PersonLeaveForm(forms.ModelForm):
                 'leave_person_id',
                 'leave_reason',
                 )
+
+class DocumentInfoForm(forms.ModelForm):
+    class Meta:
+        model=DocumentInfoModel
+        fields=['document_id',
+                'person_id',
+                'document_type',
+                'document_description',
+                'document_date',
+                'document_image',
+                ]
+
+class EntranceLeaveForm(forms.ModelForm):
+    in_list=[('1','in'),('2','out')]
+    in_or_out= forms.TypedChoiceField(choices=in_list,widget=forms.RadioSelect,coerce=str)
+    class Meta:
+        model=EntranceLeaveModel
+        fields=['person_id',
+                'traffic_date',
+                'in_or_out']
+
+class LiabilityInfoForm(forms.ModelForm):
+    class Meta:
+        model=LiabilityInfoModel
+        fields=['record_no',
+                'person_id',
+                'liability_type',
+                'liability_name',
+                'liability_desc',
+                'liability_date',
+                'liability_return',
+                'liability_lastday',
+                'liability_penalty',
+
+                ]

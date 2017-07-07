@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Sending Mail or SMS</title>
+</head>
+<body>
+<form method="POST" class="post-messageform">{% csrf_token %}
+    <h1>Send a Message</h1>
+    <p><label for="id_message_subject">Message Subject: </label><input type="text" name="message_subject" required id="id_message_subject" maxlength="50" size="50"></p>
+    <p><label for="id_message_content">Message Content: </label><input type="text" name="message_content" required id="id_message_content" maxlength="100" size="100"></p>
+    <p><label for="id_message_people">People List: </label></p>
+{#    <ul id="id_message_people">#}
+{#        {% for person in people_list %}#}
+{#        <li><label for="id_message_people_{{ person.id }}"><input type="checkbox" name="message_people" value="{{ person.student_email }}" id="id_message_people_{{ person.id }}">{{ person.id }} - {{ person.full_name }}</label></li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+    <select name="message_people" id="id_message_people" multiple>
+        {% for person in people_list %}
+        <option value="{{ person.student_email }}">{{ person.id }} - {{ person.full_name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="save btn btn-default">Send Mail</button>
+</form>
+
+
+</body>
+</html>

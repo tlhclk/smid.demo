@@ -3,11 +3,14 @@ import datetime
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from fixturepanel.models import RoomInfoModel
+from localflavor.tr.tr_provinces import PROVINCE_CHOICES
+
 
 
 class StudentInfoModel(models.Model):
     year_list=(('Prep','Preparation'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
-    city_list = (('01', 'Adana'), ('02', 'Ad\xc4\xb1yaman'), ('03', 'Afyon'), ('04', 'A\xc4\x9fr\xc4\xb1'), ('05', 'Amasya'),('06', 'Ankara'), ('07', 'Antalya'), ('08', 'Artvin'), ('09', 'Ayd\xc4\xb1n'), ('10', 'Bal\xc4\xb1kesir'),('11', 'Bilecik'), ('12', 'Bing\xc3\xb6l'), ('13', 'Bitlis'), ('14', 'Bolu'), ('15', 'Burdur'), ('16', 'Bursa'),('17', '\xc3\x87anakkale'), ('18', '\xc3\x87ank\xc4\xb1r\xc4\xb1'), ('19', '\xc3\x87orum'), ('20', 'Denizli'),('21', 'Diyarbak\xc4\xb1r'), ('22', 'Edirne'), ('23', 'Elaz\xc4\xb1\xc4\x9f'), ('24', 'Erzincan'),('25', 'Erzurum'), ('26', 'Eski\xc5\x9fehir'), ('27', 'Gaziantep'), ('28', 'Giresun'),('29', 'G\xc3\xbcm\xc3\xbc\xc5\x9fhane'), ('30', 'Hakkari'), ('31', 'Hatay'), ('32', 'Isparta'), ('33', 'Mersin'),('34', '\xc4\xb0stanbul'), ('35', '\xc4\xb0zmir'), ('36', 'Kars'), ('37', 'Kastamonu'), ('38', 'Kayseri'),('39', 'K\xc4\xb1rklareli'), ('40', 'K\xc4\xb1r\xc5\x9fehir'), ('41', 'Kocaeli'), ('42', 'Konya'),('43', 'K\xc3\xbctahya'), ('44', 'Malatya'), ('45', 'Manisa'), ('46', 'Kahramanmara\xc5\x9f'), ('47', 'Mardin'),('48', 'Mu\xc4\x9fla'), ('49', 'Mu\xc5\x9f'), ('50', 'Nev\xc5\x9fehir'), ('51', 'Ni\xc4\x9fde'), ('52', 'Ordu'),('53', 'Rize'), ('54', 'Sakarya'), ('55', 'Samsun'), ('56', 'Siirt'), ('57', 'Sinop'), ('58', 'Sivas'),('59', 'Tekirda\xc4\x9f'), ('60', 'Tokat'), ('61', 'Trabzon'), ('62', 'Tunceli'), ('63', '\xc5\x9eanl\xc4\xb1urfa'),('64', 'U\xc5\x9fak'), ('65', 'Van'), ('66', 'Yozgat'), ('67', 'Zonguldak'), ('68', 'Aksaray'), ('69', 'Bayburt'),('70', 'Karaman'), ('71', 'K\xc4\xb1r\xc4\xb1kkale'), ('72', 'Batman'), ('73', '\xc5\x9e\xc4\xb1rnak'),('74', 'Bart\xc4\xb1n'), ('75', 'Ardahan'), ('76', 'I\xc4\x9fd\xc4\xb1r'), ('77', 'Yalova'),('78', 'Karab\xc3\xbck'), ('79', 'Kilis'), ('80', 'Osmaniye'), ('81', 'D\xc3\xbczce'))
+    #city_list = (('01', 'Adana'), ('02', 'Ad\xc4\xb1yaman'), ('03', 'Afyon'), ('04', 'A\xc4\x9fr\xc4\xb1'), ('05', 'Amasya'),('06', 'Ankara'), ('07', 'Antalya'), ('08', 'Artvin'), ('09', 'Ayd\xc4\xb1n'), ('10', 'Bal\xc4\xb1kesir'),('11', 'Bilecik'), ('12', 'Bing\xc3\xb6l'), ('13', 'Bitlis'), ('14', 'Bolu'), ('15', 'Burdur'), ('16', 'Bursa'),('17', '\xc3\x87anakkale'), ('18', '\xc3\x87ank\xc4\xb1r\xc4\xb1'), ('19', '\xc3\x87orum'), ('20', 'Denizli'),('21', 'Diyarbak\xc4\xb1r'), ('22', 'Edirne'), ('23', 'Elaz\xc4\xb1\xc4\x9f'), ('24', 'Erzincan'),('25', 'Erzurum'), ('26', 'Eski\xc5\x9fehir'), ('27', 'Gaziantep'), ('28', 'Giresun'),('29', 'G\xc3\xbcm\xc3\xbc\xc5\x9fhane'), ('30', 'Hakkari'), ('31', 'Hatay'), ('32', 'Isparta'), ('33', 'Mersin'),('34', '\xc4\xb0stanbul'), ('35', '\xc4\xb0zmir'), ('36', 'Kars'), ('37', 'Kastamonu'), ('38', 'Kayseri'),('39', 'K\xc4\xb1rklareli'), ('40', 'K\xc4\xb1r\xc5\x9fehir'), ('41', 'Kocaeli'), ('42', 'Konya'),('43', 'K\xc3\xbctahya'), ('44', 'Malatya'), ('45', 'Manisa'), ('46', 'Kahramanmara\xc5\x9f'), ('47', 'Mardin'),('48', 'Mu\xc4\x9fla'), ('49', 'Mu\xc5\x9f'), ('50', 'Nev\xc5\x9fehir'), ('51', 'Ni\xc4\x9fde'), ('52', 'Ordu'),('53', 'Rize'), ('54', 'Sakarya'), ('55', 'Samsun'), ('56', 'Siirt'), ('57', 'Sinop'), ('58', 'Sivas'),('59', 'Tekirda\xc4\x9f'), ('60', 'Tokat'), ('61', 'Trabzon'), ('62', 'Tunceli'), ('63', '\xc5\x9eanl\xc4\xb1urfa'),('64', 'U\xc5\x9fak'), ('65', 'Van'), ('66', 'Yozgat'), ('67', 'Zonguldak'), ('68', 'Aksaray'), ('69', 'Bayburt'),('70', 'Karaman'), ('71', 'K\xc4\xb1r\xc4\xb1kkale'), ('72', 'Batman'), ('73', '\xc5\x9e\xc4\xb1rnak'),('74', 'Bart\xc4\xb1n'), ('75', 'Ardahan'), ('76', 'I\xc4\x9fd\xc4\xb1r'), ('77', 'Yalova'),('78', 'Karab\xc3\xbck'), ('79', 'Kilis'), ('80', 'Osmaniye'), ('81', 'D\xc3\xbczce'))
+    city_list=PROVINCE_CHOICES
     blood_type_list = (('0', '0 rh +'), ('1', '0 rh -'), ('2', 'A rh +'), ('3', 'A rh -'), ('4', 'B rh +'), ('5', 'B rh -'),('6', 'AB rh+'), ('7', 'AB rh-'))
     student_type=(('Guest','Guest'),('Temporary','Temporary'),('Permanent','Permanent'))
 
@@ -56,6 +59,9 @@ class StudentInfoModel(models.Model):
     def full_name(self):
         return '%s %s'% (self.student_name,self.student_lastname)
 
+    def group(self):
+        return 'Student'
+
 
 class ParentInfoModel(models.Model):
     id=models.CharField(max_length=50,primary_key=True,verbose_name='Parent Id: ',help_text='Parent Id')
@@ -73,6 +79,12 @@ class ParentInfoModel(models.Model):
 
     def __str__(self):
         return self.parent_name
+
+    def full_name(self):
+        return '%s %s'% (self.parent_name,self.parent_lastname)
+
+    def group(self):
+        return 'Parent'
 
 
 class PersonalInfoModel(models.Model):
@@ -119,6 +131,9 @@ class PersonalInfoModel(models.Model):
     def full_name(self):
         return '%s %s'% (self.personal_name,self.personal_lastname)
 
+    def group(self):
+        return 'Personal'
+
 
 class PersonLeaveModel(models.Model):
     person_list=[]
@@ -137,3 +152,67 @@ class PersonLeaveModel(models.Model):
 
     def __str__(self):
         return  self.leave_id
+
+
+class DocumentInfoModel(models.Model):
+    document_type_list=[('01','ID Card'),('02','Insurance'),('03','Bill'),('04','Leave Doc.'),('05','Student Certificate'),]
+    document_id=models.CharField(max_length=10,primary_key=True,verbose_name='Document Id: ')
+    person_id=models.CharField(max_length=7,verbose_name='Person Id: ',null=False)
+    document_date=models.DateField(default=datetime.date.today,verbose_name='Document Record Date: ')
+    document_type=models.CharField(max_length=20,verbose_name='Document Type: ',null=False,choices=document_type_list)
+    document_description=models.CharField(max_length=100,verbose_name='Documnet Description: ',blank=True)
+    document_image=models.ImageField(default='Desktop/asd.jpg',upload_to='document_image/',verbose_name='Documnet Image or Scan')
+
+    class Meta:
+        db_table='documnet_info'
+
+    def __str__(self):
+        return self.document_id
+
+    def document_type_name(self):
+        return self.document_type_list[int(self.document_type)-1][1]
+
+    def person_id_name(self):
+        return StudentInfoModel.objects.get(pk=self.person_id).full_name() or PersonalInfoModel.objects.get(pk=self.person_id).full_name()
+
+
+class EntranceLeaveModel(models.Model):
+    person_id_list=[]
+    for student in StudentInfoModel.objects.all():
+        person_id_list.append((student.id,student.full_name()))
+    person_id=models.CharField(max_length=7,verbose_name='Person id: ', null=False,choices=person_id_list)
+    traffic_date=models.DateField(default=datetime.date.today)
+    in_or_out=models.CharField(max_length=1,verbose_name='In or Out: ')
+
+    class meta:
+        db_table='EntrancenLeave'
+
+    def __str__(self):
+        return self.id
+
+
+class LiabilityInfoModel(models.Model):
+    fixture_type_list = [('1', 'Box Spring'), ('2', 'Bed'), ('3', 'Wardrobe'), ('4', 'Carpet'), ('5', 'Night Stand'),
+                         ('6', 'Tulle'), ('7', 'Veil'), ('8', 'Table'), ('9', 'Chair'), ('10', 'Coat Hanger'),
+                         ('11', 'Bookcase'), ('12', 'Lamp'), ('13', 'Klima'), ('14', 'Mirror')]
+    record_no=models.CharField(max_length=10,verbose_name='Record No: ',primary_key=True,default='1')
+    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person Id: ',null=False,unique=False)
+    liability_type=models.CharField(max_length=50,verbose_name='Liability Type: ',choices=fixture_type_list)
+    liability_name=models.CharField(max_length=50,verbose_name='Liability Name: ')
+    liability_desc=models.CharField(max_length=100,verbose_name='Liability Description: ')
+    liability_date=models.DateField(default=datetime.date.today,verbose_name='Liability Day')
+    liability_lastday=models.DateField(null=True,blank=True,verbose_name='Liability Last day',default=datetime.datetime.today()+datetime.timedelta(days=7))
+    liability_return=models.DateField(blank=True,null=True,verbose_name='Liability Return day')
+    liability_penalty=models.CharField(max_length=30,blank=True,null=True)
+
+
+    class Meta:
+        db_table='liability_info'
+
+    def __str__(self):
+        return self.record_no
+
+    def pk_no(self):
+        # last_one=LiabilityInfoModel.objects.all().order_by('-id')[0].record_no
+        #return int(LiabilityInfoModel.objects.all().order_by('-id')[0].record_no) + 1
+        pass

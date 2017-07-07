@@ -1,7 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from .forms import FixtureInfoForm,RoomInfoForm
 from .models import FixtureInfoModel,RoomInfoModel
 from studentpanel.models import StudentInfoModel
@@ -92,5 +90,4 @@ def delete_room(request,room_no):
         fixture.save()
     room.delete()
     return redirect('../../room_table')
-
 

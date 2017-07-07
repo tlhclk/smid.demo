@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class RoomInfoModel(models.Model):
     room_people_list=[('1','One Person'),('2','Two People'),('3','Three People'),('4','Four People'),('5','Five People')]
