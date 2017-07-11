@@ -5,10 +5,10 @@
     <title>{{ title }}</title>
 </head>
 <body>
-<h1>{{ title }}{{ request.get }}</h1>
+<h1>{{ title }}</h1>
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
+        <button type="submit" class="save btn btn-default">{{ title }}</button>
     </form>
 
 <h2>{{ request.user }}</h2>
