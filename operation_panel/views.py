@@ -38,8 +38,9 @@ def send_collective_message(request):
         subject=request.POST['message_subject']
         message=request.POST['message_content']
         selected_people=request.POST.getlist('message_people')
-        written_people=request.POS['message_people_str'].split(', ')
-        send_a_email(selected_people+written_people,subject,message)
+        written_people=request.POST['message_people_str'].split(', ')
+        to_ma=selected_people+written_people
+        send_a_email(to_ma,subject,message)
         return redirect('../../')
     people_list=StudentInfoModel.objects.all()
     return render(request,'operation_panel/sending_mail_sms.html',{'people_list':people_list})

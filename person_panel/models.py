@@ -25,8 +25,8 @@ class StudentInfoModel(models.Model):
     student_city = models.CharField(null=True,max_length=20,choices=PROVINCE_CHOICES,default='Ankara',verbose_name='Student City',help_text='City Where Student From')
     student_town = models.CharField(null=True,max_length=20,default='yok',verbose_name='Student Town',help_text='Town Where Student From')
     student_adress = models.CharField(null=True,max_length=50,default='yok',verbose_name='Student Address',help_text='Distinct, Street, Building No, Flat No')
-    room_no = models.CharField(max_length=10,null=True,blank=True)
-    #room_no = models.ForeignKey(RoomInfoModel,null=True,unique=False,verbose_name='Room Number',help_text='Room Number Student Assigned')
+    #room_no = models.CharField(max_length=10,null=True,blank=True)
+    room_no = models.ForeignKey(RoomInfoModel,null=True,unique=False,verbose_name='Room Number',help_text='Room Number Student Assigned')
     student_type = models.CharField(max_length=10, choices=student_type_list, default='Permanent',verbose_name='Student Type',help_text='Student Accommodation Type')
     birth_place = models.CharField(null=True,max_length=20, choices=PROVINCE_CHOICES, default=PROVINCE_CHOICES[0],verbose_name='Birth City',help_text='City Where Student Birth')
     school_name = models.CharField(null=True,max_length=50, default='okulsuz',verbose_name='School Name',help_text='School Name')
@@ -70,8 +70,8 @@ class StudentInfoModel(models.Model):
 
 class ParentInfoModel(models.Model):
     id=models.CharField(max_length=50,primary_key=True,verbose_name='Parent Id: ',help_text='Parent Id')
-    student_id=models.CharField(max_length=10,null=True,blank=True)
-    #student_id=models.ForeignKey(StudentInfoModel,null=False,unique=False)
+    #student_id=models.CharField(max_length=10,null=True,blank=True)
+    student_id=models.ForeignKey(StudentInfoModel,null=False,unique=False)
     parent_name=models.CharField(max_length=20,null=False,verbose_name='Parent Name',help_text='Parent Name')
     parent_lastname=models.CharField(max_length=20,null=False,verbose_name='Parent Lastname')
     parent_TCN=models.CharField(max_length=11,null=False,verbose_name='Parent TCN',blank=True)

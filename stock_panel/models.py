@@ -28,8 +28,8 @@ class RoomInfoModel(models.Model):
 class FixtureInfoModel(models.Model):
     fixture_type_list=[('1','Box Spring'),('2','Bed'),('3','Wardrobe'),('4','Carpet'),('5','Night Stand'),('6','Tulle'),('7','Veil'),('8','Table'),('9','Chair'),('10','Coat Hanger'),('11','Bookcase'),('12','Lamp'),('13','Klima'),('14','Mirror')]
     fixture_no = models.CharField(max_length=10,primary_key=True,verbose_name='Fixture No: ')
-    #room_no=models.ForeignKey(RoomInfoModel,null=True,unique=False,verbose_name='Room No: ')
-    room_no=models.CharField(max_length=10,blank=True,null=True)
+    room_no=models.ForeignKey(RoomInfoModel,null=True,unique=False,verbose_name='Room No: ')
+    #room_no=models.CharField(max_length=10,blank=True,null=True)
     fixture_type=models.CharField(max_length=20,choices=fixture_type_list,verbose_name='Fixture Type:')
     fixture_notes=models.CharField(max_length=100,null=True,blank=True, verbose_name='Fixture Notes: ')
     fixture_image = models.ImageField(upload_to='fixture_image/', default=None, null=True, blank=True,verbose_name='Fixture Image: ')

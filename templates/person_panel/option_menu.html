@@ -2,44 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Person Panel Option Menu</title>
 </head>
 <body>
 <h1>Add Student</h1>
-<button onclick="window.location.href='/student_panel/student_add'">Add Student</button>
+<button onclick="window.location.href='/person_panel/student_add'">Add Student</button>
 <h1>Student Table</h1>
-<button onclick="window.location.href='/student_panel/student_table'">Student Table</button>
+<button onclick="window.location.href='/person_panel/student_table'">Student Table</button>
 {#<h1>Edit Student</h1>#}
-{#<button onclick="window.location.href='/student_panel/student_edit'">Edit Student</button>#}
+{#<button onclick="window.location.href='/person_panel/student_edit'">Edit Student</button>#}
 {#<h1>Delete Student</h1>#}
-{#<button onclick="window.location.href='/student_panel/student_delete'">Delete Student</button>#}
+{#<button onclick="window.location.href='/person_panel/student_delete'">Delete Student</button>#}
 <h1>Add Parent</h1>
-<button onclick="window.location.href='/student_panel/parent_add'">Add Parent</button>
+<button onclick="window.location.href='/person_panel/parent_add'">Add Parent</button>
 <h1>Parent Table</h1>
-<button onclick="window.location.href='/student_panel/parent_table'">Parent Table</button>
+<button onclick="window.location.href='/person_panel/parent_table'">Parent Table</button>
 {#<h1>Edit Parent</h1>#}
-{#<button onclick="window.location.href='/student_panel/parent_edit'">Edit Parent</button>#}
+{#<button onclick="window.location.href='/person_panel/parent_edit'">Edit Parent</button>#}
 {#<h1>Delete Parent</h1>#}
-{#<button onclick="window.location.href='/student_panel/parent_delete'">Delete Parent</button>#}
+{#<button onclick="window.location.href='/person_panel/parent_delete'">Delete Parent</button>#}
 <h1>Add Personal</h1>
-<button onclick="window.location.href='/student_panel/personal_add'">Add Personal</button>
+<button onclick="window.location.href='/person_panel/personal_add'">Add Personal</button>
 <h1>Personal Table</h1>
-<button onclick="window.location.href='/student_panel/personal_table'">Personal Table</button>
+<button onclick="window.location.href='/person_panel/personal_table'">Personal Table</button>
 {#<h1>Edit Personal</h1>#}
-{#<button onclick="window.location.href='/student_panel/personal_edit'">Edit Personal</button>#}
+{#<button onclick="window.location.href='/person_panel/personal_edit'">Edit Personal</button>#}
 {#<h1>Delete Personal</h1>#}
-{#<button onclick="window.location.href='/student_panel/personal_delete'">Delete Personal</button>#}
-<h1>Permission Assign</h1>
-<button onclick="window.location.href='/student_panel/permission_assign'">Permission Assign</button>
-<h1>Send Collective Mail</h1>
-<button onclick="window.location.href='/student_panel/send_collective_message'">Send Collective Mail</button>
-<h1>Add Document</h1>
-<button onclick="window.location.href='/student_panel/document_add'">Add Document</button>
-<h1>Document Table</h1>
-<button onclick="window.location.href='/student_panel/document_table'">Document Table</button>
-<h1>Add liability</h1>
-<button onclick="window.location.href='/student_panel/liability_add'">Add liability</button>
-<h1>liability Table</h1>
-<button onclick="window.location.href='/student_panel/liability_table'">liability Table</button>
+{#<button onclick="window.location.href='/person_panel/personal_delete'">Delete Personal</button>#}
+
+{{ request.user }}
 </body>
 </html>

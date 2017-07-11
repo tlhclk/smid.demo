@@ -13,6 +13,10 @@ def add_transaction(request):
     if request.method=='POST':
         formtransaction=TransactionInfoForm(request.POST)
         if formtransaction.is_valid():
+            account=formtransaction.cleaned_data.get('account_no')
+            amount=formtransaction.cleaned_data.get('transaction_amount')
+            d_c=formtransaction.cleaned_data.get('transaction_debit_credit')
+            transaction_accountsync(account,amount,d_c)
             formtransaction.save()
             return redirect('../')
     return render(request,'account_panel/default_form.html',{'form':formtransaction})
@@ -126,4 +130,13 @@ def edit_bill(request,bill_no):
 
 def delete_bill(request,bill_no):
     BillInfoModel.objects.get(pk=bill_no).delete()
+    return redirect('../')
+
+def transaction_accountsync(account,amount,d_c):
+    if d_c=='1':
+        x=1
+    else:
+        x=-1
+    account.account_amount=str(float(account.account_amount)+x*float(amount))
+    account.save()
     return redirect('../')

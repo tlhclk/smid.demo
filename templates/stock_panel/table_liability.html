@@ -50,11 +50,11 @@ $(document).ready(function(){
     <tbody>
     {% for liability in liability_list %}
           <tr>
-              <td><a href="/student_panel/liability/{{ liability.record_no }}/">{{ liability.record_no }}</a></td>
+              <td><a href="/stock_panel/liability/{{ liability.record_no }}/">{{ liability.record_no }}</a></td>
               <td>{{ liability.person_id }}</td><td>{{ liability.liability_type }}</td><td>{{ liability.liability_name }} </td>
               <td>{{ liability.liability_date }} </td><td>{{ liability.liability_lastday }}</td><td>{{ liability.liability_return }}</td><td>{{ liability.liability_penalty }}</td>
-          <td><button onclick="window.location.href='/student_panel/liability_edit/{{ liability.record_no }}'">Edit</button>
-              <button onclick="window.location.href='/student_panel/liability_delete/{{ liability.record_no }}'">Delete</button></td></tr>
+          <td><button onclick="window.location.href='/stock_panel/liability_edit/{{ liability.record_no }}'">Edit</button>
+              <button onclick="window.location.href='/stock_panel/liability_delete/{{ liability.record_no }}'">Delete</button></td></tr>
     {% endfor %}
 
     </tbody>

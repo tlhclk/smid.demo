@@ -47,14 +47,10 @@ $(document).ready(function(){
     <tbody>
     {% for personal in personal_list %}
           <tr><td>
-              {% if view_pro_per %}
-                <a href="/student_panel/personal/{{ personal.id }}/">{{ personal.id }}</a>
-                  {% else %}
-                  {{ personal.id }}
-              {% endif %}
+                <a href="/person_panel/personal/{{ personal.id }}/">{{ personal.id }}</a>
           </td><td>{{ personal.personal_name }}</td><td>{{ personal.personal_lastname }}</td><td>{{ personal.personal_email }} </td><td>{{ personal.personal_birthday }} </td>
-          <td><button onclick="window.location.href='/student_panel/personal_edit/{{ personal.id }}'">Edit</button>
-          <button onclick="window.location.href='/student_panel/personal_delete/{{ personal.id }}'">Delete</button></td>
+          <td><button onclick="window.location.href='/person_panel/personal_edit/{{ personal.id }}'">Edit</button>
+          <button onclick="window.location.href='/person_panel/personal_delete/{{ personal.id }}'">Delete</button></td>
           </tr>
 
     {% endfor %}

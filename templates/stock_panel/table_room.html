@@ -46,10 +46,10 @@ $(document).ready(function(){
     <tbody>
     {% for room in room_list %}
           <tr>
-              <td><a href="/fixture_panel/room/{{ room.room_no }}/">{{ room.room_no }}</a></td>
+              <td><a href="/stock_panel/room/{{ room.room_no }}/">{{ room.room_no }}</a></td>
               <td>{{ room.room_floor }}</td><td>{{ room.room_people }}</td><td>{{ room.room_type }} </td>
-          <td><button onclick="window.location.href='/fixture_panel/room_edit/{{ room.room_no }}'">Edit</button>
-              <button onclick="window.location.href='/fixture_panel/room_delete/{{ room.room_no }}'">Delete</button></td></tr>
+          <td><button onclick="window.location.href='/stock_panel/room_edit/{{ room.room_no }}'">Edit</button>
+              <button onclick="window.location.href='/stock_panel/room_delete/{{ room.room_no }}'">Delete</button></td></tr>
     {% endfor %}
 
     </tbody>

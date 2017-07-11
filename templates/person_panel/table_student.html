@@ -79,13 +79,13 @@ $(document).ready(function(){
 
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../resepsiyon.png"class="user-image" alt="User Image">
+              <img src="../../media/resepsiyon.png"class="user-image" alt="User Image">
               <span class="hidden-xs">Resepsiyon 1</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../resepsiyon.png" class="img-circle" alt="User Image">
+                <img src="../../media/resepsiyon.png" class="img-circle" alt="User Image">
 
                 <p>
                   Resepsiyon 1 - Resepsiyon Görevlisi
@@ -110,7 +110,7 @@ $(document).ready(function(){
     <section class="sidebar">
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../../resepsiyon.png"class="img-circle" alt="User Image">
+          <img src="../../media/resepsiyon.png"class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>Resepsiyon 1</p>
@@ -179,7 +179,6 @@ $(document).ready(function(){
         <li><a href="../../index2.html"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
         <li class="active">Resepsiyon</li>
       </ol>
-    </section>
 
     <table id="myTable" class="display">
     <thead>
@@ -196,14 +195,10 @@ $(document).ready(function(){
     <tbody>
     {% for student in student_list %}
           <tr><td>
-              {% if view_pro_per %}
-                <a href="/student_panel/student/{{ student.id }}/">{{ student.id }}</a>
-                  {% else %}
-                  {{ student.id }}
-              {% endif %}
+                <a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a>
           </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
-          <td><button onclick="window.location.href='/student_panel/student_edit/{{ student.id }}'">Edit</button>
-          <button onclick="window.location.href='/student_panel/student_delete/{{ student.id }}'">Delete</button></td>
+          <td><button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
+          <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button></td>
           </tr>
 
     {% endfor %}

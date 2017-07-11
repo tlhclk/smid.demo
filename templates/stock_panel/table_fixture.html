@@ -46,10 +46,10 @@ $(document).ready(function(){
     <tbody>
     {% for fixture in fixture_list %}
           <tr>
-              <td><a href="/fixture_panel/fixture/{{ fixture.fixture_no }}/">{{ fixture.fixture_no }}</a></td>
+              <td><a href="/stock_panel/fixture/{{ fixture.fixture_no }}/">{{ fixture.fixture_no }}</a></td>
               <td>{{ fixture.room_no }}</td><td>{{ fixture.fixture_type }}</td><td>{{ fixture.fixture_notes }} </td>
-          <td><button onclick="window.location.href='/fixture_panel/fixture_edit/{{ fixture.fixture_no }}'">Edit</button>
-              <button onclick="window.location.href='/fixture_panel/fixture_delete/{{ fixture.fixture_no }}'">Delete</button></td></tr>
+          <td><button onclick="window.location.href='/stock_panel/fixture_edit/{{ fixture.fixture_no }}'">Edit</button>
+              <button onclick="window.location.href='/stock_panel/fixture_delete/{{ fixture.fixture_no }}'">Delete</button></td></tr>
     {% endfor %}
 
     </tbody>

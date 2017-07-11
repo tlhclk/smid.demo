@@ -48,11 +48,11 @@ $(document).ready(function(){
     <tbody>
     {% for parent in parent_list %}
           <tr>
-              <td><a href="/student_panel/parent/{{ parent.id }}/">{{ parent.student_id_id }}</a></td>
+              <td><a href="/person_panel/parent/{{ parent.id }}/">{{ parent.student_id_id }}</a></td>
               <td>{{ parent.parent_name }}</td><td>{{ parent.parent_phone }}</td><td>{{ parent.parent_email }} </td>
               <td>{{ parent.relative_degree }} </td><td>{{ parent.parent_job }}</td>
-          <td><button onclick="window.location.href='/student_panel/parent_edit/{{ parent.id }}'">Edit</button>
-              <button onclick="window.location.href='/student_panel/parent_delete/{{ parent.id }}'">Delete</button></td></tr>
+          <td><button onclick="window.location.href='/person_panel/parent_edit/{{ parent.id }}'">Edit</button>
+              <button onclick="window.location.href='/person_panel/parent_delete/{{ parent.id }}'">Delete</button></td></tr>
     {% endfor %}
 
     </tbody>

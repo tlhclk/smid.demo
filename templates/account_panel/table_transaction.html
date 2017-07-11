@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Transaction List</title>
 </head>
 <body>
+<table><thead><tr>
+    <th>Transaction No</th><th>Account Name</th><th>Transaction Type</th><th>Transaction Amount</th><th>Transaction Debit/Credit</th><th>Transaction Time</th><th>Transaction Desc</th>
+</tr></thead><tbody><tr>
+    {% for transaction in transaction_list %}
+    <td>{{ transaction.transaction_no }}</td><td>{{ transaction.account_name }}</td><td>{{ transaction.transaction_type_name }}</td><td>{{ transaction.transaction_amount }}</td><td>{{ transaction.transation_debit_credit_name }}</td><td>{{ transaction.transaction_time }}</td><td>{{ transaction.transaction_desc }}</td>
+    {% endfor %}
+</tr></tbody></table>
 
 </body>
 </html>

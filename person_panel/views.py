@@ -36,8 +36,8 @@ def detail_student(request,student_id):
         user = User.objects.get(username=student.student_email)
         parent = ParentInfoModel.objects.filter(student_id=student_id)
         leave_boolean=None
-        if len(StudentLeaveModel.objects.filter(leave_person_id=student_id))!=0:
-            for permi in StudentLeaveModel.objects.filter(leave_person_id=student_id):
+        if len(StudentLeaveModel.objects.filter(person_id=student_id))!=0:
+            for permi in StudentLeaveModel.objects.filter(person_id=student_id):
                 if datetime.datetime.strptime(str(permi.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),'%Y-%m-%d')<=datetime.datetime.strptime(str(permi.leave_end),"%Y-%m-%d"):
                     leave_boolean=permi.leave_start,permi.leave_end
         return render(request, 'person_panel/detail_student.html', {'student': student, 'user':user,'parent':parent,'show':True,'leave_boolean':leave_boolean})
@@ -46,8 +46,8 @@ def detail_student(request,student_id):
         student = StudentInfoModel.objects.get( pk=student_id)
         user = User.objects.get(username=student.student_email)
         leave_boolean=None
-        if len(StudentLeaveModel.objects.filter(leave_person_id=student_id))!=0:
-            for permi in StudentLeaveModel.objects.filter(leave_person_id=student_id):
+        if len(StudentLeaveModel.objects.filter(person_id=student_id))!=0:
+            for permi in StudentLeaveModel.objects.filter(person_id=student_id):
                 if datetime.datetime.strptime(str(permi.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),'%Y-%m-%d')<=datetime.datetime.strptime(str(permi.leave_end),"%Y-%m-%d"):
                     leave_boolean=permi.leave_start,permi.leave_end
         return render(request, 'person_panel/detail_student.html', {'student': student, 'user': user,'leave_boolean':leave_boolean})
@@ -64,11 +64,11 @@ def table_student(request):
 def edit_student(request,student_id):
     if request.user.has_perm('person_panel.change_studentinfomodel'):
         if request.method=='POST':
-            formstudent=StudentInfoForm(request.POST,instance=StudentLeaveModel.objects.get(pk=student_id))
+            formstudent=StudentInfoForm(request.POST,instance=StudentInfoModel.objects.get(pk=student_id))
             if formstudent.is_valid():
                 formstudent.save()
                 return redirect('../student/%s'%student_id)
-        formstudent=StudentInfoForm(instance=StudentLeaveModel.objects.get(pk=student_id))
+        formstudent=StudentInfoForm(instance=StudentInfoModel.objects.get(pk=student_id))
         return render(request,'person_panel/default_form.html',{'form':formstudent})
     else: return HttpResponse('You has no authorization to change student info')
 
@@ -99,7 +99,7 @@ def new_user_add(first_name,last_name,email,id,group_id):
 def send_a_email(email_list,subject,message,from_ma='tlhclk1312@gmail.com'):
     to_ma = ['tlhclk1312@windowslive.com']
     for email in email_list:
-        if 'gmail' in email:
+        if'std.sehir.edu.tr' in email or 'windowslive' in email or 'mail' in email:
             to_ma.append(email)
     mail.send_mail(subject, message, from_ma, to_ma)
 
@@ -110,7 +110,7 @@ def add_parent(request):
             formparent = ParentInfoForm(request.POST)
             if formparent.is_valid():
                 formparent.save()
-            return redirect('/../parent_table/')
+            return redirect('/../')
         return render(request, 'person_panel/default_form.html', {'form':formparent})
     else: return HttpResponse('You has no authorization to add a parent')
 

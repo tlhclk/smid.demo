@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^document_panel/',include('document_panel.urls')),
     url(r'^operation_panel/',include('operation_panel.urls')),
     url(r'^person_panel/',include('person_panel.urls')),
+    url(r'^report_panel/',include('report_panel.urls')),
     url(r'^stock_panel/',include('stock_panel.urls')),
     url(r'^user_panel/',include('user_panel.urls')),
 

@@ -7,7 +7,8 @@ import datetime
 class DocumentInfoModel(models.Model):
     document_type_list=[('01','ID Card'),('02','Insurance'),('03','Bill'),('04','Leave Doc.'),('05','Student Certificate'),]
     document_id=models.CharField(max_length=10,primary_key=True,verbose_name='Document Id: ')
-    person_id=models.CharField(max_length=7,verbose_name='Person Id: ',null=False)
+    #person_id=models.CharField(max_length=7,verbose_name='Person Id: ',null=False)
+    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person id: ')
     document_date=models.DateField(default=datetime.date.today,verbose_name='Document Record Date: ')
     document_type=models.CharField(max_length=20,verbose_name='Document Type: ',null=False,choices=document_type_list)
     document_description=models.CharField(max_length=100,verbose_name='Documnet Description: ',blank=True)
