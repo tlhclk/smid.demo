@@ -67,7 +67,7 @@ def edit_student(request,student_id):
             formstudent=StudentInfoForm(request.POST,instance=StudentInfoModel.objects.get(pk=student_id))
             if formstudent.is_valid():
                 formstudent.save()
-                return redirect('../student/%s'%student_id)
+                return redirect('../')
         formstudent=StudentInfoForm(instance=StudentInfoModel.objects.get(pk=student_id))
         return render(request,'person_panel/default_form.html',{'form':formstudent})
     else: return HttpResponse('You has no authorization to change student info')

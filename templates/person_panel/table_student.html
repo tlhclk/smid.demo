@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 <div class="wrapper">
   <header class="main-header">
-    <a href="../../index2.html" class="logo">
+    <a href="../home_page.html" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
@@ -176,7 +176,7 @@ $(document).ready(function(){
   <div class="content-wrapper">
 
       <ol class="breadcrumb">
-        <li><a href="../../index2.html"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
+        <li><a href="../../"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
         <li class="active">Resepsiyon</li>
       </ol>
 
@@ -198,7 +198,7 @@ $(document).ready(function(){
                 <a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a>
           </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
           <td><button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
-          <button onclick="{{ student.delete }}">Delete</button></td>
+          <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button></td>
           </tr>
 
     {% endfor %}

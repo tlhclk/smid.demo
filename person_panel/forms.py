@@ -1,8 +1,10 @@
 from django import forms
 from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
 #from fixturepanel.models import RoomInfoModel
+import datetime
 
 class StudentInfoForm(forms.ModelForm):
+    student_regday=forms.DateField(initial=datetime.date.today(),widget=forms.SelectDateWidget)
     class Meta:
         model=StudentInfoModel
         fields=(
