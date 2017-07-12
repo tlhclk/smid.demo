@@ -198,7 +198,7 @@ $(document).ready(function(){
                 <a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a>
           </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
           <td><button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
-          <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button></td>
+          <button onclick="{{ student.delete }}">Delete</button></td>
           </tr>
 
     {% endfor %}

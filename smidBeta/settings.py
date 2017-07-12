@@ -139,8 +139,7 @@ USE_TZ = True
 
 STATIC_ROOT= os.getcwd()+'\\static'
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates\\user_panel\\statica'),
-                    os.path.join(BASE_DIR,'templates\\staticasdqW\\'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates\\smidDemo\\'),]
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',

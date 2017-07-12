@@ -7,7 +7,7 @@ from person_panel.models import StudentInfoModel
 
 class StudentLeaveModel(models.Model):
     person_list=[]
-    leave_id=models.CharField(max_length=10,primary_key=True,verbose_name='leave_id: ')
+    #leave_id=models.CharField(max_length=10,primary_key=True,verbose_name='leave_id: ')
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Permitted Person: ')
     #person_id=models.CharField(max_length=10,blank=True,null=True)
     leave_start=models.DateField(verbose_name='leave Start: ',default='2017-07-02')
@@ -18,7 +18,7 @@ class StudentLeaveModel(models.Model):
         db_table='student_leave'
 
     def __str__(self):
-        return  self.leave_id
+        return  self.id
 
 class AttendanceInfoModel(models.Model):
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')

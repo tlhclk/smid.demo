@@ -7,10 +7,9 @@ class TransactionInfoForm(forms.ModelForm):
     class Meta:
         model=TransactionInfoModel
         fields=[
-            'transaction_no',
+            #'transaction_no',
             'account_no',
             'transaction_type',
-            'transaction_debit_credit',
             'transaction_amount',
             'transaction_time',
             'transaction_desc',
@@ -43,9 +42,10 @@ class BillInfoForm(forms.ModelForm):
     class Meta:
         model=BillInfoModel
         fields=[
-            'bill_no',
+            #'bill_no',
             'bill_type',
             'bill_code',
+            'bill_amount',
             'bill_period',
             'bill_last_date',
             'bill_address',

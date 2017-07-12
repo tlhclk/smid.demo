@@ -33,7 +33,7 @@ def table_attendance(request):
     return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list})
 
 
-def send_collective_message(request):
+def send_a_mail(request):
     if request.method=='POST':
         subject=request.POST['message_subject']
         message=request.POST['message_content']

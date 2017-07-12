@@ -15,7 +15,7 @@ def add_transaction(request):
         if formtransaction.is_valid():
             account=formtransaction.cleaned_data.get('account_no')
             amount=formtransaction.cleaned_data.get('transaction_amount')
-            d_c=formtransaction.cleaned_data.get('transaction_debit_credit')
+            d_c=formtransaction.cleaned_data.get('transaction_type')
             transaction_accountsync(account,amount,d_c)
             formtransaction.save()
             return redirect('../')
@@ -117,7 +117,7 @@ def detail_bill(request,bill_no):
 
 def table_bill(request):
     bill_list=BillInfoModel.objects.all()
-    return render(request,'account_panel/table_bill.html',{'bill,_list':bill_list})
+    return render(request,'account_panel/table_bill.html',{'bill_list':bill_list})
 
 def edit_bill(request,bill_no):
     formbill=BillInfoForm(instance=BillInfoModel.objects.get(pk=bill_no))
@@ -133,7 +133,7 @@ def delete_bill(request,bill_no):
     return redirect('../')
 
 def transaction_accountsync(account,amount,d_c):
-    if d_c=='1':
+    if d_c=='1' or d_c=='7':
         x=1
     else:
         x=-1

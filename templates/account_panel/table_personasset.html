@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Person Asset List</title>
 </head>
 <body>
+<table><thead><tr>
+    <th>Person Asset No</th><th>Person Name</th><th>Person Asset Amount</th><th>Person Asset Debt</th><th>Person Asset Desc</th>
+</tr></thead><tbody>
+    {% for asset in asset_list %}<tr>
+    <td>{{ asset.asset_id }}</td><td>{{ asset.person_id.full_name }}</td><td>{{ asset.asset_amount }}</td><td>{{ asset.asset_debt }}</td><td>{{ asset.asset_desc }}</td></tr>
+    {% endfor %}
+</tbody></table>
 
 </body>
 </html>

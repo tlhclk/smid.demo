@@ -5,7 +5,7 @@ from .models import StudentLeaveModel,AttendanceInfoModel
 class StudentLeaveForm(forms.ModelForm):
     class Meta:
         model=StudentLeaveModel
-        fields=('leave_id',
+        fields=(#'leave_id',
                 'leave_start',
                 'leave_end',
                 'person_id',

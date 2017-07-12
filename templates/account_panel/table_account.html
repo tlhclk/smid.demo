@@ -7,11 +7,11 @@
 <body>
 <table><thead><tr>
     <th>Account ID</th><th>Account Name</th><th>Account Type</th><th>Account Amount</th><th>Account Desc</th>
-</tr></thead><tbody><tr>
-    {% for account in account_list %}
-    <td>{{ account.account_no }}</td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td>
+</tr></thead><tbody>
+    {% for account in account_list %}<tr>
+    <td>{{ account.account_no }}</td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td></tr>
     {% endfor %}
-</tr></tbody></table>
+</tbody></table>
 
 </body>
 </html>
