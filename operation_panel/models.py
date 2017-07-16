@@ -18,7 +18,7 @@ class StudentLeaveModel(models.Model):
         db_table='student_leave'
 
     def __str__(self):
-        return  self.id
+        return  str(self.id)
 
 class AttendanceInfoModel(models.Model):
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')

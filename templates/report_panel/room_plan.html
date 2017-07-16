@@ -15,7 +15,7 @@
     <h2>{{ room.room_image }}</h2>
     <h2>Students in the Room</h2>
     {% for student in student_list %}
-        {% if room.room_no == student.room_number_id %}
+        {% if room.room_no == student.room_no_id %}
             <h3>{{ student.full_name }}</h3>
         {% endif %}
         {% endfor %}

@@ -2,8 +2,8 @@ from django.shortcuts import  render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core import mail
-from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm
-from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from .forms import StudentInfoForm,ParentInfoForm,PersonalInfoForm,PersonIDInfoForm
+from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
 from stock_panel.models import RoomInfoModel
 from operation_panel.models import StudentLeaveModel
 import datetime
@@ -19,10 +19,14 @@ def add_student(request):
             formstudent = StudentInfoForm(request.POST, request.FILES)
             if formstudent.is_valid():
                 id=formstudent.cleaned_data.get('id')
-                first_name = formstudent.cleaned_data.get('student_name')
-                last_name = formstudent.cleaned_data.get('student_lastname')
+                student_tcn = formstudent.cleaned_data.get('student_tcn')
+                first_name= student_tcn.s_name
+                last_name = student_tcn.s_lastname
                 email = formstudent.cleaned_data.get('student_email')
                 new_user_add(first_name, last_name, email,id,group_id='1')
+                room_no=formstudent.cleaned_data.get('room_no')
+                room_no.room_people=str(int(room_no.room_people)+1)
+                room_no.save()
                 formstudent.save()
             return redirect('/person_panel/')
         #student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
@@ -58,7 +62,8 @@ def table_student(request):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
         student_list=StudentInfoModel.objects.all()
         all_in,all_all=(len(StudentInfoModel.objects.filter(student_position=True)),len(StudentInfoModel.objects.all()))
-        return render(request, 'person_panel/table_student.html', {'student_list':student_list,'all_in':all_in,'all_all':all_all})
+        #return render(request, 'person_panel/table_student.html', {'student_list':student_list,'all_in':all_in,'all_all':all_all})
+        return  render(request, 'smidDemo/pages/examples/ogrenci-in.html',{'student_list':student_list,'all_in':all_in,'all_all':all_all})
     else: return HttpResponse('You has no authorization to view student info list')
 
 def edit_student(request,student_id):
@@ -76,7 +81,7 @@ def delete_student(request,student_id):
     if request.user.has_perm('person_panel.delete_studentinfomodel'):
         student=StudentInfoModel.objects.get(pk=student_id)
         parent=ParentInfoModel.objects.filter(student_id=student_id)
-        if parent[0]:
+        if len(parent)!=0:
             parent[0].delete()
         student.delete()
         if len(User.objects.filter(username=student.student_email))!=0:
@@ -194,3 +199,30 @@ def delete_personal(request,personal_id):
         User.objects.get(pk=personal_id).delete()
         return redirect('../')
     else: return HttpResponse('You has no authorization to delete a personal')
+
+
+def multiple_add(request):
+    if request.method=='POST':
+        form1=StudentInfoForm(request.POST,prefix='std')
+        form2=PersonIDInfoForm(request.POST,prefix='prsn')
+        if form1.is_valid() and form2.is_valid():
+            form1.save()
+            form2.save()
+            return redirect('../')
+    else:
+        form1=StudentInfoForm(prefix='std')
+        form2=PersonIDInfoForm(request.POST,prefix='prsn')
+        return render(request,'person_panel/default_form.html',{'form1':form1,'form2':form2})
+
+def add_student_id(request):
+    if request.user.has_perm('person_panel.add_studentinfomodel'):
+        formstudent = PersonIDInfoForm()
+        if request.method == "POST":
+            formstudent = PersonIDInfoForm(request.POST, request.FILES)
+            if formstudent.is_valid():
+                formstudent.save()
+            return redirect('/person_panel/student_add/')
+        #student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
+        return render(request, 'person_panel/default_form.html', {'form': formstudent})
+    else:
+        return HttpResponse('You has no authorization to add a student')

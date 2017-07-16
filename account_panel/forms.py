@@ -20,10 +20,11 @@ class PersonAssetInfoForm(forms.ModelForm):
         model=PersonAssetInfoModel
         fields=[
             'asset_id',
-            'person_id',
             'asset_amount',
             'asset_debt',
             'asset_desc',
+            'asset_period',
+            'asset_type',
         ]
 
 class AccountInfoForm(forms.ModelForm):
@@ -47,7 +48,27 @@ class BillInfoForm(forms.ModelForm):
             'bill_code',
             'bill_amount',
             'bill_period',
-            'bill_last_date',
+            'bill_lastday',
             'bill_address',
             'bill_desc',
         ]
+
+class MoneyTransferForm(forms.Form):
+    from_account=forms.ModelChoiceField(AccountInfoModel)
+    to_account=forms.ModelChoiceField(AccountInfoModel)
+    transfer_type=forms.ChoiceField(TransactionInfoModel.transaction_type_list)
+    transfer_amount=forms.CharField(max_length=10)
+    transfer_datetime=forms.DateTimeField(widget=forms.SplitDateTimeWidget)
+    transfer_desc=forms.CharField(max_length=100)
+
+    class Meta:
+        fields=[
+            'from_account',
+            'to_account',
+            'transfer_type',
+            'transfer_amount',
+            'transfer_datetime',
+            'transfer_desc',
+                ]
+    def check_to_account(self):
+        pass

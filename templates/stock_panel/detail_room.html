@@ -11,7 +11,12 @@
 <h1>{{ room_people }}</h1>
 <h1>{{ room_type }}</h1>
 <h1>{{ room.room_desc }}</h1>
-{% for student in student_list %}<h1>{{ student.full_name }}</h1>{% endfor %}
+{% for student in student_list %}
+    <h1>{{ student.full_name }}</h1>
+{% endfor %}
+{% for bos in bos_list %}
+    <h1>Boş Kontenjan</h1>
+{% endfor %}
 <img src="/../../media/{{ room.room_image }}" alt="room-image" height="400">
 
 </body>

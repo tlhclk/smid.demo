@@ -9,7 +9,7 @@
     <th>Bill No</th><th>Bill Code</th><th>Bill Type</th><th>Bill Amount</th><th>Bill Desc</th><th>Bill adress</th><th>Bill Period</th><th>Bill Last Date</th>
 </tr></thead><tbody>
     {% for bill in bill_list %}<tr>
-    <td>{{ bill.id }}</td><td>{{ bill.bill_code }}</td><td>{{ bill.bill_type_name }}</td><td>{{ bill.bill_amount }}</td><td>{{ bill.bill_desc }}</td><td>{{ bill.bill_adress }}</td><td>{{ bill.period }}</td><td>{{ bill.bill_last_date }}</td></tr>
+    <td>{{ bill.id }}</td><td>{{ bill.bill_code }}</td><td>{{ bill.bill_type_name }}</td><td>{{ bill.bill_amount }}</td><td>{{ bill.bill_desc }}</td><td>{{ bill.bill_adress }}</td><td>{{ bill.period }}</td><td>{{ bill.bill_lastday }}</td></tr>
     {% endfor %}
 </tbody></table>
 

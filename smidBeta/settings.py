@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'person_panel.apps.PersonPanelConfig',
-    'bootstrap3',
+    'bootstrap4',
     'document_panel.apps.DocumentPanelConfig',
     'user_panel',
     'stock_panel.apps.StockPanelConfig',

@@ -197,13 +197,13 @@ $(document).ready(function(){
     {% for student in student_list %}
           <tr><td>
               {% if view_pro_per %}
-                <a href="/student_panel/student/{{ student.id }}/">{{ student.id }}</a>
+                <a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a>
                   {% else %}
                   {{ student.id }}
               {% endif %}
           </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
-          <td><button onclick="window.location.href='/student_panel/student_edit/{{ student.id }}'">Edit</button>
-          <button onclick="window.location.href='/student_panel/student_delete/{{ student.id }}'">Delete</button></td>
+          <td><button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
+          <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button></td>
           </tr>
 
     {% endfor %}

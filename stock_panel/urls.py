@@ -14,9 +14,4 @@ urlpatterns = [
     url(r'^room_table/', views.table_room, name='room Table'),
     url(r'^room_edit/(?P<room_no>[0-9]+)/', views.edit_room, name='room Edit'),
     url(r'^room_delete/(?P<room_no>[0-9]+)/',views.delete_room,name='Room Delete'),
-    url(r'^liability_add/',views.liability_add,name='Liability Add'),
-    url(r'^liability/(?P<record_no>[0-9]+)', views.liability_detail, name='Liability detail'),
-    url(r'^liability_table/',views.liability_table,name='Liability Table'),
-    url(r'^liability_edit/(?P<record_no>[0-9]+)', views.liability_edit, name='Liability Edit'),
-    url(r'^liability_delete/(?P<record_no>[0-9]+)', views.liability_delete, name='Liability delete'),
 ]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import FixtureInfoModel,RoomInfoModel,LiabilityInfoModel
+from .models import FixtureInfoModel,RoomInfoModel
 
 
 class FixtureInfoForm(forms.ModelForm):
@@ -23,17 +23,3 @@ class RoomInfoForm(forms.ModelForm):
                 'room_desc',
                 'room_image'
                 )
-
-class LiabilityInfoForm(forms.ModelForm):
-    class Meta:
-        model=LiabilityInfoModel
-        fields=['record_no',
-                'person_id',
-                'liability_type',
-                'liability_name',
-                'liability_desc',
-                'liability_date',
-                'liability_return',
-                'liability_lastday',
-                'liability_penalty',
-                ]

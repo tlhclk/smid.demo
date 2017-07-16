@@ -121,14 +121,12 @@ def group_permission_add(request):
         if form.is_valid():
             group_id = form.cleaned_data.get('group_choice')
             permission_list = form.cleaned_data.get('permission_choice')
-            print permission_list
             group = Group.objects.get(pk=group_id)
             for per in permission_list[1]:
                 permission = Permission.objects.get(pk=per)
                 if permission in group.permissions.all():
-                    print permission,'already has'
+                    print (permission,'already has')
                 else:
-                    print permission.codename,'given'
                     group.permissions.add(per)
             return redirect('../group_table')
         return render(request,'user_panel/default_form.html',{'form':form,'title':title})

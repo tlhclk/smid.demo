@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from stock_panel.models import FixtureInfoModel,RoomInfoModel,LiabilityInfoModel
+from operation_panel.models import StudentLeaveModel
+from stock_panel.models import FixtureInfoModel,RoomInfoModel
+from document_panel.models import LiabilityInfoModel
 from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+import datetime
 
 def options_menu(request):
     room_list=RoomInfoModel.objects.all().order_by('room_no')
@@ -44,12 +47,25 @@ def room_plan(request):
     return render(request, 'report_panel/room_plan.html', {'room_list': room_list,'student_list':student_list})
 
 def leave_permission_table(request):
-    pass
+    leave_list=StudentLeaveModel.objects.all()
+    leave_list_now=[]
+    for leave_record in leave_list:
+        print (leave_record.leave_start,datetime.date.today(),leave_record.leave_end)
+        if datetime.datetime.strptime(str(leave_record.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),"%Y-%m-%d")<=datetime.datetime.strptime(str(leave_record.leave_end),"%Y-%m-%d"):
+            leave_list_now.append(leave_record)
+    print (leave_list_now)
+    return render(request,'report_panel/leave_table.html',{'leave_list':leave_list_now})
 
 def contact_table(request):
     student_list=StudentInfoModel.objects.all()
     personal_list=PersonalInfoModel.objects.all()
     parent_list=ParentInfoModel.objects.all()
     return render(request, 'report_panel/table_contact.html', {'student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})
+
+def calendar(request):
+    student_list=[student for student in StudentInfoModel.objects.all()]
+    for student in student_list:
+        print (student.student_regday.day)
+    return render(request,'smidDemo/pages/examples/calendar.html',{'student_list':student_list})
 
 

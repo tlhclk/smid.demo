@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create xml file for EGM</title>
+</head>
+<body>
+<h1> Create xml file for EGM</h1>
+<form class="post-form" method="post">{% csrf_token %}
+    <table><thead><tr>
+        <th></th><th>Student ID</th><th>Student Name</th><th>Student TCN</th><th>Student Phone</th><th>Student Email</th>
+    </tr></thead><tbody>
+        {% for student in student_list %}
+        <tr><td><input type="checkbox" name="sstudent_list" id="id_sstudent_list_{{ student.id }}" value={{ student }}></td><td>
+            <label for="id_sstudent_list_{{ student.id }}">{{ student.id }}</label></td><td>{{ student.full_name }}</td><td>{{ student.student_tcn }}</td>
+        <td>{{ student.student_phone }}</td><td>{{ student.student_email }}</td></tr>
+    {% endfor %}
+    </tbody></table>
+
+    <button type="submit" class="save btn btn-default">Create</button>
+</form>
+
+
+</body>
+</html>
