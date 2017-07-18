@@ -18,11 +18,14 @@ def log_in(request):
             if formuser.is_valid():
                 username = formuser.cleaned_data.get("username")
                 password = formuser.cleaned_data.get("password")
+                remember = formuser.cleaned_data.get("remember")
                 user = authenticate(username=username, password=password)
                 login(request, user)
-                return redirect('../')
+                if remember==True:
+                    request.session.set_expiry(604800)#bir haftalık
+                return redirect('http://127.0.0.1:8000/')
 
-        return render(request,'user_panel/default_form.html',{'form':formuser})
+        return render(request,'user_panel/login.html',{'form':formuser})
     else:
         return HttpResponse('Already an user singed in: ' + str(request.user))
 

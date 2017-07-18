@@ -28,7 +28,7 @@ def add_student(request):
                 room_no.room_people=str(int(room_no.room_people)+1)
                 room_no.save()
                 formstudent.save()
-            return redirect('/person_panel/')
+            return redirect('http://127.0.0.1:8000/account_panel/asset_add/')
         #student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
         return render(request, 'person_panel/default_form.html', {'form': formstudent})
     else:
@@ -63,7 +63,7 @@ def table_student(request):
         student_list=StudentInfoModel.objects.all()
         all_in,all_all=(len(StudentInfoModel.objects.filter(student_position=True)),len(StudentInfoModel.objects.all()))
         #return render(request, 'person_panel/table_student.html', {'student_list':student_list,'all_in':all_in,'all_all':all_all})
-        return  render(request, 'smidDemo/pages/examples/ogrenci-in.html',{'student_list':student_list,'all_in':all_in,'all_all':all_all})
+        return  render(request, 'person_panel/table_student.html',{'student_list':student_list})
     else: return HttpResponse('You has no authorization to view student info list')
 
 def edit_student(request,student_id):
@@ -226,3 +226,22 @@ def add_student_id(request):
         return render(request, 'person_panel/default_form.html', {'form': formstudent})
     else:
         return HttpResponse('You has no authorization to add a student')
+
+def show_profile(request,person_id):
+    if person_id[:4]=='1701':
+        if request.user.has_perm('person_panel.view_studentinfomodel'):
+            student=StudentInfoModel.objects.get(pk=person_id)
+            user=User.objects.get(pk=person_id)
+            student_id=PersonIDInfoModel.objects.get(pk=student.student_tcn.id)
+            return render(request,'person_panel/detail_student.html',{'student':student,'user':user,'student_id':student_id})
+    elif person_id[:4]=='1703':
+        if request.user.has_perm('person_panel.view_personalinfomodel'):
+            personal=PersonalInfoModel.objects.get(pk=person_id)
+            user=User.objects.get(pk=person_id)
+            return render(request,'person_panel/detail_personal.html',{'personal':personal,'user':user})
+    elif person_id[:4]=='1704':
+        if request.user.has_perm('person_panel.view_parentinfomodel'):
+            parent=ParentInfoModel.objects.get(pk=person_id)
+            student=StudentInfoModel.objects.get(pk=parent.student_id.id)
+            return render(request,'person_panel/detail_parent.html',{'student':student,'parent':parent})
+    else: return HttpResponse('Aranan Kayıt Bulunanamadı')

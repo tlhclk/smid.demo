@@ -7,14 +7,15 @@ from person_panel.models import StudentInfoModel
 
 
 class PersonAssetInfoModel(models.Model):
+    asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
     asset_id=models.CharField(max_length=10,primary_key=True,verbose_name='Individual Asset ID: ')
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person id')
     #person_id=models.CharField(max_length=10,verbose_name='Person ID: ')
     asset_amount=models.CharField(max_length=10,verbose_name='Asset Amount: ')
     asset_debt=models.CharField(max_length=10,verbose_name='Asset Debt: ')
     asset_desc=models.CharField(max_length=50,verbose_name='Asset Description: ')
-    asset_period=models.CharField(max_length=10,verbose_name='Asset period, payment time',blank=True)
-    asset_type=models.CharField(max_length=10,verbose_name='Asset Type',blank=True)
+    #asset_period=models.CharField(max_length=10,verbose_name='Asset period, payment time',blank=True)
+    asset_type=models.CharField(max_length=10,verbose_name='Asset Type',blank=True,choices=asset_type_list)
 
     class Meta:
         db_table='personasset_info'
@@ -45,7 +46,7 @@ class AccountInfoModel(models.Model):
         return dict(self.bank_code)[int(self.account_bank)]
 
 class BillInfoModel(models.Model):
-    bill_type_list=[('1','İSKİ')]
+    bill_type_list=[('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('1','Vergi'),('1','İSKİ'),('1','İSKİ')]
     #bill_no=models.CharField(max_length=10,verbose_name='Bill No: ',primary_key=True)
     bill_type=models.CharField(max_length=10,verbose_name='Bill Type: ',choices=bill_type_list)
     bill_code=models.CharField(max_length=10,verbose_name='Bill Code: ')

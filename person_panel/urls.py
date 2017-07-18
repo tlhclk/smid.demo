@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^personal_table/', views.table_personal, name='personal Table'),
     url(r'^personal_edit/(?P<personal_id>[0-9]+)', views.edit_personal, name='personal Edit'),
     url(r'^personal_delete/(?P<personal_id>[0-9]+)', views.delete_personal, name='personal Delete'),
-    url(r'^multiple/',views.multiple_add,name='Multiple')
+    url(r'^multiple/',views.multiple_add,name='Multiple'),
+    url(r'^(?P<person_id>[0-9]+)/',views.show_profile,name='')
 ]

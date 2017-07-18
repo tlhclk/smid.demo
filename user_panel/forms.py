@@ -8,6 +8,7 @@ UserModel=get_user_model()
 class UserLoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+    remember = forms.BooleanField(widget=forms.CheckboxInput,required=False)
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")

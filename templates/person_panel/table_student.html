@@ -1,122 +1,93 @@
 {% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+
+
 <html>
 <head>
-<link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Smart Dorms | Ana Sayfa</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.print.css' %}" media="print">
   <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/skins/skin-blue.min.css' %}">
 
-  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
 
 
-
-
- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
-
-
-<script>
-$(document).ready(function(){
-  $('#myTable').DataTable( {
-    responsive: true,
-    dom: 'Bfrtip',
-    buttons: [
-
-    'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
-  ]
-} );
-});
-</script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
 
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
+
   <header class="main-header">
-    <a href="../home_page.html" class="logo">
+
+    <a href="http://127.0.0.1:8000/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
-    <nav class="navbar navbar-static-top">
+
+    <nav class="navbar navbar-static-top" role="navigation">
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
       </a>
-
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <li class="dropdown messages-menu"></li>
-          <li class="dropdown notifications-menu">
-            <ul class="dropdown-menu">
-              <li>
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i>
-                    </a>
-                  </li>
-
-                </ul>
-              </li>
-            </ul>
-          </li>
-
+            {% if request.user.groups.all %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../media/resepsiyon.png"class="user-image" alt="User Image">
-              <span class="hidden-xs">Resepsiyon 1</span>
+              <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
-              <!-- User image -->
               <li class="user-header">
-                <img src="../../media/resepsiyon.png" class="img-circle" alt="User Image">
-
+                <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="img-circle" alt="User Image">
                 <p>
-                  Resepsiyon 1 - Resepsiyon Görevlisi
+                  {{ request.user.first_name }} {{ request.user.last_name }}
                 </p>
               </li>
+              <!-- Menu Body -->
+              <li class="user-body">
 
+                <!-- /.row -->
+              </li>
+              <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#profile.html" class="btn btn-default btn-flat">Profil</a>
+                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#anasayfa.html" class="btn btn-default btn-flat">Çıkış Yap</a>
+                  <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
                 </div>
               </li>
             </ul>
           </li>
+                {% else %}
+                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login">Giriş Yap</a></li>
+            {% endif %}
+          <!-- Control Sidebar Toggle Button -->
         </ul>
       </div>
     </nav>
   </header>
+  <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="../../media/resepsiyon.png"class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p>Resepsiyon 1</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Çevrimiçi</a>
-        </div>
-      </div>
+
+      <!-- search form (Optional) -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Ara...">
@@ -126,88 +97,215 @@ $(document).ready(function(){
               </span>
         </div>
       </form>
+      <!-- /.search form -->
 
+      <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
+        <li class="header">İşlemler</li>
+        <!-- Optionally, you can add icons to the links -->
+          {% if request.user.groups.all.first.name %}
         <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Oda Bilgileri Güncelleme </span>
+          <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index8.html"><i class="fa fa-circle-o"></i> Odalarda Kalan Öğrenciler </a></li>
-            <li><a href="../../index3.html"><i class="fa fa-circle-o"></i> Oda Demirbaş Takibi </a></li>
-            <li><a href="../../index4.html"><i class="fa fa-circle-o"></i> Oda Numarası, Katı ve Yer Tarifi </a></li>
-
-        </ul>
+            <li><a href="http://127.0.0.1:8000/account_panel/account_table">Genel Hesap Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/asset_table">Öğrenci Ödeme Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table">İşlem Geçmişi</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/bill_table">Fatura Tablosu</a></li>
+          </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Öğrenci Bilgi Güncelleme</span>
+          <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Takvim Bilgileri</span>
             <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../q.html"><i class="fa fa-circle-o"></i> Yoklama Bilgisi</a></li>
-            <li><a href="../w.html"><i class="fa fa-circle-o"></i> Oda Bilgisi </a></li>
-            <li><a href="../z.html"><i class="fa fa-circle-o"></i> Üzerine Zimmetli Eşya Listesi </a></li>
-
-
-          ></ul>
-        </li>
-
-
-
-
-        <li class="treeview-menu">
-          <a href="../calendar.html">
-            <i class="fa fa-calendar"></i> <span>Takvim</span>
+            <li><a href="#">Henüz Yok</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Dosya Bilgileri</span>
             <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>İşlemler</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
+            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/report_panel/attendance_table/-">Yoklama Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/capacity/">Kontenjan Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/room_plan">Yurt Planı</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/contact_table">Rehber</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/calendar">Takvim</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/stock_panel/room_table">Oda Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/stock_panel/fixture_table">Eşya Tablosu</a></li>
+          </ul>
         </li>
-
+          {% endif %}
       </ul>
+      <!-- /.sidebar-menu -->
     </section>
+    <!-- /.sidebar -->
   </aside>
 
+  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
       <ol class="breadcrumb">
-        <li><a href="../../"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
-        <li class="active">Resepsiyon</li>
+        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
       </ol>
+    </section>
+      <section>
+      <h1>
+        Öprenci Listesi
+        <small>Yurtta Bulunan Öğrencilerin Temel Bilgileri</small>
+      </h1></section>
 
-    <table id="myTable" class="display">
-    <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Birthdate</th>
-            <th>Attendance</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for student in student_list %}
-          <tr><td>
-                <a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a>
-          </td><td>{{ student.student_name }}</td><td>{{ student.student_lastname }}</td><td>{{ student.student_email }} </td><td>{{ student.student_birthday }} </td><td>{{ student.student_position }}</td>
-          <td><button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
-          <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button></td>
-          </tr>
+    <!-- Main content -->
+    <section class="content">
 
+<table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr>
+    <th>Öğrenci ID</th><th>Adı</th><th>Kimlik Numarası</th><th>Telefon Numarası</th><th>E-mail Adresi</th><th>Kayıt Olma Tarihi</th><th>Oda Numarası</th><th></th>
+</tr></thead><tbody>
+    {% for student in student_list %}<tr>
+    <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.student_tcn_id }}</td><td>{{ student.student_phone }}</td><td>{{ student.student_email }}</td><td>{{ student.student_regday }}</td><td>{{ student.room_no_id }}</td><td>
+<button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
+              <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button>
+    </td>
+</tr>
     {% endfor %}
+</tbody></table>
 
-    </tbody>
-</table>
+      <!-- Your Page Content Here -->
 
-
+    </section>
+    <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">
+     Made by <b>Talha Çelik</b>
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
+  </footer>
+
+  <!-- Control Sidebar -->side>
+
+  <div class="control-sidebar-bg"></div>
 </div>
+
+
+<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
+
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'dist/js/app.min.js' %}"></script>
+
+ <script type="text/javascript" charset="utf8" src="{% static 'dataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#myTable').DataTable(
+
+      {
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
+
+      }
+    );
+{##}
+{#    $('#myTable tbody').on( 'click', 'tr', function () {#}
+{#        if ( $(this).hasClass('selected') ) {#}
+{#            $(this).removeClass('selected');#}
+{#        }#}
+{#        else {#}
+{#            table.$('tr.selected').removeClass('selected');#}
+{#            $(this).addClass('selected');#}
+{#        }#}
+{#    } );#}
+
+
+
+    table.buttons().container()
+          .appendTo( '#example_wrapper .col-md-6:eq(10)' );
+
+          new $.fn.dataTable.Buttons( table, {
+              buttons: [
+                  {
+                      text: 'Elementi Sil',
+                      action: function ( e, dt, node, conf ) {
+                        table.row('.selected').remove().draw( false );
+                        alert( 'Element Silindi' );
+                      }
+                  }
+              ]
+          } );
+
+          table.buttons( 1, null ).container().appendTo(
+              table.table().container()
+          );
+
+
+} );
+</script>
+
 </body>
 </html>
+

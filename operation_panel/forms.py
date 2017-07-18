@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import StudentLeaveModel,AttendanceInfoModel
+from .models import StudentLeaveModel,AttendanceInfoModel,StudentInfoModel
 
 class StudentLeaveForm(forms.ModelForm):
     class Meta:
@@ -20,4 +20,19 @@ class AttendanceInfoForm(forms.ModelForm):
         fields=['person_id',
                 'traffic_date',
                 'in_or_out']
+
+
+class MailSendForm(forms.Form):
+    people_selection=forms.ModelChoiceField(StudentInfoModel.objects.all(),required=False)
+    people_manual=forms.CharField(max_length=200,required=False)
+    subject=forms.CharField(max_length=100)
+    message=forms.CharField(max_length=500,widget=forms.TextInput)
+
+    class Meta:
+        fields=[
+                'people_selection',
+                'people_manual',
+                'subject',
+                'message'
+                ]
 

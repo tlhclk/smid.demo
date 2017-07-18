@@ -1,38 +1,267 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Details - {{ student.student_name }}</title>
-</head>
-<body>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Smart Dorms | Kullanıcı Profili </title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
 
-<h1><a href="../../../user_panel/user/{{ student.id }}/">{{ student.id }}</a></h1>
-<h1>{{ student.student_position }}<a href="../../change_position/{{ student.id }}">Change Position</a> </h1>
-<h1>{{ student.student_tcn }}</h1>
-<h1>{{ student.student_name }}</h1>
-<h1>{{ student.student_lastname }}</h1>
-<h1>{{ student.student_phone }}</h1>
-<h1>{{ student.student_email }}</h1>
-<h1>{{ student.student_bday }}</h1>
-<h1>{{ student.student_regday }}</h1>
-<h1>{{ student.student_city }}</h1>
-<h1>{{ student.student_town }}</h1>
-<h1>{{ student.student_adress }}</h1>
-<h1>{{ student.room_number }}</h1>
-<h1>{{ student.student_type }}</h1>
-<h1>{{ student.birth_place }}</h1>
-<h1>{{ student.school_name }}</h1>
-<h1>{{ student.year }}</h1>
-<h1>{{ student.blood_type }}</h1>
-<h1>{{ student.health_notes }}</h1>
-<h1>{{ student.special_notes }}</h1>
-<h1 id="student_leave">{% for time in leave_boolean %}{{ time }} - {% endfor %}</h1>
-{% if show %}
-<h1><a href="../../../user_panel/group/{{ user.groups.values.first.id }}/">{{ user.groups.values.first.name }}</a></h1>
-{% endif %}
-{% if student.file_field %}
-    <img src="/../../media/{{ student.file_field }}" alt="profile-pic" height="400">
-{% endif %}
-{{ student.show }}
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <a href="http://127.0.0.1:8000/" class="logo">
+      <span class="logo-mini"><b>SM</b>iD</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Smart</b>Dorms</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="user-header">
+                <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                  {{ request.user.first_name }} {{ request.user.last_name }} - {{ request.user.groups.all.first }}
+                </p>
+              </li>
+              <!-- Menu Body -->
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
+                </div>
+                <div class="pull-right">
+                  <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Ara...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+
+      <ul class="sidebar-menu">
+        <li class="header">İşlemler</li>
+        <!-- Optionally, you can add icons to the links -->
+          {% if request.user.groups.all.first.name %}
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/account_panel/account_table">Genel Hesap Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/asset_table">Öğrenci Ödeme Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table">İşlem Geçmişi</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/bill_table">Fatura Tablosu</a></li>
+          </ul>
+        </li>
+          <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Takvim Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#">Henüz Yok</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Dosya Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>İşlemler</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
+            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/report_panel/attendance_table/-">Yoklama Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/capacity/">Kontenjan Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/room_plan">Yurt Planı</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/contact_table">Rehber</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/calendar">Takvim</a></li>
+          </ul>
+        </li><li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/stock_panel/room_table">Oda Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/stock_panel/fixture_table">Eşya Tablosu</a></li>
+          </ul>
+        </li>
+          {% endif %}
+      </ul>
+
+    </section>
+  </aside>
+
+
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/person_panel/student_table">Geri</a></li>
+      </ol>
+    </section>
+
+    <section class="content">
+        <div style="padding-top:10px;"> </div>
+        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="media">
+                        <div align="center">
+                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ student.file_field }}" width="300px" height="300px">
+                        </div>
+                        <div class="media-body">
+                            <hr>
+                            <h3><strong>Pozisyon</strong></h3>
+                            <p>Yurt Görevlisi</p>
+                            <hr>
+                            <h3><strong>İşletme ismi</strong></h3>
+                            <p>Çelik Konaklama</p>
+                            <hr>
+                            <h3><strong>Telefon Numarası</strong></h3>
+                            <p>{{ student.student_phone }}</p>
+                            <hr>
+                            <h3><strong>E-mail Adresi</strong></h3>
+                            <p><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ student.student_email }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ student.student_email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">{{ student.full_name }} <small>{{ student.student_type_name }}</small>  {% if student.student_position %}<i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Öğrenci Yurtta"></i>{% else %}<i class="fa fa-close text-red" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Öğrenci Yurtta"></i>{% endif %}</h1>
+
+                    </span>
+                    <br>
+                    <h3><b>Öğrenci ID:  </b>{{ student.id }}</h3>
+                    <h3><b>Öğrenci Oda Numarası:  </b>{{ student.room_no_id }}</h3>
+                    <h3><b>Öğrenci Kayıt Tarihi:  </b>{{ student.student_regday }}</h3>
+                    <h3><b>Öğrencinin Okulu:  </b>{{ student.school_name }}</h3>
+                    <h3><b>Öğrencinin Eğitim Yılı:  </b>{{ student.education_year_name }}</h3>
+                    <h3><b>Öğrenci Oturduğu İl:  </b>{{ student.student_city }}</h3>
+                    <h3><b>Öğrenci Otuduğu İlçe:  </b>{{ student.student_town }}</h3>
+                    <h3><b>Öğrenci Açık Adresi:  </b>{{ student.student_adress }}</h3>
+                    <h3><b>Öğrenci Kan Grubu:  </b>{{ student.blood_type_name }}</h3>
+                    <h3><b>Öğrenci Sağlık Notları:  </b>{{ student.health_notes }}</h3>
+                    <h3><b>Öğrenci Özel Notlar:  </b>{{ student.special_notes }}</h3>
+                    <hr>
+                    <span class="pull-left">
+                        <a href="http://127.0.0.1:8000/account_panel/asset/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Muhasebe Durumları</a>
+
+                    </span>
+                    <span class="pull-right">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>
+
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+     Made by <b>Talha Çelik</b>
+    </div>
+    <strong>Copyright &copy; 2017 <a href=>Teshco</a>.</strong>
+  </footer>
+
+
+  <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
+<script src="{% static 'dist/js/app.min.js' %}"></script>
+<script src="{% static 'dist/js/demo.js' %}"></script>
 </body>
 </html>

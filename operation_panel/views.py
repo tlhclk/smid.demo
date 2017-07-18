@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.core.files import File
 from .models import StudentLeaveModel,AttendanceInfoModel
-from .forms import StudentLeaveForm,AttendanceInfoForm
+from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
 from person_panel.views import send_a_email
 from person_panel.models import StudentInfoModel
 import datetime
@@ -34,17 +34,22 @@ def table_attendance(request):
     record_list=AttendanceInfoModel.objects.all()
     return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list})
 
-def send_a_mail(request):
+def send_a_mail(request,person_mail):
     if request.method=='POST':
-        subject=request.POST['message_subject']
-        message=request.POST['message_content']
-        selected_people=request.POST.getlist('message_people')
-        written_people=request.POST['message_people_str'].split(', ')
-        to_ma=selected_people+written_people
-        send_a_email(to_ma,subject,message)
-        return redirect('../../')
-    people_list=StudentInfoModel.objects.all()
-    return render(request,'operation_panel/sending_mail_sms.html',{'people_list':people_list})
+        formmail=MailSendForm()
+        if formmail.is_valid():
+            subject=request.POST['message_subject']
+            message=request.POST['message_content']
+            selected_people=request.POST.getlist('message_people')
+            written_people=request.POST['message_people_str'].split(', ')
+            to_ma=selected_people+written_people
+            send_a_email(to_ma,subject,message)
+            return redirect('../../')
+    if person_mail:
+        formmail=MailSendForm(initial={'people_manual':person_mail})
+    else:
+        formmail=MailSendForm()
+    return render(request,'operation_panel/default_form.html',{'form':formmail})
 
 def change_student_position(request,student_id):
     student=StudentInfoModel.objects.get(pk=student_id)

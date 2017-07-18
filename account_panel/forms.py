@@ -20,10 +20,10 @@ class PersonAssetInfoForm(forms.ModelForm):
         model=PersonAssetInfoModel
         fields=[
             'asset_id',
+            'person_id',
             'asset_amount',
             'asset_debt',
             'asset_desc',
-            'asset_period',
             'asset_type',
         ]
 
