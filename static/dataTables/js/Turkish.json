@@ -1,0 +1,19 @@
+
+
+{
+	"sProcessing":   "Ä°ÅŸleniyor...",
+	"sLengthMenu":   "Sayfada _MENU_ KayÄ±t GÃ¶ster",
+	"sZeroRecords":  "EÅŸleÅŸen KayÄ±t BulunmadÄ±",
+	"sInfo":         "  _TOTAL_ KayÄ±ttan _START_ - _END_ ArasÄ± KayÄ±tlar",
+	"sInfoEmpty":    "KayÄ±t Yok",
+	"sInfoFiltered": "( _MAX_ KayÄ±t Ä°Ã§erisinden Bulunan)",
+	"sInfoPostFix":  "",
+	"sSearch":       "Bul:",
+	"sUrl":          "",
+	"oPaginate": {
+		"sFirst":    "Ä°lk",
+		"sPrevious": "Ã–nceki",
+		"sNext":     "Sonraki",
+		"sLast":     "Son"
+	}
+}
