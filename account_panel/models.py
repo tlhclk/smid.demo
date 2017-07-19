@@ -46,7 +46,7 @@ class AccountInfoModel(models.Model):
         return dict(self.bank_code)[int(self.account_bank)]
 
 class BillInfoModel(models.Model):
-    bill_type_list=[('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('1','Vergi'),('1','İSKİ'),('1','İSKİ')]
+    bill_type_list=[('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('6','Vergi')]
     #bill_no=models.CharField(max_length=10,verbose_name='Bill No: ',primary_key=True)
     bill_type=models.CharField(max_length=10,verbose_name='Bill Type: ',choices=bill_type_list)
     bill_code=models.CharField(max_length=10,verbose_name='Bill Code: ')
@@ -54,7 +54,7 @@ class BillInfoModel(models.Model):
     bill_desc=models.CharField(max_length=100,verbose_name='Bill Description: ',default='-')
     bill_address=models.CharField(max_length=200,verbose_name='Bill Adress: ',default='-')
     bill_period=models.CharField(max_length=10,verbose_name='Bill Period: ',default='-')
-    bill_lastday=models.DateField(default=datetime.date.today)
+    bill_lastday=models.DateField(default=datetime.date.today())
 
     class Meta:
         db_table='bill_info'

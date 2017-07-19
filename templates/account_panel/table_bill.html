@@ -1,12 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
 
-
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Smart Dorms | Ana Sayfa</title>
+  <title> Smart Dorms | Fatura Tablosu</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -193,9 +192,8 @@
       </ol>
     </section>
       <section>
-      <h1>
-        Fatura Tablosu
-        <small>Yurda Ait Ödeme Faturalar</small>
+      <h1><small><button onclick="window.location.href='http://127.0.0.1:8000/account_panel/bill_add'">Yeni Fatura</button></small>
+
       </h1></section>
 
     <!-- Main content -->
@@ -236,13 +234,17 @@
 <script src="{% static 'dist/js/app.min.js' %}"></script>
 
  <script type="text/javascript" charset="utf8" src="{% static 'dataTables/js/jquery.dataTables.min.js' %}"></script>
-  <script type="text/javascript">$(document).ready(function(){
+
+  <script type="text/javascript">
+      $(document).ready(function(){
     $('#myTable').DataTable({
-        "language":{
-            "url": "{% static 'dataTables/js/Turkish.json' %}"
-        }
+        language:{
+            "url": "{% static 'dataTables/js/Turkish.json' %}"}
     });
-});</script>
+
+});
+
+  </script>
 
 </body>
 </html>

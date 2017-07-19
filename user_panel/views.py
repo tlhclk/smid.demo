@@ -23,6 +23,8 @@ def log_in(request):
                 login(request, user)
                 if remember==True:
                     request.session.set_expiry(604800)#bir haftalık
+                else:
+                    request.session.set_expiry(0)
                 return redirect('http://127.0.0.1:8000/')
 
         return render(request,'user_panel/login.html',{'form':formuser})

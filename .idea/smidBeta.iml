@@ -23,6 +23,8 @@
     <orderEntry type="library" name="jszip" level="application" />
     <orderEntry type="library" name="vfs_fonts" level="application" />
     <orderEntry type="library" name="pdfmake" level="application" />
+    <orderEntry type="library" name="jquery-1.12.4" level="application" />
+    <orderEntry type="library" name="jquery.dataTables" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

@@ -2,7 +2,7 @@
 from django import forms
 
 from .models import TransactionInfoModel,PersonAssetInfoModel,AccountInfoModel,BillInfoModel
-
+import datetime
 class TransactionInfoForm(forms.ModelForm):
     class Meta:
         model=TransactionInfoModel
@@ -40,6 +40,7 @@ class AccountInfoForm(forms.ModelForm):
         ]
 
 class BillInfoForm(forms.ModelForm):
+    bill_lastday=forms.DateField(initial=datetime.date.strftime(datetime.date.today(),'%d-%m-%Y'),input_formats='%Y-%m-%d')
     class Meta:
         model=BillInfoModel
         fields=[

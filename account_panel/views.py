@@ -144,11 +144,12 @@ def add_bill(request):
         formbill=BillInfoForm()
         if request.method=='POST':
             formbill=BillInfoForm(request.POST)
+            print (formbill)
             if formbill.is_valid():
                 bill_transactionsync(formbill)
                 formbill.save()
                 return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
-        return render(request,'account_panel/default_form.html',{'form':formbill})
+        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list})
     else: return HttpResponse('You have No Auth')
 
 def detail_bill(request,bill_no):
@@ -171,7 +172,7 @@ def edit_bill(request,bill_no):
             if formbill.is_valid():
                 formbill.save()
                 return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formbill})
+        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list})
     else: return HttpResponse('You have No Auth')
 
 def delete_bill(request,bill_no):
