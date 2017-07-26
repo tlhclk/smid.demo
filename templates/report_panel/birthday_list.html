@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Doğum Günleri</h2>
+{% for person in personal_list %}
+    <h3>{{ person.full_name }} - {{ person.personal_birthday }}</h3>
+{% endfor %}
+{% for student in student_list %}
+    <h3>{{ student.full_name }} - {{ student.s_birthday }}</h3>
+{% endfor %}
+<h2>Seçilen ayda doğum günü olanlar{{ request.link }}</h2>
+{% for birthday in birthday_list %}
+    <h3>{{ birthday.0 }} - {{ birthday.1 }}</h3>
+{% endfor %}
+<button id="next" onclick="">Sonraki Ay</button>
+<button id="prev" onclick="">Önceki Ay</button>
+<script>
+    function current_page() {
+        var page_href=document.URL;
+        var next_page=String(parseInt(page_href.substr(53,55))+1);
+        document.getElementById('next').setAttribute("onclick","window.location.href='/report_panel/birthday_calendar/"+next_page+"'");
+        var prev_page=String(parseInt(page_href.substr(53,55))-1);
+        document.getElementById('prev').setAttribute("onclick","window.location.href='/report_panel/birthday_calendar/"+prev_page+"'");
+
+
+
+    }
+    window.onload=[current_page()]
+</script>
+</body>
+</html>

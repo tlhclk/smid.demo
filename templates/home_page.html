@@ -1,18 +1,27 @@
 {% load static %}
 <!DOCTYPE html>
 
-
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Smart Dorms | Ana Sayfa</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
   <link rel="stylesheet" href="{% static 'dist/css/skins/skin-blue.min.css' %}">
+
+
+    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.min.js' %}"></script>
+
+
 
 
 </head>
@@ -23,18 +32,21 @@
 
   <header class="main-header">
 
-    <a href="http://127.0.0.1:8000/" class="logo">
+    <a href="http://127.0.0.1:8000/home/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <div class="navbar-custom-menu">
+      <ul class="nav navbar-header"><li>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
+          <li class="center-block"></li>
+            {% if request.user.username %}
+
+      <li>
+      <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
-            {% if request.user.groups.all %}
+
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
@@ -49,13 +61,13 @@
               </li>
               <!-- Menu Body -->
               <li class="user-body">
-              
+
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
+                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
                 </div>
                 <div class="pull-right">
                   <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
@@ -68,7 +80,7 @@
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
-      </div>
+      </div></li></ul>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
@@ -93,7 +105,7 @@
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.first.name %}
+          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -123,7 +135,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
@@ -136,7 +148,7 @@
             <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -148,7 +160,7 @@
             <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -185,23 +197,17 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
+        <li class="active"><i class="fa fa-home"></i> Ana Sayfa</li>
       </ol>
-    </section>
-      <section>
-      <h1>
-        Bok Vardı
-        <small>Ne yazıyım şimdi ben buraya</small>
-      </h1></section>
 
+    </section>
 
     <!-- Main content -->
     <section class="content">
-
       <!-- Your Page Content Here -->
-
+    <h1>Bok Var</h1>
     </section>
     <!-- /.content -->
   </div>
@@ -221,11 +227,6 @@
 
   <div class="control-sidebar-bg"></div>
 </div>
-
-
-<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'dist/js/app.min.js' %}"></script>
 
 
 </body>

@@ -6,15 +6,97 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Smart Dorms | Ana Sayfa</title>
+  <title> Smart Dorms | Genel Hesap Tablosu</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
   <link rel="stylesheet" href="{% static 'dist/css/skins/skin-blue.min.css' %}">
 
+
+
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+
+    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.min.js' %}"></script>
+
+
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
+
+
+
 <link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
+
+  <script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#myTable').DataTable(
+
+      {
+          "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
+        "order": [[ 0, "order" ]],
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'],
+          leghtMenu:[[10,25,50,-1],[10,25,50,"All"]]
+
+      }
+    );
+
+    $('#myTable-tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+
+
+
+    table.buttons().container()
+          .appendTo( '#example_wrapper .col-md-6:eq(10)' );
+
+          new $.fn.dataTable.Buttons( table, {
+              buttons: [
+                  {
+                      text: 'Elementi Sil',
+                      action: function ( e, dt, node, conf ) {
+                        table.row('.selected').remove().draw( false );
+                        alert( 'Element Silindi' );
+                      }
+                  }
+              ]
+          } );
+
+          table.buttons( 1, null ).container().appendTo(
+              table.table().container()
+          );
+
+
+} );
+</script>
+
 
 </head>
 
@@ -24,18 +106,24 @@
 
   <header class="main-header">
 
-    <a href="http://127.0.0.1:8000/" class="logo">
+    <a href="http://127.0.0.1:8000/home/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <div class="navbar-custom-menu">
+      <ul class="nav navbar-header"><li>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
+          <li class="center-block"><span><font size="5" color="white">
+                Genel Hesap Tablosu</font></span>
+        <span class="icon-bar"></span></li><li>
+            {% if request.user.id %}
+
+
+      <li>
+      <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
-            {% if request.user.groups.all %}
+
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
@@ -69,7 +157,7 @@
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
-      </div>
+      </div></li></ul>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
@@ -94,7 +182,7 @@
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.first.name %}
+          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -124,7 +212,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
@@ -137,7 +225,7 @@
             <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -149,7 +237,7 @@
             <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -186,29 +274,28 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
-        <li class="active">Geri</li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Genel Hesap Tablosu</li>
+          <small><li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_add/">Yeni Hesap Aç</a></li></small>
       </ol>
+
     </section>
-      <section>
-      <h1>
-        Hesap Tablosu
-        <small>Yurda Ait Hesapların Genel Dökümü</small>
-      </h1></section>
 
     <!-- Main content -->
     <section class="content">
 
-<table id="myTable" class="display"><thead><tr>
-    <th>Account ID</th><th>Account Name</th><th>Account Type</th><th>Account Amount</th><th>Account Desc</th><th></th>
-</tr></thead><tbody>
-    {% for account in account_list %}<tr>
-    <td>{{ account.account_no }}</td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td><td><button onclick="window.location.href='/account_panel/account_edit/{{ account.account_no }}'">Edit</button>
-              <button onclick="window.location.href='/account_panel/account_delete/{{ account.account_no }}'">Delete</button></td></tr>
-    {% endfor %}
-</tbody></table>
+        <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr>
+            <th>Hesap No</th><th>Hesap Adı</th><th>Hesap Türü</th><th>Hesaptaki Para Miktarı</th><th>Hesap Açıklaması</th><th></th>
+        </tr></thead><tbody>
+            {% for account in account_list %}<tr>
+            <td><a href="http://127.0.0.1:8000/account_panel/account/{{ account.account_no }}">{{ account.account_no }}</a></td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td><td><small> <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_edit/{{ account.account_no }}">Düzenle</a>
+                <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_delete/{{ account.account_no }}">Sil</a></small>
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody></table>
       <!-- Your Page Content Here -->
 
     </section>
@@ -232,18 +319,6 @@
 </div>
 
 
-<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'dist/js/app.min.js' %}"></script>
-
- <script type="text/javascript" charset="utf8" src="{% static 'dataTables/js/jquery.dataTables.min.js' %}"></script>
-  <script type="text/javascript">$(document).ready(function(){
-    $('#myTable').DataTable({
-        "language":{
-            "url": "{% static 'dataTables/js/Turkish.json' %}"
-        }
-    });
-});</script>
-
 </body>
 </html>
+

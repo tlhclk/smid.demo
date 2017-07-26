@@ -5,19 +5,19 @@ from django.shortcuts import render, redirect,HttpResponse
 from .models import DocumentInfoModel,LiabilityInfoModel
 from .forms import DocumentInfoForm, LiabilityInfoForm
 
-
-
 def option_menu(request):
     return render(request,'document_panel/option_menu.html')
 
 def add_document(request):
-    formdocument=DocumentInfoForm()
+    new_id=str(int(DocumentInfoModel.objects.all().order_by('-document_id')[0].document_id)+1)
+    formdocument=DocumentInfoForm(initial={'document_id':new_id})
     if request.method=='POST':
         formdocument=DocumentInfoForm(request.POST,request.FILES)
+        print (formdocument)
         if formdocument.is_valid():
             formdocument.save()
-        return redirect('../../')
-    return render(request,'document_panel/default_form.html',{'form':formdocument})
+        return redirect('http://127.0.0.1:8000/document_panel/document_table/')
+    return render(request,'document_panel/add_document.html',{'form':formdocument,'model_info':DocumentInfoModel,'title':'Yeni Dosya Kaydı'})
 
 def document_detail(request,document_id):
     document=DocumentInfoModel.objects.get(pk=document_id)
@@ -25,7 +25,7 @@ def document_detail(request,document_id):
 
 def table_document(request):
     document_list=DocumentInfoModel.objects.all()
-    return render(request, 'document_panel/table_document.html', {'document_list':document_list})
+    return render(request, 'document_panel/table_document.html', {'document_list':document_list,'title':'Dosya Tablosu'})
 
 def edit_document(request,document_id):
     formdocument = DocumentInfoForm(instance=DocumentInfoModel.objects.get(pk=document_id))

@@ -1,57 +1,71 @@
 {% load static %}
 <!DOCTYPE html>
+
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Smart Dorms | Kullanıcı Profili </title>
+  <title> Smart Dorms | Personel Detayı</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/skins/skin-blue.min.css' %}">
 
-  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.min.js' %}"></script>
+
+
 
 
 </head>
+
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
-    <a href="http://127.0.0.1:8000/" class="logo">
+
+    <a href="http://127.0.0.1:8000/home/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
-      <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
 
-      <div class="navbar-custom-menu">
+    <nav class="navbar navbar-static-top" role="navigation">
+      <ul class="nav navbar-header"><li>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
+          <li class="center-block"><span><font size="5" color="white">
+                Personel Detayı: {{ personal.id }}</font></span>
+        <span class="icon-bar"></span></li><li>
+
+      <li>
+      <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-
+            {% if request.user != 'Anonymous' %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://127.0.0.1:8000/media/{{ personal.image_field }}" class="user-image" alt="User Image">
+              <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/{{ personal.image_field }}" class="img-circle" alt="User Image">
-
+                <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="img-circle" alt="User Image">
                 <p>
-                  {{ request.user.first_name }} {{ request.user.last_name }} - {{ request.user.groups.all.first }}
+                  {{ request.user.first_name }} {{ request.user.last_name }}
                 </p>
               </li>
               <!-- Menu Body -->
+              <li class="user-body">
+
+                <!-- /.row -->
+              </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
@@ -63,17 +77,21 @@
               </li>
             </ul>
           </li>
+                {% else %}
+                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login">Giriş Yap</a></li>
+            {% endif %}
           <!-- Control Sidebar Toggle Button -->
-
         </ul>
-      </div>
+      </div></li></ul>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
+
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-      <!-- search form -->
+
+      <!-- search form (Optional) -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Ara...">
@@ -84,12 +102,12 @@
         </div>
       </form>
       <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
 
+      <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.first.name %}
+          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -119,7 +137,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
@@ -132,7 +150,7 @@
             <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -144,7 +162,7 @@
             <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -173,96 +191,113 @@
         </li>
           {% endif %}
       </ul>
-
+      <!-- /.sidebar-menu -->
     </section>
+    <!-- /.sidebar -->
   </aside>
 
-
+  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-
-    <section class="content-header">
+    <!-- Content Header (Page header) -->
+    <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/person_panel/personal_table">Geri</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/person_panel/personal_table"><i class="fa fa-table"></i> Personel Tablosu</a></li>
+          <li class="active">Personel Detayı: {{ personal.id }}</li>
       </ol>
+
     </section>
-
-
-        <div style="padding-top:10px;"> </div>
+  <section class="content">
+    <!-- Main content -->
+    <div class="content">
+      <!-- Your Page Content Here -->
+        <!-- left column -->
+    <div class="row">
         <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-            <div class="panel panel-default">
+            <div class="box box-primary">
                 <div class="panel-body">
                     <div class="media">
                         <div align="center">
                             <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ personal.image_field }}" width="300px" height="300px">
                         </div>
-                        <div class="media-body">
-                            <hr>
-                            <h3><strong>Pozisyon</strong></h3>
-                            <p>Yurt Görevlisi</p>
-                            <hr>
-                            <h3><strong>İşletme ismi</strong></h3>
-                            <p>Çelik Konaklama</p>
-                            <hr>
-                            <h3><strong>Telefon Numarası</strong></h3>
-                            <p>{{ personal.personal_phone }}</p>
-                            <hr>
-                            <h3><strong>E-mail Adresi</strong></h3>
-                            <p><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ personal.personal_email }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ personal.personal_email }}</p>
-                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h3><strong>Telefon Numarası</strong></h3>
+                        <p>{{ personal.personal_phone }}</p>
+                        <hr>
+                        <h3><strong>E-mail Adresi</strong></h3>
+                        <p><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ personal.personal_email }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ personal.personal_email }}</p>
+                        <hr>
+                        <a href="http://127.0.0.1:8000/account_panel/asset/{{ personal.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Muhasebe Durumu</a>
+
+                    <span class="pull-right">
+                    </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="box box-primary">
+                <div class="box-header with-border">
                     <span>
                         <h1 class="panel-title pull-left" style="font-size:30px;">{{ personal.full_name }}</h1>
-
-                    </span>
-                    <br>
+                    </span></div>
+                <div class="box-body">
                     <h3><b>Personel ID:  </b>{{ personal.id }}</h3>
-                    <h3><b>Personel Kimlik Numarası:  </b>{{ personal.personal_tcn }}</h3>
-                    <h3><b>Personel Doğum Günü:  </b>{{ personal.personal_birthday }}</h3>
+                    <h3><b>Personel İşe Başlama Tarihi:  </b>{{ personal.personal_startday }}</h3>
+                    <h3><b>Personel İşten Ayrılma Tarihi:  </b>{{ personal.personal_endday }}</h3>
                     <h3><b>Personel Oturduğu İl:  </b>{{ personal.personal_city }}</h3>
                     <h3><b>Personel Otuduğu İlçe:  </b>{{ personal.personal_town }}</h3>
                     <h3><b>Personel Açık Adresi:  </b>{{ personal.personal_adress }}</h3>
                     <h3><b>Personel Kan Grubu:  </b>{{ personal.blood_type_name }}</h3>
                     <h3><b>Personel Sağlık Notları:  </b>{{ personal.health_notes }}</h3>
                     <h3><b>Personel Özel Notlar:  </b>{{ personal.special_notes }}</h3>
-                    <h3><b>Personel İşe Başlama Tarihi:  </b>{{ personal.personal_startday }}</h3>
-                    <h3><b>Personel İşten Ayrılma Tarihi:  </b>{{ personal.personal_endday }}</h3>
-                    <hr>
-                    <span class="pull-left">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Muhasebe Durumları</a>
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Öğrenci Listesi <span class="badge"></span></a>
 
-                    </span>
-                    <span class="pull-right">
-                    </span>
                 </div>
             </div>
-        </div>
-  </div>
+        </div></div>
+    <div class="row">
+            <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body" style="column-count: 2">
+                    <h3><b>Uyruk: </b>{{ personal.personal_tcn.s_nation_name }}</h3>
+                    <h3><b>Kimlik Kartı Türü: </b>{{ personal.personal_tcn.s_idcard_type_name }}</h3>
+                    <h3><b>Tc Kimlik Numarası:  </b>{{ personal.personal_tcn_id }}</h3>
+                    <h3><b>Adı:  </b>{{ personal.personal_tcn.s_name }}</h3>
+                    <h3><b>Soy adı:  </b>{{ personal.personal_tcn.s_lastname }}</h3>
+                    <h3><b>Baba Adı:  </b>{{ personal.personal_tcn.s_father }}</h3>
+                    <h3><b>Anne Adı:  </b>{{ personal.personal_tcn.s_mother }}</h3>
+                    <h3><b>Doğduğu Yer:  </b>{{ personal.personal_tcn.s_birth_place }}</h3>
+                    <h3><b>Doğum Tarihi:  </b>{{ personal.personal_tcn.s_birthday }}</h3>
+                    <h3><b>Cinsiyeti: </b>{{ personal.personal_tcn.s_gender_name }}</h3>
+                    <h3><b>Medeni Hali: </b>{{ personal.personal_tcn.s_medeni_hali_name }}</h3>
+                    <h3><b>Nufüsa Kayıtlı Olduğu İl:  </b>{{ personal.personal_tcn.s_register_vilage }}</h3>
+                    <h3><b>Nufüsa Kayıtlı Oldupu İlçe:  </b>{{ personal.personal_tcn.s_register_town }}</h3>
+                    <h3><b>Nufusa Kayıtlı Olduğu Mahalle:  </b>{{ personal.personal_tcn.s_register_distinct }}</h3>
+                    <h3><b>Cilt No:  </b>{{ personal.personal_tcn.s_nufus_cilt }}</h3>
+                    <h3><b>Aile Sıra No: </b>{{ personal.personal_tcn.s_nufus_ailesira }}</h3>
+                    <h3><b>Sıra No: </b>{{ personal.personal_tcn.s_nufus_sirano }}</h3>
+                </div>
+            </div></div>
+    </div>
 
-  <div style="padding-top:250px;"> </div>
-
+    <!-- /.content -->
+    </div>
+    </section></div>
+  <!-- /.content-wrapper -->
+  <!-- Main Footer -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
+    <!-- To the right -->
+
+    <div class="pull-right">
      Made by <b>Talha Çelik</b>
     </div>
-    <strong>Copyright &copy; 2017 <a href=>Teshco</a>.</strong>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
   </footer>
 
-
+  <!-- Control Sidebar -->
   <div class="control-sidebar-bg"></div>
-</div>
-
-<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
-<script src="{% static 'dist/js/app.min.js' %}"></script>
-<script src="{% static 'dist/js/demo.js' %}"></script>
+  </div>
 </body>
 </html>

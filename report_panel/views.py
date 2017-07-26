@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from operation_panel.models import StudentLeaveModel
+from django.utils import timezone
+from operation_panel.models import StudentLeaveModel,AttendanceInfoModel
 from stock_panel.models import FixtureInfoModel,RoomInfoModel
-from document_panel.models import LiabilityInfoModel
-from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from document_panel.models import LiabilityInfoModel,DocumentInfoModel
+from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
+from account_panel.models import AccountInfoModel,PersonAssetInfoModel,TransactionInfoModel,BillInfoModel
+import json,simplejson
+
 import datetime
 
 def options_menu(request):
@@ -68,4 +72,49 @@ def calendar(request):
         print (student.student_regday.day)
     return render(request,'smidDemo/pages/examples/calendar.html',{'student_list':student_list})
 
+def unpaid_rate(request):
+    all_assets=PersonAssetInfoModel.objects.all()
+    paid_asset_rate={}
+    unpaid_asset_rate={}
+    for asset in all_assets:
+        all_transactions=TransactionInfoModel.objects.filter(transaction_desc__contains=asset.person_id_id)
+        period = str((timezone.now() - asset.person_id.student_regday).days/30+1).split('.')[0]
+        paid_asset_rate.setdefault(asset.asset_id, [])
+        unpaid_asset_rate.setdefault(asset.asset_id, [])
+        for transaction in all_transactions:
+            rate = str((transaction.transaction_time - asset.person_id.student_regday).days / 30 + 1).split('.')[0]
+            if len(paid_asset_rate[asset.asset_id])!=0:
+                paid_asset_rate[asset.asset_id].append(str(int(paid_asset_rate[asset.asset_id][-1])+1))
+            else:
+                paid_asset_rate[asset.asset_id].append('1')
+        if len(paid_asset_rate[asset.asset_id])<int(period):
+            for rate_time in range(1,int(period)+1):
+                if str(rate_time) not in paid_asset_rate[asset.asset_id]:
+                    unpaid_asset_rate[asset.asset_id].append(str(rate_time))
+    print (paid_asset_rate)
+    print (unpaid_asset_rate)
+    return render(request,'report_panel/payment_info.html',{'paid_dict':paid_asset_rate,'unpaid_dict':unpaid_asset_rate})
 
+
+def birthday_calendar(request,filter_time='07'):
+    student_list=PersonIDInfoModel.objects.all()
+    personal_list=PersonalInfoModel.objects.all()
+    json_dict={}
+    birthday_list=[]
+    for student in student_list:
+        if student.s_birthday:
+            print (student.full_name())
+            birthday_list.append((student.full_name(),student.s_birthday))
+            json_dict.setdefault(student.full_name(),{'month':student.s_birthday.month,'day':student.s_birthday.day})
+
+
+    for personal in personal_list:
+        if personal.personal_birthday:
+            print (personal.full_name())
+            birthday_list.append((personal.full_name(),personal.personal_birthday))
+            json_dict.setdefault(personal.full_name(),{'month': personal.personal_birthday.month, 'day': personal.personal_birthday.day})
+
+    birthday_json=open('templates/smidDemo/birthday_list.json','w+',encoding='utf8')
+    birthday_json.write(json.dumps(json_dict,indent=4,sort_keys=True,separators=(',', ': '), ensure_ascii=False,))
+    birthday_json.close()
+    return render(request,'report_panel/denem_birthday.html',{'birthday_list':birthday_list,'personal_list':personal_list,'student_list':student_list})

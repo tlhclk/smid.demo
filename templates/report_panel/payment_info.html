@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ödeme Bilgileri</title>
+</head>
+<body>
+<h2>Ödenen Taksitler</h2>
+{% for asset_id,payment_time in paid_dict.items %}
+    <h3>Ödeme Planı:{{ asset_id }}</h3>
+    <small>{% for paymnt in payment_time %}
+        <h3>Ödenen Taksit: {{ paymnt }}</h3>
+    {% endfor %}</small>
+{% endfor %}
+
+
+<h2>Ödenmeyen Taksitler</h2>
+{% for asset_id,payment_time in unpaid_dict.items %}
+    <h3>Ödeme Planı:{{ asset_id }}</h3>
+    <small>{% for paymnt in payment_time %}
+        <h3>Ödenmeyen Taksit: {{ paymnt }}</h3>
+    {% endfor %}</small>
+{% endfor %}
+
+</body>
+</html>

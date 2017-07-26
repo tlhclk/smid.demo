@@ -1,18 +1,40 @@
 {% load static %}
 <!DOCTYPE html>
 
-
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Smart Dorms | Fatura Ekleme</title>
+  <title> Smart Dorms | Yeni İşlem Kaydı</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{% static 'dist/css/SmartDorms.min.css' %}">
   <link rel="stylesheet" href="{% static 'dist/css/skins/skin-blue.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/colorpicker/bootstrap-colorpicker.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.min.js' %}"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+
+<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
+<script src="{% static 'dist/js/demo.js' %}"></script>
+
 
 
 </head>
@@ -23,18 +45,24 @@
 
   <header class="main-header">
 
-    <a href="http://127.0.0.1:8000/" class="logo">
+    <a href="http://127.0.0.1:8000/home/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <div class="navbar-custom-menu">
+      <ul class="nav navbar-header"><li>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
+          <li class="center-block"><span><font size="5" color="white">
+                Yeni İşlem Kaydı</font></span>
+        <span class="icon-bar"></span></li>
+            {% if request.user.id %}
+
+
+      <li>
+      <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
-            {% if request.user.groups.all %}
+
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
@@ -49,13 +77,13 @@
               </li>
               <!-- Menu Body -->
               <li class="user-body">
-              
+
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
+                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
                 </div>
                 <div class="pull-right">
                   <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
@@ -68,7 +96,7 @@
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
-      </div>
+      </div></li></ul>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
@@ -93,7 +121,7 @@
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.first.name %}
+          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -123,7 +151,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
@@ -136,7 +164,7 @@
             <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -148,7 +176,7 @@
             <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -185,106 +213,74 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/account_panel/transaction_table"><i class="fa fa-table"></i> İşlem Geçmişi</a></li>
+          <li class="active">Yeni İşlem Kaydı</li>
       </ol>
-    </section>
 
+    </section>
 
     <!-- Main content -->
     <section class="content">
-        <br>
       <!-- Your Page Content Here -->
-        <div class="center-block">
-        <div class="col-lg-20 col-md-20 col-sm-20 col-xs-20">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group">
-                  <div class="form-box-body">
-                    <p class="form-box-msg" align="center">Yeni İşlem Kaydı</p>
-                    <form method="POST" class="post-form" enctype="multipart/form-data">
-                        {% csrf_token %}
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Yeni İşlem</h3>
+            </div>
+
+              <div class="login-box-body">
+
+              <form method="POST" class="post-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="form-group has-feedback">
+                      <label for="id_account_no"> İşlem Yapılacak Hesap : </label><select name="account_no" class="form-control" style="height: 40px" required id="id_account_no">
+                      <option value="{{ form.account_no.value }}" selected>---------</option>
+                      {% for account in form.account_list %}
+                          <option value="{{ account.0 }}">{{ account.1 }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
                       <div class="form-group has-feedback">
-                          <label for="id_bill_type">Fatura Türü : </label><select name="bill_type" required id="id_bill_type">
-                          <option value="" selected>---------</option>
-
-                          <option value="1">Su</option>
-
-                          <option value="2">Doğalgaz</option>
-
-                          <option value="3">Elektrik</option>
-
-                          <option value="4">Internet</option>
-
-                          <option value="5">Telefon</option>*
-
-                          <option value="1">Vergi</option>
-
-                          <option value="1">İSKİ</option>
-
-                          <option value="1">İSKİ</option>
-
+                          <label for="id_transaction_type">İşlem Türü :</label><select name="transaction_type" class="form-control" style="height: 40px" required id="id_transaction_type">
+                          <option value="{{ form.transaction_type.value }}" selected>---------</option>
+                          {% for transaction_type in transaction_type_list %}
+                              <option value="{{ transaction_type.0 }}">{{ transaction_type.1 }}</option>
+                          {% endfor %}
                         </select>
                       </div>
                       <div class="form-group has-feedback">
-                          <label for="id_bill_code">Fatura Kodu :</label>
-                        <input type="text" class="form-control" placeholder="Fatura Kodu" name="bill_code" required id="id_bill_code" value="{{ form.bill_code.value }}">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
+                          <label for="id_transaction_amount">İşlem Miktarı : </label>
+                        <input type="text" class="form-control" placeholder="İşlem Miktarı" name="transaction_amount" required id="id_transaction_amount" value="{{ form.transaction_amount.value }}" max="10000">
+                        <span class="fa fa-money form-control-feedback"></span>
+                      </div>
+                      <div class="form-group has-feedback"><div id="datetimepicker1" class="input-append date"><label for="id_transaction_time">İşlem Zamanı : </label>
+                          <input data-format="yyyy-mm-dd hh:mm:ss" type="text" class="form-control" placeholder="İşlem Zamanı" name="transaction_time" required id="id_transaction_time" value="{{ form.transaction_time.value }}">
+                            <span class="add-on"><i data-date-icon="icon-calendar" data-time-icon="icon-time" class="icon-calendar"></i></span>
+                      </div>
                       </div>
                       <div class="form-group has-feedback">
-                          <label for="id_bill_amount">Fatura Miktarı : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Miktarı" name="bill_amount" required id="id_bill_amount" value="{{ form.bill_amount.value }}">
-                        <span class="glyphicon glyphicon-usd form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_bill_period">Fatura Dönemi : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Dönemi" name="bill_period" required id="id_bill_period" value="{{ form.bill_period.value }}">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_bill_lastday">Fatura Son Ödeme Tarihi : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Son Ödeme Tarihi" name="bill_lastday" required id="id_bill_lastday" value="{{ form.bill_lastday.value }}">
-                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_bill_desc">Fatura Açıklaması : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Açıklaması" name="bill_desc" required id="id_bill_desc" value="{{ form.bill_desc.value }}">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_bill_address">Fatura Adresi : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Adresi" name="bill_address" required id="id_bill_address" value="{{ form.bill_address.value }}">
+                          <label for="id_transaction_desc">İşlem Açıklaması : </label>
+                        <input type="text" class="form-control" placeholder="İşlem Açıklaması" name="transaction_desc" required id="id_transaction_desc" value="{{ form.transaction_desc.value }}" maxlength="100">
                         <span class="glyphicon glyphicon-comment form-control-feedback"></span>
                       </div>
                       <div class="row">
-                        <div class="col-xs-8">
-                          <div class="checkbox icheck" align="center">
-                            <label>
-                              <input type="checkbox" name="remember" id="id_remember"> Beni Hatırla
-                            </label>
-                          </div>
-                        </div>
                         <!-- /.col -->
-                        <div class="col-xs-4">
-                          <button type="submit" class="btn btn-primary btn-block btn-flat">Giriş yap</button>
-                        </div>
+                        <div class="col-xs-12">
+                            <div class="pull-right">
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                        </div></div>
                         <!-- /.col -->
-                      </div>
-                    </form>
-                <div class="social-auth-links text-center">
-                      <p>- veya -</p>
+                      </div></form>
 
-                    <a href="http://127.0.0.1:8000/user_panel/reset_password/">Şifremi unuttum.</a><br>
-
-                  </div>
                 </div>
                 </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
+        </div></div>
     </section>
     <!-- /.content -->
   </div>
@@ -304,11 +300,6 @@
 
   <div class="control-sidebar-bg"></div>
 </div>
-
-
-<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'dist/js/app.min.js' %}"></script>
 
 
 </body>

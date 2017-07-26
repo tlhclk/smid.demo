@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
 #from fixturepanel.models import RoomInfoModel
@@ -23,11 +24,8 @@ class PersonalInfoForm(forms.ModelForm):
         model=PersonalInfoModel
         fields=('id',
                 'personal_tcn',
-                'personal_name',
-                'personal_lastname',
                 'personal_phone',
                 'personal_email',
-                'personal_birthday',
                 'personal_startday',
                 'personal_endday',
                 'personal_city',
@@ -40,12 +38,12 @@ class PersonalInfoForm(forms.ModelForm):
                 )
 
 class PersonIDInfoForm(forms.ModelForm):
-    s_birthday=forms.DateField(initial=datetime.date.today(),widget=forms.SelectDateWidget,label='Öğrencinin Doğum Tarihi')
     class Meta:
         model=PersonIDInfoModel
         fields=('s_nation',
                 's_idcard_type',
                 's_gender',
+                's_medeni_hali',
                 's_tcn',
                 's_name',
                 's_lastname',
@@ -53,7 +51,6 @@ class PersonIDInfoForm(forms.ModelForm):
                 's_mother',
                 's_birthday',
                 's_birth_place',
-                's_medeni_hali',
                 's_register_vilage',
                 's_register_town',
                 's_register_distinct',
@@ -64,7 +61,6 @@ class PersonIDInfoForm(forms.ModelForm):
 
 
 class StudentInfoForm(forms.ModelForm):
-    student_regday=forms.DateField(initial=datetime.date.today(),widget=forms.SelectDateWidget,label='Öğrencinin Kayıt Tarihi')
     student_tcn=forms.ModelChoiceField(queryset=PersonIDInfoModel.objects.all())
     class Meta:
         model=StudentInfoModel
@@ -77,6 +73,7 @@ class StudentInfoForm(forms.ModelForm):
                 'student_regday',
                 'student_city',
                 'student_town',
+                'student_adress',
                 'room_no',
                 'student_type',
                 'school_name',
@@ -85,7 +82,6 @@ class StudentInfoForm(forms.ModelForm):
                 'health_notes',
                 'special_notes',
                 'file_field',
-                'student_adress'
                 )
 
     # def clean_room_number(self):

@@ -2,11 +2,12 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import home_page
+from .views import home_page,main_page
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',home_page,name='home page'),
+    url(r'^home/',home_page,name='home page'),
+    url(r'^$',main_page,name='Main Page'),
     url(r'^account_panel/',include('account_panel.urls')),
     url(r'^calendar_panel/',include('calendar_panel.urls')),
     url(r'^document_panel/',include('document_panel.urls')),

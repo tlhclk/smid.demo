@@ -5,6 +5,9 @@ from django.shortcuts import render
 def home_page(request):
     return render(request,'home_page.html')
 
+def main_page(request):
+    return render(request,'main_page.html')
+
 def contract(request):
     return render(request,'contract.html')
 

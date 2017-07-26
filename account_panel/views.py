@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .models import TransactionInfoModel,PersonAssetInfoModel,AccountInfoModel,BillInfoModel
+from .models import TransactionInfoModel,PersonAssetInfoModel,AccountInfoModel,BillInfoModel,StudentInfoModel
 from .forms import TransactionInfoForm,PersonAssetInfoForm,AccountInfoForm,BillInfoForm
 from django.shortcuts import render,redirect,HttpResponse
 import datetime
 import re
 
 
-def options_menu(request):
-    return render(request,'account_panel/option_menu.html')
 
-def add_transaction(request):
+def add_transaction(request,filter_no):
     if request.user.has_perm('account_panel.add_transactioninfomodel'):
-        formtransaction=TransactionInfoForm()
+        if filter_no!='':
+            if filter_no[:4]=='1701':
+                formtransaction = TransactionInfoForm(initial={'transaction_desc': filter_no})
+            else:
+                formtransaction=TransactionInfoForm(initial={'account_no':filter_no})
+        else:
+            formtransaction = TransactionInfoForm()
         if request.method=='POST':
             formtransaction=TransactionInfoForm(request.POST)
             if formtransaction.is_valid():
@@ -22,8 +26,8 @@ def add_transaction(request):
                 transaction_desc=formtransaction.cleaned_data.get('transaction_desc')
                 transaction_accountsync(account,amount,transaction_type,transaction_desc)
                 formtransaction.save()
-                return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formtransaction})
+                return redirect('http://127.0.0.1:8000/account_panel/transaction_table')
+        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list})
     else: return HttpResponse('You has No authorizations')
 
 def detail_transaction(request,transaction_no):
@@ -33,10 +37,22 @@ def detail_transaction(request,transaction_no):
         return render(request,'account_panel/detail_transaction.html',{'transaction':transaction})
     else: return HttpResponse('You has No authorizations')
 
-def table_transaction(request):
+def table_transaction(request,filter_no):
     if request.user.has_perm('account_panel.view_transactioninfomodel'):
-        transaction_list=TransactionInfoModel.objects.all()
-        return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list})
+        if filter_no!='':
+            if filter_no[:4]=='1701':
+                transaction_list = TransactionInfoModel.objects.filter(transaction_desc__contains=filter_no)
+                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list})
+            elif filter_no[:4]=='1713':
+                transaction_list = TransactionInfoModel.objects.filter(transaction_type='6')
+                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list})
+            else:
+                transaction_list=TransactionInfoModel.objects.filter(account_no=filter_no)
+                return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list})
+        else:
+            transaction_list=TransactionInfoModel.objects.all()
+            return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list})
+
     else: return HttpResponse('You has No authorizations')
 
 def edit_transaction(request,transaction_no):
@@ -58,18 +74,20 @@ def delete_transaction(request,transaction_no):
 
 def add_asset(request):
     if request.user.has_perm('account_panel.add_personassetinfomodel'):
-        formasset=PersonAssetInfoForm()
+        new_id=str(int(PersonAssetInfoModel.objects.all().order_by('-asset_id')[0].asset_id)+1)
+        formasset=PersonAssetInfoForm(initial={'asset_id':new_id})
         if request.method=='POST':
             formasset=PersonAssetInfoForm(request.POST)
+            print (formasset)
             if formasset.is_valid():
                 formasset.save()
-                return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formasset})
+                return redirect('http://127.0.0.1:8000/account_panel/asset_table')
+        return render(request,'account_panel/add_personasset.html',{'form':formasset,'person_list':[(student.id,student.full_name) for student in StudentInfoModel.objects.all()]})
     else: return HttpResponse('You Have No Auth')
 
 def detail_asset(request,asset_no):
     if request.user.has_perm('account_panel.view_personassetinfomodel'):
-        if '1701' in asset_no:
+        if '1701' in asset_no or '1703' in asset_no:
             asset=PersonAssetInfoModel.objects.filter(person_id=asset_no)[0]
         else:
             asset = PersonAssetInfoModel.objects.get(pk=asset_no)
@@ -90,7 +108,7 @@ def edit_asset(request,asset_no):
             if formasset.is_valid():
                 formasset.save()
                 return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formasset})
+        return render(request,'account_panel/add_personasset.html',{'form':formasset})
     else: return HttpResponse('You Have No Auth')
 
 def delete_asset(request,asset_no):
@@ -106,8 +124,8 @@ def add_account(request):
             formaccount=AccountInfoForm(request.POST)
             if formaccount.is_valid():
                 formaccount.save()
-                return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formaccount})
+                return redirect('http://127.0.0.1:8000/account_panel/account_table')
+        return render(request,'account_panel/add_account.html',{'form':formaccount})
     else: return HttpResponse('You Have No Auth')
 
 def detail_account(request,account_no):
@@ -141,10 +159,10 @@ def delete_account(request,account_no):
 
 def add_bill(request):
     if request.user.has_perm('account_panel.add_billinfomodel'):
-        formbill=BillInfoForm()
+        new_id=str(int(BillInfoModel.objects.all().order_by('-id')[0].id)+1)
+        formbill=BillInfoForm(initial={'id':new_id})
         if request.method=='POST':
             formbill=BillInfoForm(request.POST)
-            print (formbill)
             if formbill.is_valid():
                 bill_transactionsync(formbill)
                 formbill.save()
@@ -186,7 +204,7 @@ def transaction_accountsync(account_no,amount,transaction_type,transaction_desc)
         x=1
     elif transaction_type=='8':
         if re.search('1701\w{3}',transaction_desc):
-            print (re.search('1701\w{3}',transaction_desc).group())
+            #print (re.search('1701\w{3}',transaction_desc).group())
             transaction_to = re.search('1701\w{3}',transaction_desc).group()
             x = 1
             asset = PersonAssetInfoModel.objects.filter(person_id=transaction_to)[0]

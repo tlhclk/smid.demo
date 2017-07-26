@@ -15,6 +15,9 @@ class TransactionInfoForm(forms.ModelForm):
             'transaction_desc',
         ]
 
+    def account_list(self):
+        return [(account.account_no,account.account_name) for account in AccountInfoModel.objects.all()]
+
 class PersonAssetInfoForm(forms.ModelForm):
     class Meta:
         model=PersonAssetInfoModel
@@ -23,9 +26,13 @@ class PersonAssetInfoForm(forms.ModelForm):
             'person_id',
             'asset_amount',
             'asset_debt',
-            'asset_desc',
+            'asset_period',
             'asset_type',
+            'asset_desc',
         ]
+
+    def asset_type_list(self):
+        return PersonAssetInfoModel.asset_type_list
 
 class AccountInfoForm(forms.ModelForm):
     class Meta:
@@ -40,7 +47,6 @@ class AccountInfoForm(forms.ModelForm):
         ]
 
 class BillInfoForm(forms.ModelForm):
-    bill_lastday=forms.DateField(initial=datetime.date.strftime(datetime.date.today(),'%d-%m-%Y'),input_formats='%Y-%m-%d')
     class Meta:
         model=BillInfoModel
         fields=[

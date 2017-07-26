@@ -1,0 +1,71 @@
+{% extends "document_panel/default_form.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/document_panel/document_table/"><i class="fa fa-table"></i> Dosya Tablosu</a></li>
+          <li class="active">Yeni Dosya Kaydı</li>
+      </ol>
+
+    </section>
+    <section class="content">
+
+<div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Yeni Dosya Kaydı</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+              <div class="col-md-6">
+                  <form method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_document_id">Dosya No: </label>
+                    <input type="text" class="form-control" placeholder="Dosya No" name="document_id" required id="id_document_id" value="{{ form.document_id.value }}" maxlength="20  ">
+                </div>
+                <div class="form-group">
+                <label for="id_personal_tcn">Dosyanın İlişkili Olduğu Kişi: </label>
+                <select class="form-control select2" style="width: 100%;" name="personal_tcn" id="id_personal_tcn">
+                  <option value="{{ form.person_id.value }}"></option>
+                    {% for person in model_info.person_list %}
+                        <option value="{{ person }}">{{ person.full_name }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+                <div class="form-group">
+                    <label for="id_document_date">Dosya Tarihi: </label>
+                    <input type="text" class="form-control" placeholder="Dosya Tarihi" name="document_date" required id="id_document_date" value="{{ form.document_date.value }}" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label for="id_document_type">Dosya Türü: </label>
+                    <select class="form-control select2" style="width: 100%;" name="document_type" id="id_document_type">
+                  <option value="{{ form.document_type.value }}"></option>
+                    {% for doc_type in model_info.document_type_list %}
+                        <option value="{{ doc_type.0 }}">{{ doc_type.1 }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group">
+                    <label for="id_document_description">Dosya Açıklaması: </label>
+                    <input type="text" class="form-control" placeholder="Dosya Açıklaması" name="document_description" required id="id_document_description" value="{{ form.document_description.value }}" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="id_document_image">Dosya Fotoğrafı yada resmi: </label>
+                    <input type="file" class="form-control" placeholder="Dosya Resmi" name="document_image" required id="id_document_image" value="{{ form.document_image.value }}" maxlength="50">
+                </div>
+                  <div class="col-xs-12">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                            </div></div>
+                  </form>
+              </div>
+          </div>
+        </div>
+    </section>
+{% endblock %}

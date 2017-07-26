@@ -5,7 +5,6 @@ from . import views
 app_name='person_panel'
 urlpatterns = [
     url(r'^$', views.options_menu, name='Student-Parent Option Menu'),
-    url(r'^student_id_add', views.add_student_id, name='Add Student ID'),
     url(r'^student_add', views.add_student, name='Add Student'),
     url(r'^student/(?P<student_id>[0-9]+)/', views.detail_student, name='Student Details'),
     url(r'^student_table/', views.table_student, name='Student Table'),
@@ -21,6 +20,10 @@ urlpatterns = [
     url(r'^personal_table/', views.table_personal, name='personal Table'),
     url(r'^personal_edit/(?P<personal_id>[0-9]+)', views.edit_personal, name='personal Edit'),
     url(r'^personal_delete/(?P<personal_id>[0-9]+)', views.delete_personal, name='personal Delete'),
+    url(r'^person_id_add/', views.add_person_id, name='Add Person ID'),
+    url(r'^person_id_table/', views.table_person_id, name='person id Table'),
+    url(r'^person_id_edit/(?P<person_id>[0-9]+)', views.edit_person_id, name='person id Edit'),
+    url(r'^person_id_delete/(?P<person_id>[0-9]+)', views.delete_person_id, name='person id Delete'),
     url(r'^multiple/',views.multiple_add,name='Multiple'),
     url(r'^(?P<person_id>[0-9]+)/',views.show_profile,name='')
 ]

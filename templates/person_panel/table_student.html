@@ -6,16 +6,14 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Smart Dorms | Ana Sayfa</title>
+  <title> Smart Dorms | Öğrenci Tablosu</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-
-
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -24,8 +22,7 @@
 
 
 
-
-        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
 
 
@@ -50,23 +47,17 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
 
-
-
-
-
-
-
-
-
-
   <script type="text/javascript">
 $(document).ready(function() {
     var table = $('#myTable').DataTable(
 
       {
+          "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
+        "order": [[ 0, "order" ]],
         responsive: true,
         dom: 'Bfrtip',
-        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'],
+          leghtMenu:[[10,25,50,-1],[10,25,50,"All"]]
 
       }
     );
@@ -115,18 +106,22 @@ $(document).ready(function() {
 
   <header class="main-header">
 
-    <a href="http://127.0.0.1:8000/" class="logo">
+    <a href="http://127.0.0.1:8000/home/" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <div class="navbar-custom-menu">
+      <ul class="nav navbar-header"><li>
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
+          <li class="center-block"><span><font size="5" color="white">
+                Öğrenci Tablosu</font></span>
+        <span class="icon-bar"></span></li><li>
+      <li>
+      <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
-            {% if request.user.groups.all %}
+
+            {% if request.user != 'Anonymous' %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
@@ -160,7 +155,7 @@ $(document).ready(function() {
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
-      </div>
+      </div></li></ul>
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
@@ -185,7 +180,7 @@ $(document).ready(function() {
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.first.name %}
+          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -215,7 +210,7 @@ $(document).ready(function() {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/documet_table">Dosya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
@@ -228,7 +223,7 @@ $(document).ready(function() {
             <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href=http://127.0.0.1:8000/"operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -240,7 +235,7 @@ $(document).ready(function() {
             <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/student_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -277,32 +272,28 @@ $(document).ready(function() {
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/"><i class="fa fa-dashboard"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Öğrenci Tablosu</li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/person_panel/person_id_add/">Yeni Öğrenci Kaydı</a></li>
       </ol>
+
     </section>
-      <section>
-      <h1>
-        Öprenci Listesi
-        <small>Yurtta Bulunan Öğrencilerin Temel Bilgileri</small>
-      </h1></section>
 
     <!-- Main content -->
     <section class="content">
-
-<table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr>
-    <th>Öğrenci ID</th><th>Adı</th><th>Kimlik Numarası</th><th>Telefon Numarası</th><th>E-mail Adresi</th><th>Kayıt Olma Tarihi</th><th>Oda Numarası</th><th></th>
-</tr></thead><tbody>
-    {% for student in student_list %}<tr>
-    <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.student_tcn_id }}</td><td>{{ student.student_phone }}</td><td>{{ student.student_email }}</td><td>{{ student.student_regday }}</td><td>{{ student.room_no_id }}</td><td>
-<button onclick="window.location.href='/person_panel/student_edit/{{ student.id }}'">Edit</button>
-              <button onclick="window.location.href='/person_panel/student_delete/{{ student.id }}'">Delete</button>
-    </td>
-</tr>
-    {% endfor %}
-</tbody></table>
-
+            <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr>
+                <th>Öğrenci No</th><th>Adı</th><th>Kimlik Numarası</th><th>Telefon Numarası</th><th>E-mail Adresi</th><th>Oda Numarası</th><th></th>
+            </tr></thead><tbody>
+                {% for student in student_list %}<tr>
+                <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.student_tcn_id }}</td><td>{{ student.student_phone }}</td><td>{{ student.student_email }}</td><td>{{ student.room_no_id }}</td><td>
+            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a>
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody></table>
       <!-- Your Page Content Here -->
 
     </section>
@@ -320,7 +311,7 @@ $(document).ready(function() {
     <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
   </footer>
 
-  <!-- Control Sidebar -->side>
+  <!-- Control Sidebar -->
 
   <div class="control-sidebar-bg"></div>
 </div>
@@ -328,4 +319,8 @@ $(document).ready(function() {
 
 </body>
 </html>
+
+
+
+
 

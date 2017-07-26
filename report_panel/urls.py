@@ -9,5 +9,8 @@ urlpatterns = [
     url(r'^room_plan/',views.room_plan,name='Room Plan'),
     url(r'^contact_table/',views.contact_table,name='Contact Table'),
     url(r'^leave_table/',views.leave_permission_table,name='Leave List'),
-    url(r'^calendar/',views.calendar,name='calendar')
+    url(r'^calendar/',views.calendar,name='calendar'),
+    url(r'^payment_info/',views.unpaid_rate,name='Ödeme Bilgileri'),
+    url(r'^birthday_calendar/(?P<filter_time>[0-9]+)',views.birthday_calendar,name='Doğum Günü Takvimi'),
+    url(r'^birthday_cal/',views.birthday_calendar,name='olalal')
 ]
