@@ -7,7 +7,7 @@ from stock_panel.models import FixtureInfoModel,RoomInfoModel
 from document_panel.models import LiabilityInfoModel,DocumentInfoModel
 from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
 from account_panel.models import AccountInfoModel,PersonAssetInfoModel,TransactionInfoModel,BillInfoModel
-import json,simplejson
+import json
 
 import datetime
 
@@ -106,7 +106,6 @@ def birthday_calendar(request,filter_time='07'):
             print (student.full_name())
             birthday_list.append((student.full_name(),student.s_birthday))
             json_dict.setdefault(student.full_name(),{'month':student.s_birthday.month,'day':student.s_birthday.day})
-
 
     for personal in personal_list:
         if personal.personal_birthday:

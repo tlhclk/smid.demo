@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from .models import StudentLeaveModel,AttendanceInfoModel,StudentInfoModel
+from django.utils import timezone
 
 class StudentLeaveForm(forms.ModelForm):
     class Meta:
@@ -35,4 +36,14 @@ class MailSendForm(forms.Form):
                 'subject',
                 'message'
                 ]
+class DateFindForm(forms.Form):
+    date1=forms.DateField(input_formats=('%Y-%m-%d'),initial=timezone.datetime.today().date())
+    date2 = forms.DateField(input_formats=('%d-%m-%Y'),initial=timezone.datetime.today().date())
+    date3 = forms.DateField(input_formats=('%Y/%m/%d'),initial=timezone.datetime.today().date())
+    date4 = forms.DateField(input_formats=('%d/%m/%Y'),initial=timezone.datetime.today().date())
+    class Meta:
+        fields=['date1',
+                'date2',
+                'date3',
+                'date4']
 

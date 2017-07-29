@@ -5,9 +5,6 @@ from .forms import TransactionInfoForm,PersonAssetInfoForm,AccountInfoForm,BillI
 from django.shortcuts import render,redirect,HttpResponse
 import datetime
 import re
-
-
-
 def add_transaction(request,filter_no):
     if request.user.has_perm('account_panel.add_transactioninfomodel'):
         if filter_no!='':
@@ -26,15 +23,14 @@ def add_transaction(request,filter_no):
                 transaction_desc=formtransaction.cleaned_data.get('transaction_desc')
                 transaction_accountsync(account,amount,transaction_type,transaction_desc)
                 formtransaction.save()
-                return redirect('http://127.0.0.1:8000/account_panel/transaction_table')
-        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list})
+                return redirect('http://127.0.0.1:8000/account_panel/transaction_table/')
+        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list,'title':'Yeni İşlem Kaydı'})
     else: return HttpResponse('You has No authorizations')
 
 def detail_transaction(request,transaction_no):
     if request.user.has_perm('account_panel.view_transactioninfomodel'):
         transaction=TransactionInfoModel.objects.get(pk=transaction_no)
-        all_fields=TransactionInfoModel._meta.get_fields()
-        return render(request,'account_panel/detail_transaction.html',{'transaction':transaction})
+        return render(request,'account_panel/detail_transaction.html',{'transaction':transaction,'title':'İşlem Detayı'})
     else: return HttpResponse('You has No authorizations')
 
 def table_transaction(request,filter_no):
@@ -42,16 +38,16 @@ def table_transaction(request,filter_no):
         if filter_no!='':
             if filter_no[:4]=='1701':
                 transaction_list = TransactionInfoModel.objects.filter(transaction_desc__contains=filter_no)
-                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list})
+                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list,'title':'İşlem Geçmişi'})
             elif filter_no[:4]=='1713':
                 transaction_list = TransactionInfoModel.objects.filter(transaction_type='6')
-                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list})
+                return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list,'title':'İşlem Geçmişi'})
             else:
                 transaction_list=TransactionInfoModel.objects.filter(account_no=filter_no)
-                return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list})
+                return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'İşlem Geçmişi'})
         else:
             transaction_list=TransactionInfoModel.objects.all()
-            return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list})
+            return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'İşlem Geçmişi'})
 
     else: return HttpResponse('You has No authorizations')
 
@@ -62,14 +58,14 @@ def edit_transaction(request,transaction_no):
             formtransaction=TransactionInfoForm(request.POST,instance=TransactionInfoModel.objects.get(pk=transaction_no))
             if formtransaction.is_valid():
                 formtransaction.save()
-                return redirect('../')
-        return render(request,'account_panel/default_form.html',{'form':formtransaction})
+                return redirect('http://127.0.0.1:8000/account_panel/transaction_table/')
+        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'title':'İşlemi Düzenleme'})
     else: return HttpResponse('You has No authorizations')
 
 def delete_transaction(request,transaction_no):
     if request.user.has_perm('account_panel.delete_transactioninfomodel'):
         TransactionInfoModel.objects.get(pk=transaction_no).delete()
-        return redirect('../')
+        return redirect('http://127.0.0.1:8000/account_panel/transaction_table/')
     else: return HttpResponse('You has No authorizations')
 
 def add_asset(request):
@@ -81,8 +77,8 @@ def add_asset(request):
             print (formasset)
             if formasset.is_valid():
                 formasset.save()
-                return redirect('http://127.0.0.1:8000/account_panel/asset_table')
-        return render(request,'account_panel/add_personasset.html',{'form':formasset,'person_list':[(student.id,student.full_name) for student in StudentInfoModel.objects.all()]})
+                return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
+        return render(request,'account_panel/add_personasset.html',{'form':formasset,'person_list':StudentInfoModel.objects.all(),'title':'Yeni Ödeme Planı Kaydı'})
     else: return HttpResponse('You Have No Auth')
 
 def detail_asset(request,asset_no):
@@ -91,13 +87,13 @@ def detail_asset(request,asset_no):
             asset=PersonAssetInfoModel.objects.filter(person_id=asset_no)[0]
         else:
             asset = PersonAssetInfoModel.objects.get(pk=asset_no)
-        return render(request,'account_panel/detail_personasset.html',{'asset':asset})
+        return render(request,'account_panel/detail_personasset.html',{'asset':asset,'title':'Ödeme Planı Detayı'})
     else: return HttpResponse('You Have No Auth')
 
 def table_asset(request):
     if request.user.has_perm('account_panel.view_personassetinfomodel'):
         asset_list=PersonAssetInfoModel.objects.all()
-        return render(request,'account_panel/table_personasset.html',{'asset_list':asset_list})
+        return render(request,'account_panel/table_personasset.html',{'asset_list':asset_list,'title':'Ödeme Planı Tablosu'})
     else: return HttpResponse('You Have No Auth')
 
 def edit_asset(request,asset_no):
@@ -107,14 +103,14 @@ def edit_asset(request,asset_no):
             formasset=PersonAssetInfoForm(request.POST,instance=PersonAssetInfoModel.objects.get(pk=asset_no))
             if formasset.is_valid():
                 formasset.save()
-                return redirect('../')
-        return render(request,'account_panel/add_personasset.html',{'form':formasset})
+                return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
+        return render(request,'account_panel/add_personasset.html',{'form':formasset,'title':'Ödeme Planı Düzenleme','person_list':StudentInfoModel.objects.all()})
     else: return HttpResponse('You Have No Auth')
 
 def delete_asset(request,asset_no):
     if request.user.has_perm('account_panel.delete_personassetinfomodel'):
         PersonAssetInfoModel.objects.get(pk=asset_no).delete()
-        return redirect('../')
+        return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
     else: return HttpResponse('You Have No Auth')
 
 def add_account(request):
@@ -124,20 +120,20 @@ def add_account(request):
             formaccount=AccountInfoForm(request.POST)
             if formaccount.is_valid():
                 formaccount.save()
-                return redirect('http://127.0.0.1:8000/account_panel/account_table')
-        return render(request,'account_panel/add_account.html',{'form':formaccount})
+                return redirect('http://127.0.0.1:8000/account_panel/account_table/')
+        return render(request,'account_panel/add_account.html',{'form':formaccount,'title':'Yeni Hesap Kaydı'})
     else: return HttpResponse('You Have No Auth')
 
 def detail_account(request,account_no):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         account=AccountInfoModel.objects.get(pk=account_no)
-        return render(request,'account_panel/detail_account.html',{'account':account})
+        return render(request,'account_panel/detail_account.html',{'account':account,'title':'Hesap Özeti'})
     else: return HttpResponse('You Have No Auth')
 
 def table_account(request):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         account_list=AccountInfoModel.objects.all()
-        return render(request,'account_panel/table_account.html',{'account_list':account_list})
+        return render(request,'account_panel/table_account.html',{'account_list':account_list,'title':'Hesap Tablosu'})
     else: return HttpResponse('You Have No Auth')
 
 def edit_account(request,account_no):
@@ -147,14 +143,14 @@ def edit_account(request,account_no):
             formaccount=AccountInfoForm(request.POST,instance=AccountInfoModel.objects.get(pk=account_no))
             if formaccount.is_valid():
                 formaccount.save()
-                return redirect('../../')
-        return render(request,'account_panel/default_form.html',{'form':formaccount})
+                return redirect('http://127.0.0.1:8000/account_panel/account_table/')
+        return render(request,'account_panel/add_account.html',{'form':formaccount,'title':'Hesap Düzenleme'})
     else: return HttpResponse('You Have No Auth')
 
 def delete_account(request,account_no):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         AccountInfoModel.objects.get(pk=account_no).delete()
-        return redirect('../')
+        return redirect('http://127.0.0.1:8000/account_panel/account_table/')
     else: return HttpResponse('You Have No Auth')
 
 def add_bill(request):
@@ -167,19 +163,19 @@ def add_bill(request):
                 bill_transactionsync(formbill)
                 formbill.save()
                 return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
-        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list})
+        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list,'title':'Yeni Fatura Kaydı'})
     else: return HttpResponse('You have No Auth')
 
 def detail_bill(request,bill_no):
     if request.user.has_perm('account_panel.view_billinfomodel'):
         bill=BillInfoModel.objects.get(pk=bill_no)
-        return render(request,'account_panel/detail_bill.html',{'bill':bill})
+        return render(request,'account_panel/detail_bill.html',{'bill':bill,'title':'Fatura Detayı'})
     else: return HttpResponse('You have No Auth')
 
 def table_bill(request):
     if request.user.has_perm('account_panel.view_billinfomodel'):
         bill_list=BillInfoModel.objects.all()
-        return render(request,'account_panel/table_bill.html',{'bill_list':bill_list})
+        return render(request,'account_panel/table_bill.html',{'bill_list':bill_list,'title':'Fatura Tablosu'})
     else: return HttpResponse('You have No Auth')
 
 def edit_bill(request,bill_no):
@@ -189,14 +185,14 @@ def edit_bill(request,bill_no):
             formbill=BillInfoForm(request.POST,instance=BillInfoModel.objects.get(pk=bill_no))
             if formbill.is_valid():
                 formbill.save()
-                return redirect('../')
-        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list})
+                return redirect('http://127.0.0.1:8000/account_panel/bill_table/')
+        return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list,'title':'Fatura Düzenleme'})
     else: return HttpResponse('You have No Auth')
 
 def delete_bill(request,bill_no):
     if request.user.has_perm('account_panel.delete_bilinfomodel'):
         BillInfoModel.objects.get(pk=bill_no).delete()
-        return redirect('../')
+        return redirect('http://127.0.0.1:8000/account_panel/bill_table/')
     else: return HttpResponse('You have No Auth')
 
 def transaction_accountsync(account_no,amount,transaction_type,transaction_desc):
@@ -217,7 +213,6 @@ def transaction_accountsync(account_no,amount,transaction_type,transaction_desc)
         x=-1
     account_no.account_amount=str(float(account_no.account_amount)+x*float(amount))
     account_no.save()
-    return redirect('../')
 
 def bill_transactionsync(formbill):
     account_no=AccountInfoModel.objects.filter(account_name='Nakit')[0]

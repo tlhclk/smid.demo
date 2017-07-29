@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/stock_panel/fixture_table/"><i class="fa fa-table"></i> Eşya Tablosu</a></li>
+          <li class="active">Yeni Eşya Kaydı</li>
+      </ol>
+
+    </section>
+    <section class="content">
+
+<div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Yeni Eşya Kaydı</h3>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+              <div class="col-md-6">
+                  <form method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                <div class="form-group has-feedback">
+                    <label for="id_fixture_no">Eşya No: </label>
+                    <input type="text" class="form-control" placeholder="Eşya No" name="fixture_no" required id="id_fixture_no" value="{{ formfixture.fixture_no.value }}" maxlength="10">
+                </div>
+                <div class="form-group has-feedback">
+                <label for="id_room_no">Oda Numarası: </label>
+                <select class="form-control select2" style="width: 100%;" name="room_no" id="id_room_no">
+                  <option value="{{ formfixture.person_id.value }}"></option>
+                    {% for room in model_info.room_list %}
+                        <option value="{{ room }}">{{ room.room_no }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+                <div class="form-group has-feedback">
+                    <label for="id_fixture_type">Eşya Türü: </label>
+                    <select class="form-control select2" style="width: 100%;" name="fixture_type" id="id_fixture_type">
+                  <option value="{{ formfixture.fixture_type.value }}"></option>
+                    {% for fix_type in model_info.fixture_type_list %}
+                        <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_fixture_notes">Eşya Açıklaması: </label>
+                    <input type="text" class="form-control" placeholder="Eşya Açıklaması" name="fixture_notes" id="id_fixture_notes" value="{{ formfixture.fixture_notes.value }}" maxlength="100">
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_fixture_image">Dosya Fotoğrafı yada resmi: </label>
+                    <input type="file" class="form-control" placeholder="Eşya Resmi" name="fixture_image" required id="id_fixture_image" value="{{ formfixture.fixture_image.value }}" maxlength="50">
+                </div>
+                  <div class="col-xs-12">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                            </div></div>
+                  </form>
+              </div>
+          </div>
+        </div></div>
+    </section>
+{% endblock %}

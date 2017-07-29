@@ -33,13 +33,13 @@ def edit_document(request,document_id):
         formdocument=DocumentInfoForm(request.POST,request.FILES,instance=DocumentInfoModel.objects.get(pk=document_id))
         if formdocument.is_valid():
             formdocument.save()
-            return redirect('../../')
-    return render(request,'document_panel/default_form.html',{'form':formdocument})
+            return redirect('http://127.0.0.1:8000/document_panel/document_table/')
+    return render(request,'document_panel/add_document.html',{'form':formdocument,'title':'Dosya Düzenleme'})
 
 def delete_document(request,document_id):
     document=DocumentInfoModel.objects.get(pk=document_id)
     document.delete()
-    return redirect('../../')
+    return redirect('http://127.0.0.1:8000/document_panel/document_table/')
 
 
 def liability_add(request):
@@ -49,20 +49,20 @@ def liability_add(request):
             formliability=LiabilityInfoForm(request.POST)
             if formliability.is_valid():
                 formliability.save()
-                return redirect('../')
-        return render(request,'user_panel/default_form.html',{'form':formliability})
+                return redirect('http://127.0.0.1:8000/document_panel/liability_table/')
+        return render(request,'document_panel/add_liability.html',{'form':formliability,'title':'Yeni Emanet kaydı','model_info':LiabilityInfoModel})
     else: return HttpResponse('You has no authorization to change room info')
 
 def liability_detail(request,record_no):
     if request.user.has_perm('document_panel.view_liabilityinfomodel'):
         liability=LiabilityInfoModel.objects.get(pk=record_no)
-        return render(request,'document_panel/detail_liability.html',{'liability':liability})
+        return render(request,'document_panel/detail_liability.html',{'liability':liability,'title':'Emanet Detayı'})
     else: return HttpResponse('You has no authorization to change room info')
 
 def liability_table(request):
     if request.user.has_perm('document_panel.view_liabilityinfomodel'):
         liability_list=LiabilityInfoModel.objects.all()
-        return render(request,'document_panel/table_liability.html',{'liability_list':liability_list})
+        return render(request,'document_panel/table_liability.html',{'liability_list':liability_list,'title':'Emanet Tablosu'})
     else: return HttpResponse('You has no authorization to change room info')
 
 def liability_edit(request,record_no):
@@ -72,12 +72,12 @@ def liability_edit(request,record_no):
             formliability=LiabilityInfoForm(request.POST,instance=LiabilityInfoModel.objects.get(pk=record_no))
             if formliability.is_valid():
                 formliability.save()
-            return redirect('../')
-        return render(request,'user_panel/default_form.html',{'form':formliability,'title':'Edit'})
+            return redirect('http://127.0.0.1:8000/document_panel/liability_table/')
+        return render(request,'document_panel/add_liability.html',{'form':formliability,'title':'Emanet Düzenleme','model_info':LiabilityInfoModel})
     else: return HttpResponse('You has no authorization to change room info')
 
 def liability_delete(request,record_no):
     if request.user.has_perm('document_panel.delete_liabilityinfomodel'):
         LiabilityInfoModel.objects.get(pk=record_no).delete()
-        return redirect('../')
+        return redirect('http://127.0.0.1:8000/document_panel/liability_table/')
     else: return HttpResponse('You has no authorization to change room info')

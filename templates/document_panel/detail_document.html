@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ document.document_type_name }}</title>
-</head>
-<body>
-<h1>{{ document.document_id }}</h1>
-<h1>{{ document.person_id_name }}</h1>
-<h1>{{ document.document_date }}</h1>
-<h1>{{ document.document_type_name }}</h1>
-<h1>{{ document.document_description }}</h1>
-<<img src="/../../media/{{ document.document_image }}" alt="document_image" height="400">
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/document_panel/document_table"><i class="fa fa-table"></i> Dosya Tablosu</a></li>
+          <li class="active">Dosya Detayı: {{ document.document_id }}</li>
+      </ol>
 
-</body>
-</html>
+    </section>
+  <section class="content">
+    <!-- Main content -->
+    <div class="content">
+      <!-- Your Page Content Here -->
+        <!-- left column -->
+
+    <div class="row">
+            <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3><b>Dosya No: </b>{{ document.document_id }}</h3>
+                    <h3><b>Öğrenci No: </b>{{ document.person_id.full_name }}</h3>
+                    <h3><b>Dosya Tarihi:  </b>{{ document.document_date }}</h3>
+                    <h3><b>Dosya Türü:  </b>{{ document.document_type_name }}</h3>
+                    <h3><b>Dosya Açıklaması:  </b>{{ document.document_description }}</h3>
+                    <div class="media">
+                        <div align="center">
+                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ document.document_image }}" width="1000px">
+                        </div>
+                    </div>
+                </div>
+            </div></div>
+    </div>
+
+    <!-- /.content -->
+    </div>
+    </section>{% endblock %}

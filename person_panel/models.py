@@ -4,10 +4,14 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from stock_panel.models import RoomInfoModel
 from localflavor.tr.tr_provinces import PROVINCE_CHOICES
+from django.utils import timezone
 
 
 def get_time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return str(datetime.datetime.now())
+
+def get_date():
+    return str(datetime.date.today())
 
 class PersonIDInfoModel(models.Model):
     idcard_type_list = [('1', 'Nüfus Cüzdanı'), ('2', 'TC Kimliği'), ('3', 'Ehliyet'), ('4', 'Pasaport'),('5', 'Diğer')]
@@ -18,8 +22,8 @@ class PersonIDInfoModel(models.Model):
     s_tcn = models.CharField(max_length=11, default='', verbose_name='TC No',primary_key=True)
     s_name = models.CharField(max_length=50, default='', verbose_name='İsim',)
     s_lastname = models.CharField(max_length=50, default='', verbose_name='Soyisim',)
-    s_birthday = models.DateTimeField(default='1990-12-31 00:00:00', verbose_name='Doğum Tarihi',)
-    s_birth_place = models.CharField(null=True, max_length=20, choices=PROVINCE_CHOICES,verbose_name='Doğduğu Şehir',default='1')
+    s_birthday = models.DateField(default='1990-12-31', verbose_name='Doğum Tarihi',)
+    s_birth_place = models.CharField( max_length=20, choices=PROVINCE_CHOICES,verbose_name='Doğduğu Şehir',default='1')
     s_father = models.CharField(max_length=50, verbose_name='Baba Adı',default='')
     s_mother = models.CharField(max_length=50, verbose_name='Anne Adı',default='')
     s_nation = models.CharField(max_length=50, verbose_name='Uyruk', choices=nation_list,default='1')
@@ -69,8 +73,8 @@ class PersonalInfoModel(models.Model):
     #personal_lastname = models.CharField(max_length=200, default='Yilmaz', verbose_name='Personel Soyismi',help_text='Personal Last Name')
     personal_phone = PhoneNumberField(default='+905553332211', verbose_name='Telefon Numarası',max_length=13)
     personal_email = models.EmailField(default='', verbose_name='Email Adresi',unique=True)
-    personal_startday = models.DateTimeField(default=get_time, verbose_name='İşe Başlangıç Tarihi')
-    personal_endday = models.DateTimeField(verbose_name='İşten Ayrılma Günü',default=get_time)
+    personal_startday = models.DateField(default=get_date, verbose_name='İşe Başlangıç Tarihi')
+    personal_endday = models.DateField(verbose_name='İşten Ayrılma Günü',default='')
     personal_city = models.CharField(max_length=20, choices=PROVINCE_CHOICES, verbose_name='Personel Adres İli',default='1')
     personal_town = models.CharField(max_length=20, default='', verbose_name='Personel Adres İlçesi')
     personal_adress = models.CharField( max_length=100, default='', verbose_name='Personel Adres')
@@ -120,7 +124,7 @@ class StudentInfoModel(models.Model):
     student_tcn=models.OneToOneField(PersonIDInfoModel,verbose_name='Öğrencinin Kimlik Numarası',unique=True)
     student_phone = PhoneNumberField(default='+905553332211',verbose_name='Telefon Numarası',max_length=13)
     student_email = models.EmailField(default='',verbose_name='Email Adresi',unique=True)
-    student_regday = models.DateTimeField(default=get_time,verbose_name='Kayıt Tarihi')
+    student_regday = models.DateField(default=get_date,verbose_name='Kayıt Tarihi')
     student_city = models.CharField(max_length=20,choices=PROVINCE_CHOICES,verbose_name='Adres Şehri',default='1')
     student_town = models.CharField(max_length=20,default='',verbose_name='Adres İlçesi')
     student_adress = models.CharField(max_length=100,default='',verbose_name='Adres')

@@ -1,63 +1,42 @@
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css">
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Emanet Tablosu</li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/document_panel/liability_add/">Yeni Emanet Kaydı</a></li>
+      </ol>
 
+    </section>
 
-
- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.0.3/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
-
-
-<script>
-$(document).ready(function(){
-  $('#myTable').DataTable( {
-    responsive: true,
-    dom: 'Bfrtip',
-    buttons: [
-
-    'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
-  ]
-} );
-});
-</script>
-</head>
-<body>
-<table id="myTable" class="display">
+    <!-- Main content -->
+    <section class="content">
+<table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-          <th>Record No</th>
-          <th>Person ID</th>
-          <th>Liability Type</th>
-            <th>Liability Name</th>
-          <th>Liability Date</th>
-          <th>Liability Last Day</th>
-          <th>Liability Record</th>
-          <th>Liability Penalty</th>
+          <th>Emanet No</th>
+            <th>Kişi Adı</th>
+          <th>Emanet Türü</th>
+          <th>Açıklaması</th>
+            <th>Verilme Tarihi</th>
+            <th>Son Teslim Tarihi</th>
+            <th>Teslim Edilen Tarih</th>
+            <th>Ceza Miktarı</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
     {% for liability in liability_list %}
           <tr>
-              <td><a href="/stock_panel/liability/{{ liability.record_no }}/">{{ liability.record_no }}</a></td>
-              <td>{{ liability.person_id }}</td><td>{{ liability.liability_type }}</td><td>{{ liability.liability_name }} </td>
-              <td>{{ liability.liability_date }} </td><td>{{ liability.liability_lastday }}</td><td>{{ liability.liability_return }}</td><td>{{ liability.liability_penalty }}</td>
-          <td><button onclick="window.location.href='/stock_panel/liability_edit/{{ liability.record_no }}'">Edit</button>
-              <button onclick="window.location.href='/stock_panel/liability_delete/{{ liability.record_no }}'">Delete</button></td></tr>
+              <td><a href="http://127.0.0.1:8000/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
+              <td>{{ liability.person_id.full_name }}</td><td>{{ liability.liability_type_name }}</td><td>{{ liability.liability_desc }}</td><td>{{ liability.liability_date }}</td><td>{{ liability.liability_lastday }}</td><td>{{ liability.liability_return }}</td><td>{{ liability.liability_penalty }}</td>
+          <td>
+              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
+              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_delete/{{ liability.id }}">Sil</a>
+                          </td></tr>
     {% endfor %}
 
     </tbody>
 </table>
-</body>
-</html>
+    </section>
+{% endblock %}

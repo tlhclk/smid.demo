@@ -4,7 +4,6 @@ from . import views
 
 app_name='person_panel'
 urlpatterns = [
-    url(r'^$', views.options_menu, name='Student-Parent Option Menu'),
     url(r'^student_add', views.add_student, name='Add Student'),
     url(r'^student/(?P<student_id>[0-9]+)/', views.detail_student, name='Student Details'),
     url(r'^student_table/', views.table_student, name='Student Table'),

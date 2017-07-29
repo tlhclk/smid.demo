@@ -29,7 +29,9 @@
 
     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'dist/js/app.min.js' %}"></script>
+    <script src="{% static 'main_theme/js/app.min.js' %}"></script>
+<script src="{%  static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
 
 
 
@@ -43,8 +45,6 @@
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
-<script src="{%  static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
 
@@ -56,52 +56,20 @@ $(document).ready(function() {
           "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
         "order": [[ 0, "order" ]],
         responsive: true,
-        dom: 'Bfrtip',
+        dom: 'Bfrtlip',
         buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'],
-          leghtMenu:[[10,25,50,-1],[10,25,50,"All"]]
+          lenghtMenu:[[10,25,50,-1],[10,25,50,"All"]]
 
       }
     );
 
-    $('#myTable-tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    } );
 
-
-
-    table.buttons().container()
-          .appendTo( '#example_wrapper .col-md-6:eq(10)' );
-
-          new $.fn.dataTable.Buttons( table, {
-              buttons: [
-                  {
-                      text: 'Elementi Sil',
-                      action: function ( e, dt, node, conf ) {
-                        table.row('.selected').remove().draw( false );
-                        alert( 'Element Silindi' );
-                      }
-                  }
-              ]
-          } );
-
-          table.buttons( 1, null ).container().appendTo(
-              table.table().container()
-          );
-
-
-} );
-$(function () {
     $(".select2").select2();
 
     $("[data-mask]").inputmask();
 
-})
+
+} );
 </script>
 
 

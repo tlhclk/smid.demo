@@ -8,7 +8,7 @@ def get_time():
     return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 class DocumentInfoModel(models.Model):
-    document_type_list=[('1','ID Card'),('2','Insurance'),('3','Bill'),('4','Leave Doc.'),('5','Student Certificate'),]
+    document_type_list=[('1','Kimlik Kartı'),('2','Sigorta'),('3','Fatura'),('4','İzin Kağıdı'),('5','Öğrenci Sertifikası'),]
     document_id=models.CharField(max_length=10,primary_key=True,verbose_name='Document Id: ',default='')
     #person_id=models.CharField(max_length=7,verbose_name='Person Id: ',null=False)
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person id: ')
@@ -33,26 +33,32 @@ class DocumentInfoModel(models.Model):
         return StudentInfoModel.objects.all()
 
 class LiabilityInfoModel(models.Model):
-    fixture_type_list = [('1', 'Box Spring'), ('2', 'Bed'), ('3', 'Wardrobe'), ('4', 'Carpet'), ('5', 'Night Stand'),
-                         ('6', 'Tulle'), ('7', 'Veil'), ('8', 'Table'), ('9', 'Chair'), ('10', 'Coat Hanger'),
-                         ('11', 'Bookcase'), ('12', 'Lamp'), ('13', 'Klima'), ('14', 'Mirror')]
-    record_no=models.CharField(max_length=10,verbose_name='Record No: ',primary_key=True,default='1')
-    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person Id: ',null=False,unique=False)
+    fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
+                         ('6', 'Tül'), ('7', 'Perde'), ('8', 'Masa'), ('9', 'Sandalye'), ('10', 'Askılık'),
+                         ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna')]
+    #record_no=models.CharField(max_length=10,verbose_name='Record No: ',primary_key=True,default='1')
+    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person Id: ',unique=False)
     #person_id=models.CharField(max_length=10,blank=True,null=True)
     liability_type=models.CharField(max_length=50,verbose_name='Liability Type: ',choices=fixture_type_list)
-    liability_name=models.CharField(max_length=50,verbose_name='Liability Name: ')
-    liability_desc=models.CharField(max_length=100,verbose_name='Liability Description: ')
+    #liability_name=models.CharField(max_length=50,verbose_name='Liability Name: ',default='')
+    liability_desc=models.CharField(max_length=100,verbose_name='Liability Description: ',default='')
     liability_date=models.DateTimeField(default=get_time,verbose_name='Liability Day')
-    liability_lastday=models.DateTimeField(null=True,blank=True,verbose_name='Liability Last day',default=get_time)
-    liability_return=models.DateTimeField(blank=True,null=True,verbose_name='Liability Return day')
-    liability_penalty=models.CharField(max_length=30,blank=True,null=True)
+    liability_lastday=models.DateTimeField(blank=True,verbose_name='Liability Last day',default=get_time)
+    liability_return=models.DateTimeField(blank=True,verbose_name='Liability Return day')
+    liability_penalty=models.CharField(max_length=30,blank=True,default='')
 
     class Meta:
         db_table='liability_info'
 
     def __str__(self):
-        return self.record_no
+        return self.id
 
     def fixture_type_name(self):
+        return dict(self.fixture_type_list)[self.liability_type]
+
+    def person_list(self):
+        return StudentInfoModel.objects.all()
+
+    def liability_type_name(self):
         return dict(self.fixture_type_list)[self.liability_type]
 

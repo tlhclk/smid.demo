@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/stock_panel/room_table/"><i class="fa fa-table"></i> Oda Tablosu</a></li>
+          <li class="active">Yeni Oda Kaydı</li>
+      </ol>
+
+    </section>
+    <section class="content">
+
+<div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Yeni Eşya Kaydı</h3>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+              <div class="col-md-6">
+                  <form method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                <div class="form-group has-feedback">
+                    <label for="id_room_no">Oda Numarası: </label>
+                    <input type="text" class="form-control" placeholder="Oda Numarası" name="room_no" required id="id_room_no" value="{{ formroom.room_no.value }}" maxlength="5">
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_room_floor">Oda Katı: </label>
+                    <input type="text" class="form-control" placeholder="Oda Katı" name="room_floor" required id="id_room_floor" value="{{ formroom.room_floor.value }}" maxlength="2">
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_room_people">Oda Kontenjanı: </label>
+                    <select class="form-control select2" style="width: 100%;" name="room_people" required id="id_room_people">
+                  <option value="{{ formroom.room_people.value }}"></option>
+                    {% for fix_type in model_info.room_people_list %}
+                        <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_room_type">Oda Türü: </label>
+                    <select class="form-control select2" style="width: 100%;" name="room_type" required id="id_room_type">
+                  <option value="{{ formroom.room_type.value }}"></option>
+                    {% for fix_type in model_info.room_type_list %}
+                        <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_room_desc">Oda Açıklaması: </label>
+                    <input type="text" class="form-control" placeholder="Oda Açıklaması" name="room_desc" id="id_room_desc" value="{{ formroom.room_desc.value }}" maxlength="100">
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="id_room_image">Oda Resmi: </label>
+                    <input type="file" class="form-control" placeholder="Oda Resmi" name="room_image" id="id_room_image" value="{{ formroom.room_image.value }}" maxlength="100">
+                </div>
+                  <div class="col-xs-12">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                            </div></div>
+                  </form>
+              </div>
+          </div>
+        </div></div>
+    </section>
+{% endblock %}

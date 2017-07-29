@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.core.files import File
 from .models import StudentLeaveModel,AttendanceInfoModel
-from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
+from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm,DateFindForm
 from person_panel.views import send_a_email
 from person_panel.models import StudentInfoModel
 import datetime
@@ -84,3 +84,11 @@ def create_egm_xml(request):
         print (sstudent_list)
     student_list=StudentInfoModel.objects.all()
     return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list})
+
+def show_form(request):
+    if request.method=='POST':
+        formasd=DateFindForm(request.POST)
+        print(formasd)
+        if formasd.is_valid():
+            print('oldu')
+    return render(request,'operation_panel/default_form.html',{'form':DateFindForm()})

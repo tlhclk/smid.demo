@@ -20,6 +20,8 @@ class ParentInfoForm(forms.ModelForm):
 
 
 class PersonalInfoForm(forms.ModelForm):
+    personal_startday=forms.DateField(input_formats=('%Y-%m-%d'),initial=datetime.date.today().strftime('%Y-%m-%d'))
+    personal_endday=forms.DateField(input_formats=('%Y-%m-%d'))
     class Meta:
         model=PersonalInfoModel
         fields=('id',

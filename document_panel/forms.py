@@ -16,10 +16,10 @@ class DocumentInfoForm(forms.ModelForm):
 class LiabilityInfoForm(forms.ModelForm):
     class Meta:
         model = LiabilityInfoModel
-        fields = ['record_no',
+        fields = [#'record_no',
                   'person_id',
                   'liability_type',
-                  'liability_name',
+                  #'liability_name',
                   'liability_desc',
                   'liability_date',
                   'liability_return',

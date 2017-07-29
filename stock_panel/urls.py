@@ -3,7 +3,6 @@ from . import views
 
 app_name='stock_panel'
 urlpatterns = [
-    url(r'^$',views.option_menu,name='Fixture-Room-Liability Option Menu'),
     url(r'^fixture_add/', views.add_fixture, name='Add Fixture to a Room'),
     url(r'^fixture/(?P<fixture_no>[0-9]+)/', views.fixture_detail, name='Fixture Details'),
     url(r'^fixture_table/', views.table_fixture, name='Fixture Table'),

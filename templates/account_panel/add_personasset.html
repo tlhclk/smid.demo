@@ -1,218 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Smart Dorms | Yeni Ödeme Planı Kaydı</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
-<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
-  <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
-
-  <link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css' %}">
-  <link rel="stylesheet" href="{% static 'main_theme/css/skins/_all-skins.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/colorpicker/bootstrap-colorpicker.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
-
-    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'dist/js/app.min.js' %}"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
-
-<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
-<script src="{% static 'dist/js/demo.js' %}"></script>
-
-
-
-</head>
-
-
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-
-  <header class="main-header">
-
-    <a href="http://127.0.0.1:8000/home/" class="logo">
-      <span class="logo-mini"><b>SM</b>iD</span>
-      <span class="logo-lg"><b>Smart</b>Dorms</span>
-    </a>
-
-    <nav class="navbar navbar-static-top" role="navigation">
-      <ul class="nav navbar-header"><li>
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
-          <li class="center-block"><span><font size="5" color="white">
-                Yeni Ödeme Planı Kaydı</font></span>
-        <span class="icon-bar"></span></li>
-            {% if request.user.id %}
-
-
-      <li>
-      <div class="nav navbar-custom-menu">
-        <ul class="nav navbar-nav">
-
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="img-circle" alt="User Image">
-                <p>
-                  {{ request.user.first_name }} {{ request.user.last_name }}
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
-                </div>
-                <div class="pull-right">
-                  <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-                {% else %}
-                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login">Giriş Yap</a></li>
-            {% endif %}
-          <!-- Control Sidebar Toggle Button -->
-        </ul>
-      </div></li></ul>
-    </nav>
-  </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-      <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Ara...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">İşlemler</li>
-        <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.0.id == 2 %}
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/account_panel/account_table">Genel Hesap Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/asset_table">Öğrenci Ödeme Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table">İşlem Geçmişi</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/bill_table">Fatura Tablosu</a></li>
-          </ul>
-        </li>
-          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Takvim Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#">Henüz Yok</a></li>
-          </ul>
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Dosya Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
-          </ul>
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>İşlemler</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
-          </ul>
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
-          </ul>
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/report_panel/attendance_table/-">Yoklama Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/capacity/">Kontenjan Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/room_plan">Yurt Planı</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/contact_table">Rehber</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/calendar">Takvim</a></li>
-          </ul>
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/stock_panel/room_table">Oda Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/stock_panel/fixture_table">Eşya Tablosu</a></li>
-          </ul>
-        </li>
-          {% endif %}
-      </ul>
-      <!-- /.sidebar-menu -->
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+{% extends "base.html" %}
+{% block content %}
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
@@ -239,10 +26,11 @@
               <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
                   <div class="form-group has-feedback">
-                          <label for="id_person_id">Öğrenci No : </label><select name="person_id" class="form-control" style="height: 40px" required id="id_person_id">
+                          <label for="id_person_id">Öğrenci No : </label>
+                      <select name="person_id" class="form-control select2" style="height: 40px" required id="id_person_id">
                           <option value="{{ form.person_id.value }}" selected></option>
                           {% for person in person_list %}
-                              <option value="{{ person.0 }}">{{ person.1 }}</option>
+                              <option value="{{ person }}">{{ person.full_name }}</option>
                            {% endfor %}
                         </select>
                       </div><div class="form-group has-feedback">
@@ -257,7 +45,7 @@
                       </div>
                     <div class="form-group has-feedback">
                           <label for="id_asset_debt">Borç Miktarı : </label>
-                        <input type="text" class="form-control" placeholder="Fatura Açıklaması" name="asset_debt" required id="id_asset_debt" value="{{ form.asset_debt.value }}" max="100000">
+                        <input type="text" class="form-control" placeholder="Borç Miktarı" name="asset_debt" required id="id_asset_debt" value="{{ form.asset_debt.value }}" max="100000">
                         <span class="fa fa-money form-control-feedback"></span>
                       </div>
                   <div class="form-group has-feedback">
@@ -266,7 +54,7 @@
                         <span class="glyphicon glyphicon-comment form-control-feedback"></span>
                       </div>
                   <div class="form-group has-feedback">
-                          <label for="id_asset_type">Ödeme Türü : </label><select name="asset_type" class="form-control" style="height: 40px" required id="id_asset_type">
+                          <label for="id_asset_type">Ödeme Türü : </label><select name="asset_type" class="form-control select2" style="height: 40px" required id="id_asset_type">
                           <option value="{{ form.asset_type.value }}" selected></option>
                           {% for asset_type in form.asset_type_list %}
                               <option value="{{ asset_type.0 }}">{{ asset_type.1 }}</option>
@@ -292,30 +80,4 @@
                 </div>
         </div></div>
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-     Made by <b>Talha Çelik</b>
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
-  </footer>
-
-  <!-- Control Sidebar -->side>
-
-  <div class="control-sidebar-bg"></div>
-</div>
-
-
-</body>
-</html>
-
-
-
-
-
+{% endblock %}

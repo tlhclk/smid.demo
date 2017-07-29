@@ -1,18 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Details - {{ liability.liability_name }}</title>
-</head>
-<body>
-<h1>{{ liability.record_no }}</h1>
-<h1>{{ liability.liability_type }}</h1>
-<h1>{{ liability.person_id }}</h1>
-<h1>{{ liability.liability_name }}</h1>
-<h1>{{ liability.liability_desc }}</h1>
-<h1>{{ liability.liability_date }}</h1>
-<h1>{{ liability.liability_lastday }}</h1>
-<h1>{{ liability.liability_return }}</h1>
-<h1>{{ liability.liability_penalty }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/document_panel/liability_table"><i class="fa fa-table"></i> Emanet Tablosu</a></li>
+          <li class="active">Emanet Detayı: {{ liability.id }}</li>
+      </ol>
+
+    </section>
+  <section class="content">
+    <!-- Main content -->
+    <div class="content">
+      <!-- Your Page Content Here -->
+        <!-- left column -->
+
+    <div class="row">
+            <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3><b>Emanet No: </b>{{ liability.id }}</h3>
+                    <h3><b>Öğrenci No: </b>{{ liability.person_id.full_name }}</h3>
+                    <h3><b>Emanet Türü:  </b>{{ liability.liability_type_name }}</h3>
+                    <h3><b>Emanet Açıklaması:  </b>{{ liability.liability_desc }}</h3>
+                    <h3><b>Verilme Tarihi: </b>{{ liability.liability_date }}</h3>
+                    <h3><b>Son Teslim Tarihi: </b>{{ liability.liability_lastday }}</h3>
+                    <h3><b>Teslim Edilen Tarih: </b>{{ liability.liability_return }}</h3>
+                    <h3><b>Ceza Miktarı: </b>{{ liability.liability_penalty }}</h3>
+                </div>
+            </div></div>
+    </div>
+
+    <!-- /.content -->
+    </div>
+    </section>{% endblock %}

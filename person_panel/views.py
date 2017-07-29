@@ -10,8 +10,6 @@ from operation_panel.models import StudentLeaveModel
 import datetime
 
 
-def options_menu(request):
-    return render(request,'person_panel/option_menu.html')
 
 def add_student(request):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
@@ -31,8 +29,7 @@ def add_student(request):
                 room_no.save()
                 formstudent.save()
             return redirect('http://127.0.0.1:8000/account_panel/asset_add/')
-        #student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
-        return render(request, 'person_panel/add_student.html', {'form': formstudent,'model_info':StudentInfoModel})
+        return render(request, 'person_panel/add_student.html', {'form': formstudent,'model_info':StudentInfoModel,'title':'Yeni Öğrenci Kaydı'})
     else:
         return HttpResponse('You has no authorization to add a student')
 
@@ -40,28 +37,14 @@ def detail_student(request,student_id):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
         student = StudentInfoModel.objects.get( pk=student_id)
         user = User.objects.get(username=student.student_email)
-        parent = ParentInfoModel.objects.filter(person_id=student_id)
-        leave_boolean=True
-        return render(request, 'person_panel/detail_student.html', {'student': student, 'user':user,'parent':parent,'show':True,'leave_boolean':leave_boolean})
-
-    elif request.user.has_perm('person_panel.view_profile'):
-        student = StudentInfoModel.objects.get( pk=student_id)
-        user = User.objects.get(username=student.student_email)
-        leave_boolean=None
-        if len(StudentLeaveModel.objects.filter(student_id=student_id))!=0:
-            for permi in StudentLeaveModel.objects.filter(student_id=student_id):
-                if datetime.datetime.strptime(str(permi.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),'%Y-%m-%d')<=datetime.datetime.strptime(str(permi.leave_end),"%Y-%m-%d"):
-                    leave_boolean=permi.leave_start,permi.leave_end
-        return render(request, 'person_panel/detail_student.html', {'student': student, 'user': user,'leave_boolean':leave_boolean})
-
+        parent = ParentInfoModel.objects.filter(student_id=student_id)
+        return render(request, 'person_panel/detail_student.html', {'student': student, 'user':user,'parent':parent,'title':'Öğrenci Detayı'})
     else: return HttpResponse('You has no authorization to view student profile <a href="../"> Go back</a>')
 
 def table_student(request):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
         student_list=StudentInfoModel.objects.all()
-        all_in,all_all=(len(StudentInfoModel.objects.filter(student_position=True)),len(StudentInfoModel.objects.all()))
-        #return render(request, 'person_panel/table_student.html', {'student_list':student_list,'all_in':all_in,'all_all':all_all})
-        return  render(request, 'person_panel/table_student.html',{'student_list':student_list})
+        return  render(request, 'person_panel/table_student.html',{'student_list':student_list, 'title': 'Öğrenci Tablosu'})
     else: return HttpResponse('You has no authorization to view student info list')
 
 def edit_student(request,student_id):
@@ -72,7 +55,7 @@ def edit_student(request,student_id):
                 formstudent.save()
                 return redirect('../')
         formstudent=StudentInfoForm(instance=StudentInfoModel.objects.get(pk=student_id))
-        return render(request,'person_panel/add_student.html',{'form':formstudent,'model_info':StudentInfoModel})
+        return render(request,'person_panel/add_student.html',{'form':formstudent,'model_info':StudentInfoModel,'title':'Öğrenci Ekleme'})
     else: return HttpResponse('You has no authorization to change student info')
 
 def delete_student(request,student_id):
@@ -115,7 +98,7 @@ def add_parent(request):
             if formparent.is_valid():
                 formparent.save()
             return redirect('http://127.0.0.1:8000/person_panel/parent_table')
-        return render(request, 'person_panel/add_parent.html', {'form':formparent,'model_info':StudentInfoModel.objects.all()})
+        return render(request, 'person_panel/add_parent.html', {'form':formparent,'model_info':StudentInfoModel.objects.all(), 'title':'Veli Kaydı'})
     else: return HttpResponse('You has no authorization to add a parent')
 
 def detail_parent(request,parent_id):
@@ -124,17 +107,17 @@ def detail_parent(request,parent_id):
             parent_list=ParentInfoModel.objects.filter(student_id=parent_id)
             if len(parent_list)!=0:
                 parent=parent_list[0]
-                return render(request, 'person_panel/detail_parent.html', {'parent': parent})
+                return render(request, 'person_panel/detail_parent.html', {'parent': parent,'title':'Veli Detay'})
             return redirect('http://127.0.0.1:8000/person_panel/parent_table')
         else:
             parent = ParentInfoModel.objects.get( pk=parent_id)
-            return render(request, 'person_panel/detail_parent.html', {'parent': parent})
+            return render(request, 'person_panel/detail_parent.html', {'parent': parent,'title':'Veli Detay'})
     else: return HttpResponse('You has no authorization to view parent profile <a href="../"> Go back</a>')
 
 def table_parent(request):
     if request.user.has_perm('person_panel.view_parentinfomodel'):
         parent_list=ParentInfoModel.objects.all()
-        return render(request, 'person_panel/table_parent.html', {'parent_list':parent_list})
+        return render(request, 'person_panel/table_parent.html', {'parent_list':parent_list, 'title':'Veli Tablosu'})
     else: return HttpResponse('You has no authorization to view parent info list')
 
 def edit_parent(request,parent_id):
@@ -145,7 +128,7 @@ def edit_parent(request,parent_id):
             if formparent.is_valid():
                 formparent.save()
                 return redirect('../')
-        return render(request,'person_panel/add_parent.html',{'form':formparent})
+        return render(request,'person_panel/add_parent.html',{'form':formparent, 'title':'Veli Ekleme'})
         #return render(request,'person_panel/edit_parent.html',{'parent':parent})
     else: return HttpResponse('You has no authorization to change parent info')
 
@@ -172,7 +155,7 @@ def add_personal(request):
                 new_user_add(first_name, last_name, email,id,group_id=3)
                 formpersonal.save()
                 return redirect('http://127.0.0.1:8000/person_panel/personal_table')
-        return render(request, 'person_panel/add_personal.html', {'form': formpersonal,'model_info':PersonIDInfoModel.objects.all(),'city_list':PersonIDInfoModel.city_list,'blood_type_list':StudentInfoModel.blood_type_list})
+        return render(request, 'person_panel/add_personal.html', {'form': formpersonal,'model_info':PersonIDInfoModel.objects.all(),'city_list':PersonIDInfoModel.city_list,'blood_type_list':StudentInfoModel.blood_type_list,'title':'Veli Ekleme'})
     else:
         return HttpResponse('You has no authorization to add a personal')
 
@@ -180,25 +163,26 @@ def detail_personal(request,personal_id):
     if request.user.has_perm('person_panel.view_personalinfomodel'):
         personal = PersonalInfoModel.objects.get( pk=personal_id)
         user = User.objects.get(pk=personal_id)
-        return render(request, 'person_panel/detail_personal.html', {'personal': personal, 'user': user})
+        return render(request, 'person_panel/detail_personal.html', {'personal': personal, 'user': user, 'title':'Personel Detayı'})
 
     else: return HttpResponse('You has no authorization to view personal profile <a href="../"> Go back</a>')
 
 def table_personal(request):
     if request.user.has_perm('person_panel.view_personalinfomodel'):
         personal_list=PersonalInfoModel.objects.all()
-        return render(request, 'person_panel/table_personal.html', {'personal_list':personal_list})
+        return render(request, 'person_panel/table_personal.html', {'personal_list':personal_list, 'title':'Personel Tablosu'})
     else: return HttpResponse('You has no authorization to view personal info list')
 
 def edit_personal(request,personal_id):
     if request.user.has_perm('person_panel.change_personalinfomodel'):
         if request.method == "POST":
             formpersonal =PersonalInfoForm(request.POST,instance=PersonalInfoModel.objects.get(pk=personal_id))
+            print (formpersonal)
             if formpersonal.is_valid():
                 formpersonal.save()
                 return redirect('../personal_table/')
         formpersonal = PersonalInfoForm(instance=PersonalInfoModel.objects.get(pk=personal_id))
-        return render(request,'person_panel/add_personal.html',{'form':formpersonal})
+        return render(request,'person_panel/add_personal.html',{'form':formpersonal,'model_info':PersonIDInfoModel.objects.all(),'city_list':PersonIDInfoModel.city_list,'blood_type_list':StudentInfoModel.blood_type_list,'title':'Personel Ekleme'})
     else: return HttpResponse('You has no authorization to change personal info')
 
 def delete_personal(request,personal_id):
@@ -220,7 +204,7 @@ def multiple_add(request):
     else:
         form1=StudentInfoForm(prefix='std')
         form2=PersonIDInfoForm(request.POST,prefix='prsn')
-        return render(request,'person_panel/default_form.html',{'form1':form1,'form2':form2})
+        return render(request,'person_panel/default_form.html',{'form1':form1,'form2':form2,'title':'Personel Paneli'})
 
 def add_person_id(request):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
@@ -231,14 +215,14 @@ def add_person_id(request):
                 formstudent.save()
             return redirect('http://127.0.0.1:8000/person_panel/student_add/')
         #student_new_id = int(StudentInfoModel.objects.all().order_by('-id')[0].id)+1
-        return render(request, 'person_panel/add_person_id.html', {'form': formstudent,'model_info':PersonIDInfoModel})
+        return render(request, 'person_panel/add_person_id.html', {'form': formstudent,'model_info':PersonIDInfoModel,'title':'Kişi Ekleme'})
     else:
         return HttpResponse('You has no authorization to add a student')
 
 def table_person_id(request):
     if request.user.has_perm('person_panel.view_personidinfomodel'):
         person_id_list=PersonIDInfoModel.objects.all()
-        return render(request, 'person_panel/table_person_id.html', {'person_id_list':person_id_list})
+        return render(request, 'person_panel/table_person_id.html', {'person_id_list':person_id_list,'title':'Kişi Tablosu'})
     else: return HttpResponse('You has no authorization to view person_id info list')
 
 def edit_person_id(request,person_id):
@@ -249,7 +233,7 @@ def edit_person_id(request,person_id):
                 formperson_id.save()
                 return redirect('http://127.0.0.1:8000/person_panel/person_id_table')
         formperson_id = PersonIDInfoForm(instance=PersonIDInfoModel.objects.get(pk=person_id))
-        return render(request,'person_panel/add_person_id.html',{'form':formperson_id,'model_info':PersonIDInfoModel})
+        return render(request,'person_panel/add_person_id.html',{'form':formperson_id,'model_info':PersonIDInfoModel,'title':'Kişi Ekleme'})
     else: return HttpResponse('You has no authorization to change person_id info')
 
 def delete_person_id(request,person_id):
@@ -265,15 +249,15 @@ def show_profile(request,person_id):
             student=StudentInfoModel.objects.get(pk=person_id)
             user=User.objects.get(pk=person_id)
             person_id=PersonIDInfoModel.objects.get(pk=student.student_tcn.id)
-            return render(request,'person_panel/detail_student.html',{'student':student,'user':user,'person_id':person_id})
+            return render(request,'person_panel/detail_student.html',{'student':student,'user':user,'person_id':person_id,'title':'Öğrenci Detayı'})
     elif person_id[:4]=='1703':
         if request.user.has_perm('person_panel.view_personalinfomodel'):
             personal=PersonalInfoModel.objects.get(pk=person_id)
             user=User.objects.get(pk=person_id)
-            return render(request,'person_panel/detail_personal.html',{'personal':personal,'user':user})
+            return render(request,'person_panel/detail_personal.html',{'personal':personal,'user':user, 'title':'Personel Detayı'})
     elif person_id[:4]=='1704':
         if request.user.has_perm('person_panel.view_parentinfomodel'):
             parent=ParentInfoModel.objects.get(pk=person_id)
             student=StudentInfoModel.objects.get(pk=parent.person_id.id)
-            return render(request,'person_panel/detail_parent.html',{'student':student,'parent':parent})
+            return render(request,'person_panel/detail_parent.html',{'student':student,'parent':parent, 'title':'Veli Detayı'})
     else: return HttpResponse('Aranan Kayıt Bulunanamadı')
