@@ -73,7 +73,7 @@
                 </div>
                 <div class="form-group">
                 <label for="id_s_birthday">Doğum Tarihi:</label>
-                  <input type="text" class="form-control pull-right" name="s_birthday" id="id_s_birthday" value="{{ form.s_birthday.value }}" data-inputmask='"mask": "9999-99-99 99:99:99"' data-mask>
+                  <input type="text" class="form-control pull-right date-picker" name="s_birthday" id="id_s_birthday" value="{{ form.s_birthday.value.year }}-{{ form.s_birthday.value.month }}-{{ form.s_birthday.value.day }}" maxlength="10">
 
                 <!-- /.input group -->
               </div>

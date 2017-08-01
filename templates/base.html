@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+  <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
   <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
   <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
 
@@ -46,6 +48,11 @@
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
 
+<script src="/static/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/static/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
 
   <script type="text/javascript">
@@ -56,9 +63,11 @@ $(document).ready(function() {
           "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
         "order": [[ 0, "order" ]],
         responsive: true,
-        dom: 'Bfrtlip',
-        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'],
-          lenghtMenu:[[10,25,50,-1],[10,25,50,"All"]]
+{#	dom:'Bftrlip',#}
+		dom: "<'row'<'col-sm-6 col-lg-3'B><'col-sm-1 col-lg-9'f>>" +
+		"<'row'<'col-lg-12'tr>>" +
+		"<'row'<'col-sm-2 col-lg-2'l><'col-sm-4 col-lg-4'i><'col-sm-6 col-lg-6'p>>",
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
 
       }
     );
@@ -67,6 +76,13 @@ $(document).ready(function() {
     $(".select2").select2();
 
     $("[data-mask]").inputmask();
+
+    $('.date-picker').datepicker({timePicker:true,
+      autoclose: true,format: 'yyyy-mm-dd'
+    });
+
+    $('.datetime-picker').datetimepicker({format: 'YYYY-mm-DD HH:M:ss'
+    });
 
 
 } );
@@ -96,22 +112,21 @@ $(document).ready(function() {
       <div class="nav navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-            {% if request.user != 'Anonymous' %}
+            {% if request.user.username %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="user-image" alt="User Image">
+              <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user }}.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/profile_pic/heiwajima_shizou.jpg" class="img-circle" alt="User Image">
+                <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user }}.jpg" class="img-circle" alt="User Image">
                 <p>
                   {{ request.user.first_name }} {{ request.user.last_name }}
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
-
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
@@ -125,8 +140,9 @@ $(document).ready(function() {
               </li>
             </ul>
           </li>
+
                 {% else %}
-                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login">Giriş Yap</a></li>
+                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login/">Giriş Yap</a></li>
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
@@ -151,11 +167,11 @@ $(document).ready(function() {
       </form>
       <!-- /.search form -->
 
+        {% if request.user.groups.all.0.id == 2 %}
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">İşlemler</li>
         <!-- Optionally, you can add icons to the links -->
-          {% if request.user.groups.all.0.id == 2 %}
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
             <span class="pull-right-container">
@@ -163,10 +179,10 @@ $(document).ready(function() {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/account_panel/account_table">Genel Hesap Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/asset_table">Öğrenci Ödeme Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table">İşlem Geçmişi</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/bill_table">Fatura Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/account_table/">Genel Hesap Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/asset_table/">Öğrenci Ödeme Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/">İşlem Geçmişi</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/bill_table/">Fatura Tablosu</a></li>
           </ul>
         </li>
           <li class="treeview">
@@ -186,7 +202,7 @@ $(document).ready(function() {
           </a>
           <ul class="treeview-menu">
             <li><a href="http://127.0.0.1:8000/document_panel/document_table/">Dosya Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/document_panel/liability_table">Emanet Eşya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/document_panel/liability_table/">Emanet Eşya Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>İşlemler</span>
@@ -195,10 +211,10 @@ $(document).ready(function() {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table">Yoklama Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/mail_send">Toplu Mail Yollama</a></li>
-            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml">EGM Dosyası Oluşturma</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table/">Yoklama Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table/">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/mail_send/">Toplu Mail Yollama</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml/">EGM Dosyası Oluşturma</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Kişi Bilgileri</span>
@@ -207,10 +223,10 @@ $(document).ready(function() {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/person_panel/student_table">Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/parent_table">Veli Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/personal_table">Personel Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table">Kimlik Kartı Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/student_table/">Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/parent_table/">Veli Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/personal_table/">Personel Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/person_panel/person_id_table/">Kimlik Kartı Tablosu</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Raporlar</span>
@@ -221,10 +237,10 @@ $(document).ready(function() {
           <ul class="treeview-menu">
             <li><a href="http://127.0.0.1:8000/report_panel/attendance_table/-">Yoklama Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/report_panel/capacity/">Kontenjan Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/room_plan">Yurt Planı</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/contact_table">Rehber</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/leave_table">İzinli Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/calendar">Takvim</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/room_plan/">Yurt Planı</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/contact_table/">Rehber</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/leave_table/">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/calendar/">Takvim</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>
@@ -233,12 +249,46 @@ $(document).ready(function() {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/stock_panel/room_table">Oda Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000/stock_panel/fixture_table">Eşya Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/stock_panel/room_table/">Oda Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/stock_panel/fixture_table/">Eşya Tablosu</a></li>
           </ul>
         </li>
-          {% endif %}
       </ul>
+          {% elif request.user.groups.all.0.id == 1 %}
+
+      <ul class="sidebar-menu">
+        <li class="header">Öğrenci İşlemleri</li>
+        <li class="treeview">
+          <a href="http://127.0.0.1:8000/person_panel/student/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Profil</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+
+        <li class="treeview">
+          <a href="http://127.0.0.1:8000/account_panel/asset/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Ödeme Planı</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="http://127.0.0.1:8000/stock_panel/room/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Oda Bilgileri</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="http://127.0.0.1:8000/operation_panel/mail_send/info@kampuscity.com"><i class="fa fa-link"></i> <span>Yöneticiye Mail</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+      </ul>
+          {% endif %}
       <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

@@ -47,16 +47,16 @@
                 <!-- /.input group -->
               </div>
                 <div class="form-group">
-                    <label for="id_personal_email">E-mail Adresi: </label>
-                    <input type="email" class="form-control" placeholder="E-mail Adresi" name="personal_email" required id="id_personal_email" value="{{ form.personal_email.value }}" maxlength="50">
+                    <label for="id_e_mail">E-mail Adresi: </label>
+                    <input type="email" class="form-control" placeholder="E-mail Adresi" name="e_mail" required id="id_e_mail" value="{{ form.e_mail.value }}" maxlength="50">
                 </div>
                 <div class="form-group">
-                    <label for="id_personal_startday">İşe Başlama Tarihi: </label>
-                    <input type="text" class="form-control" placeholder="İşe Başlama Tarihi" name="personal_startday" required id="id_personal_startday" value="{{ form.personal_startday.value }}" maxlength="20" data-inputmask='"mask":"9999-99-99"' data-mask>
+                    <label for="id_personal_startday">İşe Başlama Tarihi: {{ form.personal_startday.value }} </label>
+                  <input type="text" class="form-control date-picker"  name="personal_startday" required id="id_personal_startday" value="{{ form.personal_startday.value.year }}-{{ form.personal_startday.value.month }}-{{ form.personal_startday.value.day }}" maxlength="10">
                 </div>
                 <div class="form-group">
-                    <label for="id_personal_endday">İşten Ayrılma Tarihi: </label>
-                    <input type="text" class="form-control" placeholder="İşten Ayrılma Tarihi" name="personal_endday" id="id_personal_endday" value="{{ form.personal_endday.value }}" maxlength="20" data-inputmask='"mask": "9999-99-99"' data-mask>
+                    <label for="id_personal_endday">İşten Ayrılma Tarihi:  </label>
+                  <input type="text" class="form-control pull-right date-picker" name="personal_endday" id="id_personal_endday" value="{% if form.personal_endday.value %}{{ form.personal_endday.value.year }}-{{ form.personal_endday.value.month }}-{{ form.personal_endday.value.day }}{% endif %}" maxlength="10">
                 </div>
                 <div class="form-group">
                     <label for="id_personal_city">Yaşadığı Şehir: </label>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="form-group">
                     <label for="id_image_field">Profil Resmi: </label>
-                    <input type="file" class="form-control" placeholder="Profil Resmi" name="image_field" required id="id_image_field" value="{{ form.image_field.value }}" maxlength="50">
+                    <input type="file" class="form-control" placeholder="Profil Resmi" name="image_field" id="id_image_field" value="{{ form.image_field.value }}" maxlength="50">
                 </div>
 
                         <div class="col-xs-12">

@@ -5,9 +5,12 @@ from django.db import models
 import datetime
 from person_panel.models import StudentInfoModel
 
-
 def get_time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.now()
+
+def get_date():
+    return datetime.date.today()
+
 
 class PersonAssetInfoModel(models.Model):
     asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
@@ -33,7 +36,7 @@ class PersonAssetInfoModel(models.Model):
 
 class AccountInfoModel(models.Model):
     account_type_list=[('1','Vadesiz Banka Hesabı'),('2','Vadeli Banka Hesabı'),('3','Nakit'),('4','Senet'),('5','Çek'),('6','Kredi Kartı Hesabı')]
-    bank_code=[('149','Suadiye-HalkBank')]
+    bank_code=[('149','HalkBank'),('150','Vakıfbank'),('151','Yapı Kredi'),('152','Ziraat Bankası'),('153','İş Bankası'),('154','Akbank')]
     account_no=models.CharField(max_length=10,verbose_name='Account No: ',primary_key=True)
     account_name=models.CharField(max_length=20,verbose_name='Account Name: ',default='')
     account_type=models.CharField(max_length=40,verbose_name='Account Type: ',choices=account_type_list)
@@ -62,7 +65,7 @@ class BillInfoModel(models.Model):
     bill_desc=models.CharField(max_length=100,verbose_name='Bill Description: ',default='')
     bill_address=models.CharField(max_length=200,verbose_name='Bill Adress: ',default='')
     bill_period=models.CharField(max_length=10,verbose_name='Bill Period: ',default='')
-    bill_lastday=models.DateTimeField(default=get_time)
+    bill_lastday=models.DateField(default=get_date,max_length=10)
 
     class Meta:
         db_table='bill_info'
@@ -80,7 +83,7 @@ class TransactionInfoModel(models.Model):
     transaction_type = models.CharField(max_length=10, choices=transaction_type_list,verbose_name='İşlem Türü', default='1')
     transaction_amount = models.CharField(max_length=10, verbose_name='İşlem Miktarı',default='')
     transaction_time = models.DateTimeField(default=get_time,verbose_name='İşlem Zamanı')
-    transaction_desc = models.CharField(max_length=100, verbose_name='İşlem Açıklaması',default='')
+    transaction_desc = models.CharField(max_length=100, verbose_name='İşlem Açıklaması',null=True,blank=True,default='')
 
     class Meta:
         db_table = 'transaction_info'

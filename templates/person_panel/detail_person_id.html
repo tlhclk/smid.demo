@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/person_panel/person_id_table"><i class="fa fa-table"></i> Kimlik Tablosu</a></li>
+          <li class="active">Kimlik Detayı: {{ person.s_tcn }}</li>
+      </ol>
+
+    </section>
+  <section class="content">
+    <!-- Main content -->
+    <div class="content">
+      <!-- Your Page Content Here -->
+    <div class="row">
+            <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <span>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">{{ person.full_name }}</h1>
+                    </span></div>
+                <div class="box-body" style="column-count: 2">
+                    <div class="media">
+                        <div align="center">
+                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ person_info.image_field }}" width="300px">
+                        </div>
+                    </div>
+                    <h3><b>Tc Kimlik Numarası:  </b><a href="http://127.0.0.1:8000/person_panel/{{ person.s_tcn }}">{{ person.s_tcn }}</a></h3>
+                    <h3><b>Adı :  </b>{{ person.s_name }}</h3>
+                    <h3><b>Soyadı :  </b>{{ person.s_lastname }}</h3>
+                    <h3><b>Baba Adı : </b>{{ person.s_father }}</h3>
+                    <h3><b>Ana Adı : </b>{{ person.s_mother }}</h3>
+                    <h3><b>Doğum Yeri : </b>{{ person.birth_city_name }}</h3>
+                    <h3><b>Doğum Tarihi :</b>{{ person.s_birthday }}</h3>
+                    <h3><b>&nbsp</b></h3>
+                    <h3><b>&nbsp</b></h3>
+                    <h3><b>&nbsp</b></h3>
+                    <h3><b>Uyruk : </b>{{ person.s_nation_name }}</h3>
+                    <h3><b>Kimlik Türü : </b>{{ person.s_idcard_type_name }}</h3>
+                    <h3><b>Cinsiyet : </b>{{ person.s_gender_name }}</h3>
+                    <h3><b>Medeni Hali : </b>{{ person.s_medeni_hali_name }}</h3>
+                    <h3><b>Kayıtlı Olduğu İl : </b>{{ person.s_register_vilage }}</h3>
+                    <h3><b>Kayıtlı Olduğu İlçe : </b>{{ person.s_register_town }}</h3>
+                    <h3><b>Kayıtlı Olduğu Mahalle : </b>{{ person.s_register_distinct }}</h3>
+                    <h3><b>Cilt No</b>{{ person.s_nufus_cilt }}</h3>
+                    <h3><b>Aile Sıra No</b>{{ person.s_nufus_ailesira }}</h3>
+                    <h3><b>Sıra No:  </b>{{ person.s_nufus_sirano }}</h3>
+                </div>
+            </div></div>
+    </div>
+
+    <!-- /.content -->
+    </div>
+    </section>
+    {% endblock %}

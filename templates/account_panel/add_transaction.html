@@ -47,12 +47,12 @@
                         <span class="fa fa-money form-control-feedback"></span>
                       </div>
                       <div class="form-group has-feedback"><label for="id_transaction_time">İşlem Zamanı : </label>
-                          <input type="text" class="form-control" placeholder="İşlem Zamanı" name="transaction_time" required id="id_transaction_time" value="{{ form.transaction_time.value }}"  data-inputmask='"mask": "9999-99-99 99:99:99"' data-mask>
+                          <input type="text" class="form-control datetime-picker" placeholder="İşlem Zamanı" name="transaction_time" required id="id_transaction_time" value="{{ form.transaction_time.value.year }}-{{ form.transaction_time.value.month }}-{{ form.transaction_time.value.day }} {{ form.transaction_time.value.hour }}:{{ form.transaction_time.value.minute }}:{{ form.transaction_time.value.second }}">
                             <span class="fa fa-calendar form-control-feedback"></span>
                       </div>
                       <div class="form-group has-feedback">
                           <label for="id_transaction_desc">İşlem Açıklaması : </label>
-                        <input type="text" class="form-control" placeholder="İşlem Açıklaması" name="transaction_desc" required id="id_transaction_desc" value="{{ form.transaction_desc.value }}" maxlength="100">
+                        <input type="text" class="form-control" placeholder="İşlem Açıklaması" name="transaction_desc" id="id_transaction_desc" value="{{ form.transaction_desc.value }}" maxlength="100">
                         <span class="glyphicon glyphicon-comment form-control-feedback"></span>
                       </div>
                       <div class="row">

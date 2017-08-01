@@ -62,7 +62,7 @@
                       </div>
                       <div class="form-group has-feedback">
                           <label for="id_bill_lastday">Fatura Son Ödeme Tarihi : </label>
-                          <input type="text" class="form-control" placeholder="Fatura Son Ödeme Tarihi" name="bill_lastday" required id="id_bill_lastday" value="{{ form.bill_lastday.value }}">
+                          <input type="text" class="form-control date-picker" placeholder="Fatura Son Ödeme Tarihi" name="bill_lastday" required id="id_bill_lastday" value="{{ form.bill_lastday.value.year }}-{{ form.bill_lastday.value.month }}-{{ form.bill_lastday.value.day }}">
                         <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                       </div>
                       <div class="row">

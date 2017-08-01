@@ -20,14 +20,12 @@ class ParentInfoForm(forms.ModelForm):
 
 
 class PersonalInfoForm(forms.ModelForm):
-    personal_startday=forms.DateField(input_formats=('%Y-%m-%d'),initial=datetime.date.today().strftime('%Y-%m-%d'))
-    personal_endday=forms.DateField(input_formats=('%Y-%m-%d'))
     class Meta:
         model=PersonalInfoModel
         fields=('id',
                 'personal_tcn',
                 'personal_phone',
-                'personal_email',
+                'e_mail',
                 'personal_startday',
                 'personal_endday',
                 'personal_city',
@@ -71,7 +69,7 @@ class StudentInfoForm(forms.ModelForm):
                 'student_position',
                 'student_tcn',
                 'student_phone',
-                'student_email',
+                'e_mail',
                 'student_regday',
                 'student_city',
                 'student_town',
@@ -83,7 +81,7 @@ class StudentInfoForm(forms.ModelForm):
                 'blood_type',
                 'health_notes',
                 'special_notes',
-                'file_field',
+                'image_field',
                 )
 
     # def clean_room_number(self):
@@ -95,4 +93,3 @@ class StudentInfoForm(forms.ModelForm):
     #         print (room_people, room_max)
     #     else:
     #         raise forms.ValidationError('Room has no quota',code='Room overload')
-

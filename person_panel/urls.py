@@ -5,12 +5,12 @@ from . import views
 app_name='person_panel'
 urlpatterns = [
     url(r'^student_add', views.add_student, name='Add Student'),
-    url(r'^student/(?P<student_id>[0-9]+)/', views.detail_student, name='Student Details'),
+    url(r'^student/(?P<student_id>[0-9]+)', views.detail_student, name='Student Details'),
     url(r'^student_table/', views.table_student, name='Student Table'),
     url(r'^student_edit/(?P<student_id>[0-9]+)', views.edit_student, name='Student Edit'),
     url(r'^student_delete/(?P<student_id>[0-9]+)', views.delete_student, name='Student Delete'),
     url(r'^parent_add/',views.add_parent,name='Add Parent'),
-    url(r'^parent/(?P<parent_id>[0-9]+)/', views.detail_parent, name='parent Details'),
+    url(r'^parent/(?P<parent_id>[0-9]+)', views.detail_parent, name='parent Details'),
     url(r'^parent_table/', views.table_parent, name='parent Table'),
     url(r'^parent_edit/(?P<parent_id>[0-9]+)', views.edit_parent, name='parent Edit'),
     url(r'^parent_delete/(?P<parent_id>[0-9]+)', views.delete_parent, name='parent Delete'),
@@ -23,6 +23,6 @@ urlpatterns = [
     url(r'^person_id_table/', views.table_person_id, name='person id Table'),
     url(r'^person_id_edit/(?P<person_id>[0-9]+)', views.edit_person_id, name='person id Edit'),
     url(r'^person_id_delete/(?P<person_id>[0-9]+)', views.delete_person_id, name='person id Delete'),
-    url(r'^multiple/',views.multiple_add,name='Multiple'),
-    url(r'^(?P<person_id>[0-9]+)/',views.show_profile,name='')
+    url(r'^person_id/(?P<person_id>[0-9]+)',views.detail_person_id,name='person id detay'),
+    url(r'^(?P<person_id>[0-9]+)',views.show_profile,name='')
 ]

@@ -6,22 +6,26 @@ import datetime
 from person_panel.models import StudentInfoModel
 
 def get_time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.now()
+
+def get_date():
+    return datetime.date.today()
 
 class StudentLeaveModel(models.Model):
-    person_list=[]
-    #leave_id=models.CharField(max_length=10,primary_key=True,verbose_name='leave_id: ')
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Permitted Person: ')
     #person_id=models.CharField(max_length=10,blank=True,null=True)
-    leave_start=models.DateTimeField(verbose_name='leave Start: ',default=get_time)
-    leave_end=models.DateTimeField(verbose_name='leave End: ',default='2017-07-05')
-    leave_reason=models.CharField(max_length=100,verbose_name='leave Reason: ',blank=True)
+    leave_start=models.DateField(verbose_name='leave Start: ',default=get_date)
+    leave_end=models.DateField(verbose_name='leave End: ',default=get_date)
+    leave_reason=models.CharField(max_length=100,verbose_name='leave Reason: ',blank=True,default='',null=True)
 
     class Meta:
         db_table='student_leave'
 
     def __str__(self):
         return  str(self.id)
+
+    def person_list(self):
+        return StudentInfoModel.objects.all()
 
 class AttendanceInfoModel(models.Model):
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')

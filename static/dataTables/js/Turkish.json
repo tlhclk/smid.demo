@@ -2,13 +2,13 @@
 
 {
 	"sProcessing":   "İşleniyor...",
-	"sLengthMenu":   "Sayfada _MENU_ Kayıt Göster",
+	"sLengthMenu":   "_MENU_ Kayıt Göster",
 	"sZeroRecords":  "Aranan Kayıt Bulunmadı",
-	"sInfo":         "  _TOTAL_ Kayıttan _START_ - _END_ Arası Kayıtlar",
+	"sInfo":         "  Toplam: _TOTAL_ Kayıt",
 	"sInfoEmpty":    "Kayıt Yok",
 	"sInfoFiltered": "( _MAX_ Kayıt İçerisinden Bulunan)",
 	"sInfoPostFix":  "",
-	"sSearch":       "Bul:",
+	"sSearch":       "Ara:",
 	"sUrl":          "",
 	"oPaginate": {
 		"sFirst":    "İlk",

@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render,redirect
 from django.core.files import File
 from .models import StudentLeaveModel,AttendanceInfoModel
-from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm,DateFindForm
-from person_panel.views import send_a_email
+from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
+from django.core import mail
 from person_panel.models import StudentInfoModel
 import datetime
 
@@ -13,13 +13,23 @@ def option_menu(request):
     return render(request,'operation_panel/option_menu.html')
 
 def add_student_leave(request):
-    leave_form=StudentLeaveForm()
-    if request.method=='POST':
-        leave_form = StudentLeaveForm(request.POST)
-        if leave_form.is_valid():
-            leave_form.save()
-            return redirect('../')
-    return render(request,'operation_panel/default_form.html',{'form':leave_form})
+    if request.user.has_perm('operation_panel.add_studentleavemodel'):
+        leave_form=StudentLeaveForm()
+        if request.method=='POST':
+            leave_form = StudentLeaveForm(request.POST)
+            if leave_form.is_valid():
+                leave_form.save()
+                return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
+        return render(request,'operation_panel/add_leave.html',{'form':leave_form,'title':'Yeni İzin Kaydı','model_info':StudentLeaveModel})
+    else:
+        return redirect('http://127.0.0.1:8000/home/')
+
+def table_student_leave(request):
+    if request.user.has_perm('operation_panel.view_studentleavemodel'):
+        leave_list=StudentLeaveModel.objects.all()
+        return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'İzin Tablosu'})
+    else:
+        return redirect('http://127.0.0.1:8000/home/')
 
 def add_attendance(request):
     formattendance=AttendanceInfoForm()
@@ -27,8 +37,8 @@ def add_attendance(request):
         formattendance=AttendanceInfoForm(request.POST)
         if formattendance.is_valid():
             formattendance.save()
-            return redirect('../../')
-    return render(request,'operation_panel/default_form.html',{'form':formattendance})
+            return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
+    return render(request,'operation_panel/default_form.html',{'form':formattendance,'model_info':'','title':'Yeni Yoklama Kaydı'})
 
 def table_attendance(request):
     record_list=AttendanceInfoModel.objects.all()
@@ -36,20 +46,21 @@ def table_attendance(request):
 
 def send_a_mail(request,person_mail):
     if request.method=='POST':
-        formmail=MailSendForm()
+        formmail=MailSendForm(request.POST)
+        print (formmail)
         if formmail.is_valid():
-            subject=request.POST['message_subject']
-            message=request.POST['message_content']
-            selected_people=request.POST.getlist('message_people')
-            written_people=request.POST['message_people_str'].split(', ')
+            subject=request.POST['subject']
+            message=request.POST['message']
+            selected_people=request.POST.getlist('people_selection')
+            written_people=request.POST['people_manual'].split(', ')
             to_ma=selected_people+written_people
-            send_a_email(to_ma,subject,message)
-            return redirect('../../')
+            mail.send_mail(subject,message,'tlhclk1312@gmail.com',to_ma)
+            return redirect('http://127.0.0.1:8000/home/')
     if person_mail:
         formmail=MailSendForm(initial={'people_manual':person_mail})
     else:
         formmail=MailSendForm()
-    return render(request,'operation_panel/default_form.html',{'form':formmail})
+    return render(request,'operation_panel/send_mail.html',{'form':formmail,'person_list':StudentInfoModel.objects.all(),'title':'Mail Gönder'})
 
 def change_student_position(request,student_id):
     student=StudentInfoModel.objects.get(pk=student_id)
@@ -58,37 +69,30 @@ def change_student_position(request,student_id):
     else:
         student.student_position=True
     student.save()
-    return redirect('../../student/%s'%student_id)
+    return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
 
 def create_egm_xml(request):
-    if request.method=='POST':
-        sstudent_list=request.POST.getlist('sstudent_list')
-        if len(sstudent_list)==0:
-            sstudent_list=StudentInfoModel.objects.all()
+    if request.user.has_perm('person_panel.delete_studentinfomodel'):
+        if request.method=='POST':
+            sstudent_list=request.POST.getlist('sstudent_list')
+            if len(sstudent_list)==0:
+                sstudent_list=StudentInfoModel.objects.all()
 
-        file2 = open('deneme.xml', 'w+')
-        file=File(file2)
-        file.write('<?xml version="1.0" encoding="utf-8"?><?hash DB1BE508AA9F2D9233C6E9BB06CDFD46?>')
-        file.write('<Konaklama TesisKodu="123" Tarih="' + str(datetime.datetime.now()) + '" GonderenProgram="SMiD" >')
-        for student in sstudent_list:
-            print (student)
-            # file.write('<Kisi SiraNo="'+student.id+'" TCKimlikNo="'+student.student_tcn+'" Adi="'+student.student_name+'" Soyadi="'+student.student_lastname+'" BabaAdi="'+student.student_father+'" '
-            #                                         'AnaAdi="'+student.student_mother+'" DoğumYeri="'+student.birth_place+'" Uyrugu="'+student.student_nation_name+'" KimlikBelgesiTuru="'+student.s_idcard_type_name+'" '
-            #                                        'NufasaKayitliOlduğuIl="'+student.s_register_vilage+'" NufusaKAyitliOlduguIlce="'+student.s_register_town+'" '
-            #                                         'NufusaKayitliOlduğuMahalle="'+student.s_register_distinct+'" Cinsiyet="'+student.s_gender+'" VerilenOdaNo="'+student.room_no.room_no+'" '
-            #                                         'NufusCilt="'+student.s_nufus_cilt+'" NufusAileSira="'+student.s_nufus_ailesira+'" NufusSiraNo="'+student.s_nufus_sirano+'" MedeniHali="'+student.s_medeni_hali+'" />')
-        file.write('</Konaklama>')
-        file.close()
-        file2.close()
-
-        print (sstudent_list)
-    student_list=StudentInfoModel.objects.all()
-    return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list})
-
-def show_form(request):
-    if request.method=='POST':
-        formasd=DateFindForm(request.POST)
-        print(formasd)
-        if formasd.is_valid():
-            print('oldu')
-    return render(request,'operation_panel/default_form.html',{'form':DateFindForm()})
+            file2 = open('deneme.xml', 'w+')
+            file=File(file2)
+            file.write('<?xml version="1.0" encoding="utf-8"?><?hash DB1BE508AA9F2D9233C6E9BB06CDFD46?>')
+            file.write('<Konaklama TesisKodu="123" Tarih="' + str(datetime.datetime.now()) + '" GonderenProgram="SMiD" >')
+            for student in sstudent_list:
+                print (student)
+                # file.write('<Kisi SiraNo="'+student.id+'" TCKimlikNo="'+student.student_tcn+'" Adi="'+student.student_name+'" Soyadi="'+student.student_lastname+'" BabaAdi="'+student.student_father+'" '
+                #                                         'AnaAdi="'+student.student_mother+'" DoğumYeri="'+student.birth_place+'" Uyrugu="'+student.student_nation_name+'" KimlikBelgesiTuru="'+student.s_idcard_type_name+'" '
+                #                                        'NufasaKayitliOlduğuIl="'+student.s_register_vilage+'" NufusaKAyitliOlduguIlce="'+student.s_register_town+'" '
+                #                                         'NufusaKayitliOlduğuMahalle="'+student.s_register_distinct+'" Cinsiyet="'+student.s_gender+'" VerilenOdaNo="'+student.room_no.room_no+'" '
+                #                                         'NufusCilt="'+student.s_nufus_cilt+'" NufusAileSira="'+student.s_nufus_ailesira+'" NufusSiraNo="'+student.s_nufus_sirano+'" MedeniHali="'+student.s_medeni_hali+'" />')
+            file.write('</Konaklama>')
+            file.close()
+            file2.close()
+        student_list=StudentInfoModel.objects.all()
+        return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list})
+    else:
+        return redirect('http://127.0.0.1:8000/home/')

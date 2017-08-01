@@ -3,7 +3,9 @@
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          {% if request.user.groups.all.0.id != 1 %}
         <li class="active"><a href="http://127.0.0.1:8000/person_panel/parent_table"><i class="fa fa-table"></i> Veli Tablosu</a></li>
+          {% endif %}
           <li class="active">Veli Detayı: {{ parent.id }}</li>
       </ol>
 

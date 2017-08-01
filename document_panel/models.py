@@ -4,18 +4,22 @@ from django.db import models
 from person_panel.models import StudentInfoModel,PersonalInfoModel
 import datetime
 
+
 def get_time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.now()
+
+def get_date():
+    return datetime.date.today()
 
 class DocumentInfoModel(models.Model):
     document_type_list=[('1','Kimlik Kartı'),('2','Sigorta'),('3','Fatura'),('4','İzin Kağıdı'),('5','Öğrenci Sertifikası'),]
     document_id=models.CharField(max_length=10,primary_key=True,verbose_name='Document Id: ',default='')
     #person_id=models.CharField(max_length=7,verbose_name='Person Id: ',null=False)
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person id: ')
-    document_date=models.DateTimeField(default=get_time,verbose_name='Document Record Date: ')
+    document_date=models.DateField(default=get_date,verbose_name='Document Record Date: ',max_length=10)
     document_type=models.CharField(max_length=20,verbose_name='Document Type: ',choices=document_type_list)
     document_description=models.CharField(max_length=100,verbose_name='Documnet Description: ',default='')
-    document_image=models.ImageField(default='',upload_to='document_image/',verbose_name='Documnet Image or Scan',max_length=100)
+    document_image=models.ImageField(default='',upload_to='document_image/',verbose_name='Documnet Image or Scan',max_length=100,blank=True)
 
     class Meta:
         db_table='documnet_info'
@@ -41,10 +45,10 @@ class LiabilityInfoModel(models.Model):
     #person_id=models.CharField(max_length=10,blank=True,null=True)
     liability_type=models.CharField(max_length=50,verbose_name='Liability Type: ',choices=fixture_type_list)
     #liability_name=models.CharField(max_length=50,verbose_name='Liability Name: ',default='')
-    liability_desc=models.CharField(max_length=100,verbose_name='Liability Description: ',default='')
-    liability_date=models.DateTimeField(default=get_time,verbose_name='Liability Day')
-    liability_lastday=models.DateTimeField(blank=True,verbose_name='Liability Last day',default=get_time)
-    liability_return=models.DateTimeField(blank=True,verbose_name='Liability Return day')
+    liability_desc=models.CharField(max_length=100,verbose_name='Liability Description: ',default='',blank=True)
+    liability_date=models.DateTimeField(default=get_time,verbose_name='Liability Day',max_length=20)
+    liability_lastday=models.DateTimeField(blank=True,verbose_name='Liability Last day',default=get_time,max_length=20)
+    liability_return=models.DateTimeField(blank=True,verbose_name='Liability Return day',default='',null=True)
     liability_penalty=models.CharField(max_length=30,blank=True,default='')
 
     class Meta:

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from .forms import FixtureInfoForm,RoomInfoForm
 from .models import FixtureInfoModel,RoomInfoModel
 from person_panel.models import StudentInfoModel
@@ -16,19 +15,19 @@ def add_fixture(request):
                 formfixture.save()
             return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
         return render(request,'stock_panel/add_fixture.html',{'formfixture':formfixture,'model_info':FixtureInfoModel,'title':'Yeni Eşya Kaydı'})
-    else: return HttpResponse('You have no Authoriztion')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def table_fixture(request):
     if request.user.has_perm('stock_panel.view_fixtureinfomodel'):
         fixture_list=FixtureInfoModel.objects.all()
         return render(request,'stock_panel/table_fixture.html',{'fixture_list':fixture_list,'title':'Eşya Tablosu'})
-    else: return HttpResponse('You have no Authoriztion')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def fixture_detail(request,fixture_no):
     if request.user.has_perm('stock_panel.view_fixtureinfomodel'):
         fixture=FixtureInfoModel.objects.get(pk=fixture_no)
         return render(request,'stock_panel/detail_fixture.html',{'fixture':fixture,'title':'Eşya Detayı'})
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def edit_fixture(request,fixture_no):
     if request.user.has_perm('stock_panel.change_fixtureinfomodel'):
@@ -39,14 +38,14 @@ def edit_fixture(request,fixture_no):
             return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
         formfixture = FixtureInfoForm(instance=FixtureInfoModel.objects.get(pk=fixture_no))
         return render(request,'stock_panel/add_fixture.html',{'formfixture':formfixture,'model_info':FixtureInfoModel,'title':'Eşya Düzenleme'})
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def delete_fixture(request,fixture_no):
     if request.user.has_perm('stock_panel.delete_fixtureinfomodel'):
         fixture=FixtureInfoModel.objects.get(fixture_no=fixture_no)
         fixture.delete()
         return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 
 def add_room(request):
@@ -59,13 +58,13 @@ def add_room(request):
                 formroom.save()
             return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
         return render(request,'stock_panel/add_room.html',{'formroom':formroom,'model_info':RoomInfoModel,'title':'Yeni Oda Kaydı'})
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def table_room(request):
     if request.user.has_perm('stock_panel.view_roominfomodel'):
         room_list=RoomInfoModel.objects.all()
         return render(request,'stock_panel/table_room.html',{'room_list':room_list,'title':'Oda Tablosu'})
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def room_detail(request,room_no):
     if request.user.has_perm('stock_panel.view_roominfomodel'):
@@ -74,7 +73,7 @@ def room_detail(request,room_no):
         bos_adet=int(room.room_people)-len(student_list)
         bos_list=['1' for i in range(bos_adet)]
         return render(request,'stock_panel/detail_room.html',{'room':room,'student_list':student_list,'bos_list':bos_list,'title':'Oda Detayı'})
-    else: return HttpResponse('You has no authorization to change fixture info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def edit_room(request,room_no):
     if request.user.has_perm('stock_panel.change_roominfomodel'):
@@ -85,12 +84,12 @@ def edit_room(request,room_no):
                 formroom.save()
                 return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
         return render(request,'stock_panel/add_room.html',{'formroom':formroom,'model_info':RoomInfoModel,'title':'Oda Düzenleme'})
-    else: return HttpResponse('You has no authorization to change room info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 
 def delete_room(request,room_no):
     if request.user.has_perm('stock_panel.delete_roominfomodel'):
         FixtureInfoModel.objects.filter(room_no=room_no).delete()
         RoomInfoModel.objects.get(room_no=room_no).delete()
         return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
-    else: return HttpResponse('You has no authorization to change room info')
+    else: return redirect('http://127.0.0.1:8000/home/')
 

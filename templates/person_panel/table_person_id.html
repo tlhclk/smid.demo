@@ -15,7 +15,7 @@
                 <th>TCN</th><th>Adı</th><th>Soyadı</th><th>Baba Adı</th><th>Uyruk</th><th>Cinsiyet</th><th></th>
             </tr></thead><tbody>
                 {% for person in person_id_list %}<tr>
-                <td>{{ person.s_tcn }}</td><td>{{ person.s_name }}</td><td>{{ person.s_lastname }}</td><td>{{ person.s_father }}</td><td>{{ person.s_nation_name }}</td><td>{{ person.s_gender_name }}</td><td>
+                <td><a href="http://127.0.0.1:8000/person_panel/person_id/{{ person.s_tcn }}">{{ person.s_tcn }}</a></td><td>{{ person.s_name }}</td><td>{{ person.s_lastname }}</td><td>{{ person.s_father }}</td><td>{{ person.s_nation_name }}</td><td>{{ person.s_gender_name }}</td><td>
             <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/person_id_edit/{{ person.s_tcn }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/person_id_delete/{{ person.s_tcn }}">Sil</a>
                 </td>
@@ -25,27 +25,4 @@
       <!-- Your Page Content Here -->
 
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-     Made by <b>Talha Çelik</b>
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
-  </footer>
-
-  <!-- Control Sidebar -->
-
-  <div class="control-sidebar-bg"></div>
-</div>
-
-
-</body>
-</html>
-
 {% endblock %}

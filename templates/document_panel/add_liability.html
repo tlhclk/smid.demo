@@ -4,7 +4,7 @@
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
         <li class="active"><a href="http://127.0.0.1:8000/document_panel/liability_table/"><i class="fa fa-table"></i> Emanet Tablosu</a></li>
-          <li class="active">Yeni Dosya Kaydı</li>
+          <li class="active">{{ title }}</li>
       </ol>
 
     </section>
@@ -12,7 +12,7 @@
 
 <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Yeni Dosya Kaydı</h3>
+          <h3 class="box-title">{{ title }}</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -37,7 +37,7 @@
                     <label for="id_liability_type">Eşya Türü: </label>
                     <select class="form-control select2" style="width: 100%;" name="liability_type" id="id_liability_type">
                   <option value="{{ form.liability_type.value }}"></option>
-                    {% for doc_type in model_info.liability_type_list %}
+                    {% for doc_type in model_info.fixture_type_list %}
                         <option value="{{ doc_type.0 }}">{{ doc_type.1 }}</option>
                     {% endfor %}
                 </select>
@@ -48,15 +48,15 @@
                 </div>
                 <div class="form-group has-feedback">
                     <label for="id_liability_date">Eşya Alım Tarihi: </label>
-                    <input type="text" class="form-control" placeholder="Emanet Alım Tarihi" name="liability_date" required id="id_liability_date" value="{{ form.liability_date.value }}" data-inputmask='"mask": "9999-99-99 99:99:99"' data-mask>
+                    <input type="text" class="form-control datetime-picker" placeholder="Emanet Alım Tarihi" name="liability_date" required id="id_liability_date" value="{{ form.liability_date.value.year }}-{{ form.liability_date.value.month }}-{{ form.liability_date.value.day }} {{ form.liability_date.value.hour }}:{{ form.liability_date.value.minute }}:{{ form.liability_date.value.second }}" maxlength="20">
                 </div>
                 <div class="form-group has-feedback">
                     <label for="id_liability_lastday">Son Teslim Tarihi: </label>
-                    <input type="text" class="form-control" placeholder="Son Teslim Tarihi" name="liability_lastday" required id="id_liability_lastday" value="{{ form.liability_lastday.value }}" data-inputmask='"mask": "9999-99-99 99:99:99"' data-mask>
+                    <input type="text" class="form-control datetime-picker" placeholder="Son Teslim Tarihi" name="liability_lastday" required id="id_liability_lastday" value="{{ form.liability_lastday.value.year }}-{{ form.liability_lastday.value.month }}-{{ form.liability_lastday.value.day }} {{ form.liability_lastday.value.hour }}:{{ form.liability_lastday.value.minute }}:{{ form.liability_lastday.value.second }}" maxlength="20">
                 </div>
                 <div class="form-group has-feedback">
                     <label for="id_liability_return">Teslim Edilen Tarihi: </label>
-                    <input type="text" class="form-control" placeholder="Teslim Edilen Tarihi" name="liability_return" id="id_liability_return" value="{{ form.liability_return.value }}" data-inputmask='"mask": "9999-99-99 99:99:99"' data-mask>
+                    <input type="text" class="form-control datetime-picker" placeholder="Teslim Edilen Tarihi" name="liability_return" id="id_liability_return" value="{{ form.liability_return.value.year }}-{{ form.liability_return.value.month }}-{{ form.liability_return.value.day }} {{ form.liability_return.value.hour }}:{{ form.liability_return.value.minute }}:{{ form.liability_return.value.second }}" maxlength="20">
                 </div>
                 <div class="form-group has-feedback">
                     <label for="id_liability_penalty">Emanet Cezası: </label>

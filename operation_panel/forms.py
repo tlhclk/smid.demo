@@ -6,7 +6,7 @@ from django.utils import timezone
 class StudentLeaveForm(forms.ModelForm):
     class Meta:
         model=StudentLeaveModel
-        fields=(#'leave_id',
+        fields=(
                 'leave_start',
                 'leave_end',
                 'person_id',
@@ -36,14 +36,3 @@ class MailSendForm(forms.Form):
                 'subject',
                 'message'
                 ]
-class DateFindForm(forms.Form):
-    date1=forms.DateField(input_formats=('%Y-%m-%d'),initial=timezone.datetime.today().date())
-    date2 = forms.DateField(input_formats=('%d-%m-%Y'),initial=timezone.datetime.today().date())
-    date3 = forms.DateField(input_formats=('%Y/%m/%d'),initial=timezone.datetime.today().date())
-    date4 = forms.DateField(input_formats=('%d/%m/%Y'),initial=timezone.datetime.today().date())
-    class Meta:
-        fields=['date1',
-                'date2',
-                'date3',
-                'date4']
-
