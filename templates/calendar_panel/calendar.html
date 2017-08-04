@@ -215,13 +215,10 @@
       var temp_dict;
       d3.json('{% static 'birthday_list.json' %}', function(data) {
           for (item in data) {
-              birthday_list.push(data[item].name);
-              temp_dict+=data[item].name;
+              div2.innerHtml=data[item]
           }
           });
-      div1.innerHTML=typeof (temp_dict);
-      div2.innerText='hop2';
-      div2.innerText=d3.json('{% static "birthday_list.json" %}',function (data){return console.log(data[0])}).get_methods();
+      div1.innerText='hop2';
       return birthday_list
   }
 

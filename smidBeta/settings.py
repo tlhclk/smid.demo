@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'account_panel.apps.AccountPanelConfig',
     'operation_panel.apps.OperationPanelConfig',
     'calendar_panel.apps.CalendarPanelConfig',
+    'django_mailbox',
+    'localflavor',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE_CLASSES = [
