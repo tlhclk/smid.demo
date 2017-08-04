@@ -3,4 +3,6 @@ from django.conf.urls import url
 from . import views
 
 app_name='calendar_panel'
-urlpatterns = []
+urlpatterns = [
+    url(r'^birthday_calendar/',views.birthday_calendar,name='Doğum Günü Takvimi')
+]

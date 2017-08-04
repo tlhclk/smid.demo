@@ -31,7 +31,7 @@ class AttendanceInfoModel(models.Model):
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')
     #person_id=models.CharField(max_length=10,blank=True,null=True)
     traffic_date=models.DateTimeField(default=get_time)
-    in_or_out=models.CharField(max_length=1,verbose_name='In or Out: ')
+    in_or_out=models.BooleanField(max_length=1,verbose_name='In or Out: ')
 
     class meta:
         db_table='attendance_info'

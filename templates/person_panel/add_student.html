@@ -26,13 +26,16 @@
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                <div class="form-group">
+                <div class="form-group">qw
                     <label for="id_id">Öğrenci No: </label>
                     <input type="text" class="form-control" placeholder="Öğrenci No" name="id" required id="id_id" value="{{ form.id.value }}" maxlength="11">
                 </div>
                 <div class="form-group">
-                    <label for="id_student_position">Öğrenci Konumu: </label>
-                    <input type="text" class="form-control" placeholder="Öğrenci" name="student_position" required id="id_student_position" value="{{ form.student_position.value }}" maxlength="100">
+                    <label for="id_student_position">Öğrenci Konumu : </label>
+{#                    <input type="text" class="form-control" placeholder="Öğrenci" name="student_position" required id="id_student_position" value="{{ form.student_position.value }}" maxlength="100">#}
+                    <label for=""><input type="radio" class="minimal" name="student_position" required id="id_student_position_0" value="1"> İçerde</label>
+                    <label for=""><input type="radio" class="minimal" name="student_position" required id="id_student_position_1" value="2"> Dışarda</label>
+
                 </div>
                 <div class="form-group">
                 <label for="id_student_tcn">Öğrenci Kimlik Numarası: </label>

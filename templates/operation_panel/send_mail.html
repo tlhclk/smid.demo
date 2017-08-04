@@ -26,13 +26,13 @@
                           <select name="people_selection" id="id_people_selection" class="form-control select2">
                               <option value="">--------</option>
                               {% for person in person_list %}
-                                  <option value="{{ person.e_mail }}">{{ person.full_name }} - {{ person.e_mail }}</option>
+                                  <option value="{{ person.id }}">{{ person.full_name }} - {{ person.e_mail }}</option>
                               {% endfor %}
                           </select>
                       </div>
                 <div class="form-group has-feedback">
                     <label for="id_people_manual">Mail Adresleri: </label>
-                    <input type="text" class="form-control" placeholder="Mail Adresleri" name="people_manual" required id="id_people_manual" value="{{ form.people_manual.value }}" maxlength="100">
+                    <input type="text" class="form-control" placeholder="Mail Adresleri" name="people_manual" id="id_people_manual" value="{% if form.people_manual.value %}{{ form.people_manual.value }}{% endif %}" maxlength="100">
                 </div>
                 <div class="form-group has-feedback">
                     <label for="id_subject">Konu: </label>

@@ -8,6 +8,8 @@ from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
 from django.core import mail
 from person_panel.models import StudentInfoModel
 import datetime
+import imaplib
+import email
 
 def option_menu(request):
     return render(request,'operation_panel/option_menu.html')
@@ -61,6 +63,28 @@ def send_a_mail(request,person_mail):
     else:
         formmail=MailSendForm()
     return render(request,'operation_panel/send_mail.html',{'form':formmail,'person_list':StudentInfoModel.objects.all(),'title':'Mail Gönder'})
+
+def mail_inbox():
+    mail = imaplib.IMAP4_SSL('smtp.gmail.com')
+    mail.login('tlhclk1312@gmail.com', 'Tlhclk.12')
+    mail.select('inbox')
+    print (mail)
+    type, data = mail.search(None, 'ALL')
+    mail_ids = data[0]
+    id_list = mail_ids.split()
+    print (id_list)
+    for i in range(int(id_list[-1]),int(id_list[0]),-1):
+        result, data = mail.uid('fetch', str(i), '(X-GM-THRID X-GM-MSGID)')
+        print (result,data)
+        # typ,data=mail.fetch(str(i),'(RFC3501)')
+        #
+        # for response_part in data:
+        #     if isinstance(response_part, tuple):
+        #         msg = email.message_from_string(response_part[1])
+        #         email_subject = msg['subject']
+        #         email_from = msg['from']
+        #         print ('From : ' + email_from + '\n')
+        #         print ('Subject : ' + email_subject + '\n')
 
 def change_student_position(request,student_id):
     student=StudentInfoModel.objects.get(pk=student_id)

@@ -132,7 +132,7 @@ class StudentInfoModel(models.Model):
     health_notes = models.CharField(max_length=200, default='',verbose_name='Sağlık Notları')
     special_notes = models.CharField(max_length=200, default='',verbose_name='Özel Notlar')
     image_field = models.ImageField(upload_to='profile_pic/',default='',verbose_name='Profil Resmi',blank=True,null=True)
-    student_position= models.BooleanField(verbose_name='Öğrenci Konumu',default=True)
+    student_position= models.BooleanField(verbose_name='Öğrenci Konumu',default='1')
 
 
     class Meta:
