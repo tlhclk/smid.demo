@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Öğrenci Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/person_panel/person_id_add/">Yeni Öğrenci Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/person_panel/person_id_add/">Yeni Öğrenci Kaydı</a></li>
       </ol>
 
     </section>
@@ -15,9 +15,9 @@
                 <th>Öğrenci No</th><th>Adı</th><th>Oda Numarası</th><th>Kayıt Tarihi</th><th>Okulu</th><th>Borcu</th><th></th>
             </tr></thead><tbody>
                 {% for student in student_list %}<tr>
-                <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_no_id }}</td><td>{{ student.student_regday }}</td><td>{{ student.school_name }}</td><td>{{ student.payment_info.0.asset_debt }}</td><td>
-            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a>
+                <td><a href="http://www.dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_no_id }}</td><td>{{ student.student_regday }}</td><td>{{ student.school_name }}</td><td>{{ student.payment_info.0.asset_debt }}</td><td>
+            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/student_edit/{{ student.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/student_delete/{{ student.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

@@ -25,7 +25,7 @@ SECRET_KEY = '1d^alrv3cj4)zu#f=t-zezpl#65x)al)bc0ca2=p$&6@pdx1fc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['207.154.214.85','www.dormoni.com']
 
 
 # Application definition
@@ -140,11 +140,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT= os.getcwd()+'\\static'
+STATIC_ROOT= os.path.join(BASE_DIR,'static/')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates\\smidDemo\\'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates/static/'),]
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-

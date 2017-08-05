@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Öğrenci Yoklama Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/operation_panel/attendance_add/">Yeni Yoklama Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/operation_panel/attendance_add/">Yeni Yoklama Kaydı</a></li>
       </ol>
 
     </section>
@@ -16,7 +16,7 @@
             </tr></thead><tbody>
                 {% for record in record_list %}<tr>
                     <td>{{ record.id }}</td><td>{{ record.person_id.full_name }}</td><td>{{ record.traffic_date }}</td><td>{{ record.in_or_out }}</td><td>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/operation_panel/record_delete/{{ record.id }}">Sil</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/operation_panel/record_delete/{{ record.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}
