@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Eşya Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://www.dormoni.com/stock_panel/fixture_add/">Yeni Eşya Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/fixture_add/">Yeni Eşya Kaydı</a></li>
       </ol>
 
     </section>
@@ -26,8 +26,8 @@
           <tr>
               <td><a href="/stock_panel/fixture/{{ fixture.fixture_no }}/">{{ fixture.fixture_no }}</a></td>
               <td>{{ fixture.room_no }}</td><td>{{ fixture.fixture_type }}</td><td>{{ fixture.fixture_notes }} </td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/stock_panel/fixture_edit/{{ fixture.fixture_no }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/stock_panel/fixture_delete/{{ fixture.fixture_no }}">Sil</a></td></tr>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/fixture_edit/{{ fixture.fixture_no }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/fixture_delete/{{ fixture.fixture_no }}">Sil</a></td></tr>
     {% endfor %}
 
     </tbody>

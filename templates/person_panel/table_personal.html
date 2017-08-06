@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Personal Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/person_panel/personal_add/">Yeni Personel Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/person_panel/personal_add/">Yeni Personel Kaydı</a></li>
       </ol>
 
     </section>
@@ -27,8 +27,8 @@
           <tr><td>
                 <a href="/person_panel/personal/{{ personal.id }}/">{{ personal.id }}</a>
           </td><td>{{ personal.personal_tcn.s_name }}</td><td>{{ personal.personal_tcn.s_lastname }}</td><td>{{ personal.e_mail }} </td><td>{{ personal.personal_phone }} </td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/personal_edit/{{ personal.id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/personal_delete/{{ personal.id }}">Sil</a>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_edit/{{ personal.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_delete/{{ personal.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Dosya Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://www.dormoni.com/document_panel/document_add/">Yeni Dosya Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/document_panel/document_add/">Yeni Dosya Kaydı</a></li>
       </ol>
 
     </section>
@@ -25,10 +25,10 @@
     <tbody>
     {% for document in document_list %}
           <tr>
-              <td><a href="http://www.dormoni.com/document_panel/document/{{ document.document_id }}/">{{ document.document_id }}</a></td>
+              <td><a href="http://127.0.0.1:8000/document_panel/document/{{ document.document_id }}/">{{ document.document_id }}</a></td>
               <td>{{ document.person_id_name }}</td><td>{{ document.document_type_name }}</td><td>{{ document.document_date }} </td><td>{{ document.document_description }}</td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/document_panel/document_edit/{{ document.document_id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/document_panel/document_delete/{{ document.document_id }}">Sil</a></td></tr>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_edit/{{ document.document_id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_delete/{{ document.document_id }}">Sil</a></td></tr>
     {% endfor %}
 
     </tbody>

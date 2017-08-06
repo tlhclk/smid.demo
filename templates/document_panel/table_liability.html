@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Emanet Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://www.dormoni.com/document_panel/liability_add/">Yeni Emanet Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/document_panel/liability_add/">Yeni Emanet Kaydı</a></li>
       </ol>
 
     </section>
@@ -28,11 +28,11 @@
     <tbody>
     {% for liability in liability_list %}
           <tr>
-              <td><a href="http://www.dormoni.com/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
+              <td><a href="http://127.0.0.1:8000/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
               <td>{{ liability.person_id.full_name }}</td><td>{{ liability.liability_type_name }}</td><td>{{ liability.liability_desc }}</td><td>{{ liability.liability_date }}</td><td>{{ liability.liability_lastday }}</td><td>{{ liability.liability_return }}</td><td>{{ liability.liability_penalty }}</td>
           <td>
-              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
-              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/document_panel/liability_delete/{{ liability.id }}">Sil</a>
+              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
+              <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_delete/{{ liability.id }}">Sil</a>
                           </td></tr>
     {% endfor %}
 
