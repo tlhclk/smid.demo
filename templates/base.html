@@ -53,6 +53,7 @@
 {# radio-checkbox #}
 <script src="{%  static 'plugins/iCheck/icheck.min.js' %}"></script>
 
+    {% block script %}{% endblock %}
 {# manual script #}
   <script type="text/javascript">
 $(document).ready(function() {
@@ -89,7 +90,6 @@ $(document).ready(function() {
 
 } );
 </script>
-    {% block script %}{% endblock %}
 
 
 </head>

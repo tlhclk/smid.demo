@@ -34,16 +34,14 @@ def student_attendance(request,room_no,student_id):
 
 def dorm_capacity(request,room_no):
     if room_no!='':
-        report_type='Room No %s Capacity Report' % room_no
         room_capacity=RoomInfoModel.objects.get(pk=room_no).room_people
         student_list=StudentInfoModel.objects.filter(room_number=room_no)
-        return render(request,'report_panel/report_capacity.html',{'report_type':report_type,'student_list':student_list,'room_capacity':room_capacity})
+        return render(request,'report_panel/report_capacity.html',{'student_list':student_list,'room_capacity':room_capacity})
     else:
-        report_type='All Dorm Capacity'
         all_rooms=RoomInfoModel.objects.all()
-        all_capacity=sum([int(room.room_people) for room in all_rooms])
-        full_part=len(StudentInfoModel.objects.all())
-        return render(request,'report_panel/report_capacity.html',{'report_type':report_type,'all_capacity':all_capacity,'full_part':full_part})
+        quota_number=sum([int(room.room_people) for room in all_rooms])
+        student_number=len(StudentInfoModel.objects.all())
+        return render(request,'report_panel/report_capacity.html',{'student_number':student_number,'quota_number':quota_number,'title':'Kontenjan Grafiği'})
 
 def room_plan(request):
     room_list=RoomInfoModel.objects.all()
