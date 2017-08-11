@@ -16,6 +16,7 @@ def add_transaction(request,filter_no):
             formtransaction = TransactionInfoForm()
         if request.method=='POST':
             formtransaction=TransactionInfoForm(request.POST)
+            print (formtransaction)
             if formtransaction.is_valid():
                 account=formtransaction.cleaned_data.get('account_no')
                 amount=formtransaction.cleaned_data.get('transaction_amount')
@@ -59,7 +60,7 @@ def edit_transaction(request,transaction_no):
             if formtransaction.is_valid():
                 formtransaction.save()
                 return redirect('http://127.0.0.1:8000/account_panel/transaction_table/')
-        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'title':'İşlemi Düzenleme'})
+        return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list,'title':'İşlemi Düzenleme'})
     else: return redirect('http://127.0.0.1:8000/home/')
 
 def delete_transaction(request,transaction_no):

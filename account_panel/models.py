@@ -76,13 +76,13 @@ class BillInfoModel(models.Model):
 
 
 class TransactionInfoModel(models.Model):
-    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Tahsilat'),('8','Öğrenci Ödemesi')]
+    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
     #transaction_no = models.CharField(max_length=10, primary_key=True, verbose_name='Transaction No: ')
     account_no=models.ForeignKey(AccountInfoModel,verbose_name='Hesap Numarası')
     #account_no = models.CharField(max_length=10, blank=True, null=True)
     transaction_type = models.CharField(max_length=10, choices=transaction_type_list,verbose_name='İşlem Türü', default='1')
     transaction_amount = models.CharField(max_length=10, verbose_name='İşlem Miktarı',default='')
-    transaction_time = models.DateTimeField(default=get_time,verbose_name='İşlem Zamanı')
+    transaction_time = models.DateTimeField(default='',verbose_name='İşlem Zamanı')
     transaction_desc = models.CharField(max_length=100, verbose_name='İşlem Açıklaması',null=True,blank=True,default='')
 
     class Meta:

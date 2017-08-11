@@ -11,8 +11,7 @@ import datetime
 import imaplib
 import email
 
-def option_menu(request):
-    return render(request,'operation_panel/option_menu.html')
+
 
 def add_student_leave(request):
     if request.user.has_perm('operation_panel.add_studentleavemodel'):

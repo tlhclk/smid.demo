@@ -11,10 +11,7 @@ import json
 
 import datetime
 
-def options_menu(request):
-    room_list=RoomInfoModel.objects.all().order_by('room_no')
-    student_list=StudentInfoModel.objects.all()
-    return render(request,'report_panel/option_menu.html',{'room_list':room_list,'student_list':student_list})
+
 
 def student_attendance(request,room_no,student_id):
     if room_no and not student_id:
@@ -56,7 +53,7 @@ def leave_permission_table(request):
         if datetime.datetime.strptime(str(leave_record.leave_start),"%Y-%m-%d")<=datetime.datetime.strptime(str(datetime.date.today()),"%Y-%m-%d")<=datetime.datetime.strptime(str(leave_record.leave_end),"%Y-%m-%d"):
             leave_list_now.append(leave_record)
     print (leave_list_now)
-    return render(request,'report_panel/leave_table.html',{'leave_list':leave_list_now})
+    return render(request,'report_panel/table_leave.html',{'leave_list':leave_list_now})
 
 def contact_table(request):
     student_list=StudentInfoModel.objects.all()
@@ -64,11 +61,6 @@ def contact_table(request):
     parent_list=ParentInfoModel.objects.all()
     return render(request, 'report_panel/table_contact.html', {'student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})
 
-def calendar(request):
-    student_list=[student for student in StudentInfoModel.objects.all()]
-    for student in student_list:
-        print (student.student_regday.day)
-    return render(request,'smidDemo/pages/examples/calendar.html',{'student_list':student_list})
 
 def unpaid_rate(request):
     all_assets=PersonAssetInfoModel.objects.all()
@@ -76,11 +68,11 @@ def unpaid_rate(request):
     unpaid_asset_rate={}
     for asset in all_assets:
         all_transactions=TransactionInfoModel.objects.filter(transaction_desc__contains=asset.person_id_id)
-        period = str((timezone.now() - asset.person_id.student_regday).days/30+1).split('.')[0]
+        period = str((datetime.date.today() - asset.person_id.student_regday).days/30+1).split('.')[0]
         paid_asset_rate.setdefault(asset.asset_id, [])
         unpaid_asset_rate.setdefault(asset.asset_id, [])
         for transaction in all_transactions:
-            rate = str((transaction.transaction_time - asset.person_id.student_regday).days / 30 + 1).split('.')[0]
+            rate = str((transaction.transaction_time.date() - asset.person_id.student_regday).days / 30 + 1).split('.')[0]
             if len(paid_asset_rate[asset.asset_id])!=0:
                 paid_asset_rate[asset.asset_id].append(str(int(paid_asset_rate[asset.asset_id][-1])+1))
             else:
@@ -89,29 +81,55 @@ def unpaid_rate(request):
             for rate_time in range(1,int(period)+1):
                 if str(rate_time) not in paid_asset_rate[asset.asset_id]:
                     unpaid_asset_rate[asset.asset_id].append(str(rate_time))
-    print (paid_asset_rate)
-    print (unpaid_asset_rate)
     return render(request,'report_panel/payment_info.html',{'paid_dict':paid_asset_rate,'unpaid_dict':unpaid_asset_rate})
 
+def money_flow(request,account_no):
+    if request.user.has_perm('account_panel.view_accountinfomodel'):
+        transaction_list=TransactionInfoModel.objects.all()
+        if account_no != '':
+            transaction_list=TransactionInfoModel.objects.filter(account_no=account_no)
+        all_money_list=[get_sum(transaction_list.filter(transaction_type=type_i[0])) for type_i in TransactionInfoModel.transaction_type_list]
+        return render(request, 'report_panel/money_flow.html',{'title':'Aylık Para Akışı','monthly_sum':all_money_list})
+    else: return redirect('http://127.0.0.1:8000/home/')
 
-def birthday_calendar(request,filter_time='07'):
-    student_list=PersonIDInfoModel.objects.all()
-    personal_list=PersonalInfoModel.objects.all()
-    json_dict={}
-    birthday_list=[]
-    for student in student_list:
-        if student.s_birthday:
-            print (student.full_name())
-            birthday_list.append((student.full_name(),student.s_birthday))
-            json_dict.setdefault(student.full_name(),{'month':student.s_birthday.month,'day':student.s_birthday.day})
+def get_sum(transaction_list):
+    transaction_list = [transaction_list.filter(transaction_time__month=str(i)) for i in range(1, 13)]
+    monthly_sum = [sum([float(x.transaction_amount) for x in transaction_list[i]]) for i in range(12)]
+    return monthly_sum
 
-    for personal in personal_list:
-        if personal.personal_birthday:
-            print (personal.full_name())
-            birthday_list.append((personal.full_name(),personal.personal_birthday))
-            json_dict.setdefault(personal.full_name(),{'month': personal.personal_birthday.month, 'day': personal.personal_birthday.day})
-
-    birthday_json=open('templates/smidDemo/birthday_list.json','w+',encoding='utf8')
-    birthday_json.write(json.dumps(json_dict,indent=4,sort_keys=True,separators=(',', ': '), ensure_ascii=False,))
-    birthday_json.close()
-    return render(request,'report_panel/denem_birthday.html',{'birthday_list':birthday_list,'personal_list':personal_list,'student_list':student_list})
+def account_amount(request):
+    account_list=AccountInfoModel.objects.all()
+    month_list=['2017-1','2017-2','2017-3','2017-4','2017-5','2017-6','2017-7','2017-8','2017-9','2017-10','2017-11','2017-12']
+    color_list=['rgba(255,0,0,0.6)','rgba(0,255,0,0.6)','rgba(0,0,255,0.6)','rgba(255,255,0,0.6)','rgba(255,0,255,0.6)',
+                'rgba(0,255,255,0.6)','rgba(192,192,192,0.6)','rgba(255,127,0.6)','rgba(255,0,127,0.6)','rgba(127,255,0,0.6)']
+    all_account_flow_list=[]
+    check_box_list=[]
+    for i,account in enumerate(account_list):
+        i=i%10
+        check_box_list.append((account.account_name,color_list[i]))
+        account_process_dict={}
+        for month in month_list:
+            account_process_dict[month]=0.0
+        transaction_list=TransactionInfoModel.objects.filter(account_no=account.account_no)
+        for transaction in transaction_list:
+            key=str(transaction.transaction_time.year)+'-'+str(transaction.transaction_time.month)
+            if transaction.transaction_type == '1' or transaction.transaction_type == '7' or transaction.transaction_type == '8':
+                account_process_dict[key]-=float(transaction.transaction_amount)
+            else:
+                account_process_dict[key] += float(transaction.transaction_amount)
+        account_process_list=[]
+        amount=account.account_amount
+        for month in month_list:
+            amount=float(amount)-float(account_process_dict[month])
+            account_process_list.append(amount)
+        all_account_flow_list.append({"label": account.account_name,
+                                      "fillColor": color_list[i],
+                                      "strokeColor": color_list[i],
+                                      "pointColor": color_list[i],
+                                      "pointStrokeColor": color_list[i],
+                                      "pointHighlightFill": color_list[i],
+                                      "pointHighlightStroke": color_list[i],
+                                      "data": account_process_list})
+    account_info=json.dumps(all_account_flow_list)
+    asd=all_account_flow_list
+    return render(request,'report_panel/account_graph.html',{'title':'Hesap Miktarı','account_info':account_info,'model_info':check_box_list})

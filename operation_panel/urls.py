@@ -4,7 +4,6 @@ from . import views
 
 app_name='operation_panel'
 urlpatterns = [
-    url(r'^$',views.option_menu,name='Operation Option Menu'),
     url(r'^attendance_add/', views.add_attendance, name='Entrance'),
     url(r'^attendance_table/', views.table_attendance, name='Entrance Leave Table'),
     url(r'^leave_add/',views.add_student_leave,name='Permission Assign'),

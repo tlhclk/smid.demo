@@ -9,7 +9,7 @@ class RoomInfoModel(models.Model):
     room_floor=models.CharField(max_length=2,verbose_name='Room Floor: ',default='')
     room_people=models.CharField(max_length=2,choices=room_people_list,verbose_name='Room People: ')
     room_type=models.CharField(max_length=20,choices=room_type_list,verbose_name='Room Type: ')
-    room_desc=models.CharField(max_length=100,verbose_name='Room Description',blank=True,default='')
+    room_desc=models.CharField(max_length=100,verbose_name='Room Description',blank=True,default='',null=True)
     room_image=models.ImageField(upload_to='room_image/',blank=True,verbose_name='Room Image: ',default='')
 
     class Meta:

@@ -124,7 +124,7 @@ def edit_parent(request,parent_id):
             if formparent.is_valid():
                 formparent.save()
                 return redirect('http://127.0.0.1:8000/person_panel/parent_table/')
-        return render(request,'person_panel/add_parent.html',{'form':formparent, 'title':'Veli Düzenleme'})
+        return render(request,'person_panel/add_parent.html',{'form':formparent,'model_info':StudentInfoModel.objects.all(), 'title':'Veli Düzenleme'})
     else: return redirect('http://127.0.0.1:8000/home/')
 
 def delete_parent(request,parent_id):

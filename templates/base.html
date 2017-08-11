@@ -1,97 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
-
-
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Smart Dorms | {{ title }}</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
-  <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
   <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
   <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
-
-  <link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
 {% block css %}{% endblock %}
-
 {# java script imports #}
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'main_theme/js/app.min.js' %}"></script>
-<script src="{%  static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
-    {# datatables #}
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
-{# datepicker-datetimepicker #}
-<script src="/static/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="/static/plugins/datepicker/bootstrap-datepicker.js"></script>
-<script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-{# radio-checkbox #}
-<script src="{%  static 'plugins/iCheck/icheck.min.js' %}"></script>
-
     {% block script %}{% endblock %}
-{# manual script #}
-  <script type="text/javascript">
-$(document).ready(function() {
-    var table = $('#myTable').DataTable(
-
-      {
-          "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
-        "order": [[ 0, "order" ]],
-        responsive: true,
-{#	dom:'Bftrlip',#}
-		dom: "<'row'<'col-sm-6 col-lg-3'B><'col-sm-1 col-lg-9'f>>" +
-		"<'row'<'col-lg-12'tr>>" +
-		"<'row'<'col-sm-2 col-lg-2'l><'col-sm-4 col-lg-4'i><'col-sm-6 col-lg-6'p>>",
-        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
-
-      }
-    );
-
-
-    $(".select2").select2();
-
-    $("[data-mask]").inputmask();
-
-    $('.date-picker').datepicker({timePicker:true,
-      autoclose: true,format: 'yyyy-mm-dd'
-    });
-
-    $('.datetime-picker').datetimepicker({format: 'YYYY-mm-DD HH:M:ss'
-    });
-    $('input[type="radio"].minimal').iCheck({
-      radioClass: 'iradio_minimal-blue'
-    });
-
-
-} );
-</script>
-
-
 </head>
 
 
@@ -158,22 +83,13 @@ $(document).ready(function() {
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
-      <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Ara...">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
+
       <!-- /.search form -->
 
         {% if request.user.groups.all.0.id == 2 %}
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <li class="header">İşlemler</li>
+        <li class="header"> </li>
         <!-- Optionally, you can add icons to the links -->
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Muhasebe Bilgileri</span>
@@ -242,8 +158,8 @@ $(document).ready(function() {
             <li><a href="http://127.0.0.1:8000/report_panel/capacity/">Kontenjan Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/report_panel/room_plan/">Yurt Planı</a></li>
             <li><a href="http://127.0.0.1:8000/report_panel/contact_table/">Rehber</a></li>
-            <li><a href="http://127.0.0.1:8000/report_panel/leave_table/">İzinli Öğrenci Tablosu</a></li>
-            <li><a href="http://127.0.0.1:8000//calendar/">Takvim</a></li>
+            <li><a href="http://127.0.0.1:8000/operation_panel/leave_table/">İzinli Öğrenci Tablosu</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/money_flow/">Para Akışı</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>
@@ -311,7 +227,7 @@ $(document).ready(function() {
      Made by <b>Talha Çelik</b>
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="#">Teshco</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2017 <a href="https://www.tetraba.com">TetraBA</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -322,8 +238,3 @@ $(document).ready(function() {
 
 </body>
 </html>
-
-
-
-
-

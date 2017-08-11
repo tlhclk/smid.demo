@@ -5,9 +5,6 @@ from django.shortcuts import render, redirect,HttpResponse
 from .models import DocumentInfoModel,LiabilityInfoModel
 from .forms import DocumentInfoForm, LiabilityInfoForm
 
-def option_menu(request):
-    return render(request,'document_panel/option_menu.html')
-
 def add_document(request):
     if request.user.has_perm('document_panel.add_documentinfomodel'):
         new_id=str(int(DocumentInfoModel.objects.all().order_by('-document_id')[0].document_id)+1)

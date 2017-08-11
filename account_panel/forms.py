@@ -43,14 +43,13 @@ class AccountInfoForm(forms.ModelForm):
             'account_type',
             'account_amount',
             'account_desc',
-
+            'account_bank',
         ]
 
 class BillInfoForm(forms.ModelForm):
     class Meta:
         model=BillInfoModel
         fields=[
-            #'bill_no',
             'bill_type',
             'bill_code',
             'bill_amount',
