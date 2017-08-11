@@ -40,9 +40,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Kimlik Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/person_panel/person_id_add/">Yeni Kimlik Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/person_panel/person_id_add/">Yeni Kimlik Kaydı</a></li>
       </ol>
 
     </section>
@@ -53,9 +53,9 @@ $(document).ready(function() {
                 <th>TCN</th><th>Adı</th><th>Soyadı</th><th>Baba Adı</th><th>Uyruk</th><th>Cinsiyet</th><th></th>
             </tr></thead><tbody>
                 {% for person in person_id_list %}<tr>
-                <td><a href="http://127.0.0.1:8000/person_panel/person_id/{{ person.s_tcn }}">{{ person.s_tcn }}</a></td><td>{{ person.s_name }}</td><td>{{ person.s_lastname }}</td><td>{{ person.s_father }}</td><td>{{ person.s_nation_name }}</td><td>{{ person.s_gender_name }}</td><td>
-            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/person_id_edit/{{ person.s_tcn }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/person_id_delete/{{ person.s_tcn }}">Sil</a>
+                <td><a href="http://www.dormoni.com/person_panel/person_id/{{ person.s_tcn }}">{{ person.s_tcn }}</a></td><td>{{ person.s_name }}</td><td>{{ person.s_lastname }}</td><td>{{ person.s_father }}</td><td>{{ person.s_nation_name }}</td><td>{{ person.s_gender_name }}</td><td>
+            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/person_id_edit/{{ person.s_tcn }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/person_id_delete/{{ person.s_tcn }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}
