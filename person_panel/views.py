@@ -28,20 +28,20 @@ def add_student(request):
             return redirect('http://www.dormoni.com/account_panel/asset_add/')
         return render(request, 'person_panel/add_student.html', {'form': formstudent,'model_info':StudentInfoModel,'title':'Yeni Öğrenci Kaydı'})
     else:
-        return redirect('http://www.dormoni.com/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_student(request,student_id):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
         student = StudentInfoModel.objects.get(pk=student_id)
         parent = ParentInfoModel.objects.filter(student_id=student_id)
         return render(request, 'person_panel/detail_student.html', {'student': student,'parent':parent,'title':'Öğrenci Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_student(request):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
         student_list=StudentInfoModel.objects.all()
         return  render(request, 'person_panel/table_student.html',{'student_list':student_list, 'title': 'Öğrenci Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_student(request,student_id):
     if request.user.has_perm('person_panel.change_studentinfomodel'):
@@ -52,7 +52,7 @@ def edit_student(request,student_id):
                 return redirect('http://www.dormoni.com/person_panel/student_table/')
         formstudent=StudentInfoForm(instance=StudentInfoModel.objects.get(pk=student_id))
         return render(request,'person_panel/add_student.html',{'form':formstudent,'model_info':StudentInfoModel,'title':'Öğrenci Ekleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_student(request,student_id):
     if request.user.has_perm('person_panel.delete_studentinfomodel'):
@@ -65,7 +65,7 @@ def delete_student(request,student_id):
             user = User.objects.filter(username=student.e_mail)[0]
             user.delete()
         return redirect('http://www.dormoni.com/person_panel/student_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 # user add and sending mail
 def new_user_add(first_name,last_name,email,id,group_id):
@@ -95,7 +95,7 @@ def add_parent(request):
                 formparent.save()
             return redirect('http://www.dormoni.com/person_panel/parent_table/')
         return render(request, 'person_panel/add_parent.html', {'form':formparent,'model_info':StudentInfoModel.objects.all(), 'title':'Yeni Veli Kaydı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_parent(request,parent_id):
     if request.user.has_perm('person_panel.view_parentinfomodel'):
@@ -108,13 +108,13 @@ def detail_parent(request,parent_id):
         else:
             parent = ParentInfoModel.objects.get( pk=parent_id)
             return render(request, 'person_panel/detail_parent.html', {'parent': parent,'title':'Veli Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_parent(request):
     if request.user.has_perm('person_panel.view_parentinfomodel'):
         parent_list=ParentInfoModel.objects.all()
         return render(request, 'person_panel/table_parent.html', {'parent_list':parent_list, 'title':'Veli Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_parent(request,parent_id):
     if request.user.has_perm('person_panel.change_parentinfomodel'):
@@ -125,14 +125,14 @@ def edit_parent(request,parent_id):
                 formparent.save()
                 return redirect('http://www.dormoni.com/person_panel/parent_table/')
         return render(request,'person_panel/add_parent.html',{'form':formparent,'model_info':StudentInfoModel.objects.all(), 'title':'Veli Düzenleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_parent(request,parent_id):
     if request.user.has_perm('person_panel.delete_parentinfomodel'):
         parent=ParentInfoModel.objects.get(pk=parent_id)
         parent.delete()
         return redirect('http://www.dormoni.com/person_panel/parent_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_personal(request):
     if request.user.has_perm('person_panel.add_personalinfomodel'):
@@ -153,19 +153,19 @@ def add_personal(request):
                 return redirect('http://www.dormoni.com/person_panel/personal_table/')
         return render(request, 'person_panel/add_personal.html', {'form': formpersonal,'model_info':PersonIDInfoModel.objects.all(),'city_list':PersonIDInfoModel.city_list,'blood_type_list':StudentInfoModel.blood_type_list,'title':'Yeni Personel Kaydı'})
     else:
-        return redirect('http://www.dormoni.com/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_personal(request,personal_id):
     if request.user.has_perm('person_panel.view_personalinfomodel'):
         personal = PersonalInfoModel.objects.get( pk=personal_id)
         return render(request, 'person_panel/detail_personal.html', {'personal': personal, 'title':'Personel Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_personal(request):
     if request.user.has_perm('person_panel.view_personalinfomodel'):
         personal_list=PersonalInfoModel.objects.all()
         return render(request, 'person_panel/table_personal.html', {'personal_list':personal_list, 'title':'Personel Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_personal(request,personal_id):
     if request.user.has_perm('person_panel.change_personalinfomodel'):
@@ -176,13 +176,13 @@ def edit_personal(request,personal_id):
                 return redirect('http://www.dormoni.com/person_panel/personal_table/')
         formpersonal = PersonalInfoForm(instance=PersonalInfoModel.objects.get(pk=personal_id))
         return render(request,'person_panel/add_personal.html',{'form':formpersonal,'model_info':PersonIDInfoModel.objects.all(),'city_list':PersonIDInfoModel.city_list,'blood_type_list':StudentInfoModel.blood_type_list,'title':'Personel Ekleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_personal(request,personal_id):
     if request.user.has_perm('person_panel.delete_personalinfomodel'):
         PersonalInfoModel.objects.get(pk=personal_id).delete()
         return redirect('http://www.dormoni.com/person_panel/personal_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_person_id(request):
     if request.user.has_perm('person_panel.add_personidinfomodel'):
@@ -194,7 +194,7 @@ def add_person_id(request):
             return redirect('http://www.dormoni.com/person_panel/student_add/')
         return render(request, 'person_panel/add_person_id.html', {'form': formstudent,'model_info':PersonIDInfoModel,'title':'Yeni Kimlik Kaydı'})
     else:
-        return redirect('http://www.dormoni.com/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_person_id(request,person_id):
     if request.user.has_perm('person_panel.view_personidinfomodel'):
@@ -202,13 +202,13 @@ def detail_person_id(request,person_id):
         person=PersonIDInfoModel.objects.get(pk=person_id)
         person_info=(StudentInfoModel.objects.filter(student_tcn=person_id) or PersonalInfoModel.objects.filter(personal_tcn=person_id))
         return render(request,'person_panel/detail_person_id.html',{'person':person,'person_info':person_info[0],'title':'Kimlik Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_person_id(request):
     if request.user.has_perm('person_panel.view_personidinfomodel'):
         person_id_list=PersonIDInfoModel.objects.all()
         return render(request, 'person_panel/table_person_id.html', {'person_id_list':person_id_list,'title':'Kimlik Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_person_id(request,person_id):
     if request.user.has_perm('person_panel.change_personidinfomodel'):
@@ -220,14 +220,14 @@ def edit_person_id(request,person_id):
                 return redirect('http://www.dormoni.com/person_panel/person_id_table/')
         formperson_id = PersonIDInfoForm(instance=PersonIDInfoModel.objects.get(pk=person_id))
         return render(request,'person_panel/add_person_id.html',{'form':formperson_id,'model_info':PersonIDInfoModel,'title':'Kimlik Düzenleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_person_id(request,person_id):
     if request.user.has_perm('person_panel.delete_personidinfomodel'):
         PersonIDInfoModel.objects.get(pk=person_id).delete()
         User.objects.get(pk=person_id).delete()
         return redirect('http://www.dormoni.com/person_panel/person_id_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def show_profile(request,person_id):
     if person_id[:4]=='1701':

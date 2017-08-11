@@ -5,6 +5,7 @@ from .forms import TransactionInfoForm,PersonAssetInfoForm,AccountInfoForm,BillI
 from django.shortcuts import render,redirect,HttpResponse
 import datetime
 import re
+
 def add_transaction(request,filter_no):
     if request.user.has_perm('account_panel.add_transactioninfomodel'):
         if filter_no!='':
@@ -26,13 +27,13 @@ def add_transaction(request,filter_no):
                 formtransaction.save()
                 return redirect('http://www.dormoni.com/account_panel/transaction_table/')
         return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list,'title':'Yeni İşlem Kaydı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_transaction(request,transaction_no):
     if request.user.has_perm('account_panel.view_transactioninfomodel'):
         transaction=TransactionInfoModel.objects.get(pk=transaction_no)
         return render(request,'account_panel/detail_transaction.html',{'transaction':transaction,'title':'İşlem Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_transaction(request,filter_no):
     if request.user.has_perm('account_panel.view_transactioninfomodel'):
@@ -50,7 +51,7 @@ def table_transaction(request,filter_no):
             transaction_list=TransactionInfoModel.objects.all()
             return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'İşlem Geçmişi'})
 
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_transaction(request,transaction_no):
     if request.user.has_perm('account_panel.change_transactioninfomodel'):
@@ -61,13 +62,13 @@ def edit_transaction(request,transaction_no):
                 formtransaction.save()
                 return redirect('http://www.dormoni.com/account_panel/transaction_table/')
         return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'transaction_type_list':TransactionInfoModel.transaction_type_list,'title':'İşlemi Düzenleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_transaction(request,transaction_no):
     if request.user.has_perm('account_panel.delete_transactioninfomodel'):
         TransactionInfoModel.objects.get(pk=transaction_no).delete()
         return redirect('http://www.dormoni.com/account_panel/transaction_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_asset(request):
     if request.user.has_perm('account_panel.add_personassetinfomodel'):
@@ -79,7 +80,7 @@ def add_asset(request):
                 formasset.save()
                 return redirect('http://www.dormoni.com/account_panel/asset_table/')
         return render(request,'account_panel/add_personasset.html',{'form':formasset,'person_list':StudentInfoModel.objects.all(),'title':'Yeni Ödeme Planı Kaydı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_asset(request,asset_no):
     if request.user.has_perm('account_panel.view_personassetinfomodel'):
@@ -88,13 +89,13 @@ def detail_asset(request,asset_no):
         else:
             asset = PersonAssetInfoModel.objects.get(pk=asset_no)
         return render(request,'account_panel/detail_personasset.html',{'asset':asset,'title':'Ödeme Planı Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_asset(request):
     if request.user.has_perm('account_panel.view_personassetinfomodel'):
         asset_list=PersonAssetInfoModel.objects.all()
         return render(request,'account_panel/table_personasset.html',{'asset_list':asset_list,'title':'Ödeme Planı Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_asset(request,asset_no):
     if request.user.has_perm('account_panel.change_personassetinfomodel'):
@@ -105,13 +106,13 @@ def edit_asset(request,asset_no):
                 formasset.save()
                 return redirect('http://www.dormoni.com/account_panel/asset_table/')
         return render(request,'account_panel/add_personasset.html',{'form':formasset,'title':'Ödeme Planı Düzenleme','person_list':StudentInfoModel.objects.all()})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_asset(request,asset_no):
     if request.user.has_perm('account_panel.delete_personassetinfomodel'):
         PersonAssetInfoModel.objects.get(pk=asset_no).delete()
         return redirect('http://www.dormoni.com/account_panel/asset_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_account(request):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
@@ -122,19 +123,19 @@ def add_account(request):
                 formaccount.save()
                 return redirect('http://www.dormoni.com/account_panel/account_table/')
         return render(request,'account_panel/add_account.html',{'form':formaccount,'title':'Yeni Hesap Kaydı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_account(request,account_no):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         account=AccountInfoModel.objects.get(pk=account_no)
         return render(request,'account_panel/detail_account.html',{'account':account,'title':'Hesap Özeti'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_account(request):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         account_list=AccountInfoModel.objects.all()
         return render(request,'account_panel/table_account.html',{'account_list':account_list,'title':'Hesap Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_account(request,account_no):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
@@ -145,13 +146,13 @@ def edit_account(request,account_no):
                 formaccount.save()
                 return redirect('http://www.dormoni.com/account_panel/account_table/')
         return render(request,'account_panel/add_account.html',{'form':formaccount,'title':'Hesap Düzenleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_account(request,account_no):
     if request.user.has_perm('account_panel.view_accountinfomodel'):
         AccountInfoModel.objects.get(pk=account_no).delete()
         return redirect('http://www.dormoni.com/account_panel/account_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_bill(request):
     if request.user.has_perm('account_panel.add_billinfomodel'):
@@ -164,19 +165,19 @@ def add_bill(request):
                 formbill.save()
                 return redirect('http://www.dormoni.com/account_panel/asset_table/')
         return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list,'title':'Yeni Fatura Kaydı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_bill(request,bill_no):
     if request.user.has_perm('account_panel.view_billinfomodel'):
         bill=BillInfoModel.objects.get(pk=bill_no)
         return render(request,'account_panel/detail_bill.html',{'bill':bill,'title':'Fatura Detayı'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_bill(request):
     if request.user.has_perm('account_panel.view_billinfomodel'):
         bill_list=BillInfoModel.objects.all()
         return render(request,'account_panel/table_bill.html',{'bill_list':bill_list,'title':'Fatura Tablosu'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_bill(request,bill_no):
     if request.user.has_perm('account_panel.change_billinfomodel'):
@@ -187,13 +188,13 @@ def edit_bill(request,bill_no):
                 formbill.save()
                 return redirect('http://www.dormoni.com/account_panel/bill_table/')
         return render(request,'account_panel/add_bill.html',{'form':formbill,'bill_type_list':BillInfoModel.bill_type_list,'title':'Fatura Düzenleme'})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_bill(request,bill_no):
     if request.user.has_perm('account_panel.delete_bilinfomodel'):
         BillInfoModel.objects.get(pk=bill_no).delete()
         return redirect('http://www.dormoni.com/account_panel/bill_table/')
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def transaction_accountsync(account_no,amount,transaction_type,transaction_desc):
     if transaction_type=='1' or transaction_type=='7':
@@ -207,7 +208,7 @@ def transaction_accountsync(account_no,amount,transaction_type,transaction_desc)
             asset.asset_debt = str(float(asset.asset_debt) - x * float(amount))
             asset.save()
         else:
-            return redirect('http://www.dormoni.com/login/')
+            return redirect('http://www.dormoni.com/user_panel/login/')
     else:
         x=-1
     account_no.account_amount=str(float(account_no.account_amount)+x*float(amount))

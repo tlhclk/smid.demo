@@ -90,7 +90,7 @@ def money_flow(request,account_no):
             transaction_list=TransactionInfoModel.objects.filter(account_no=account_no)
         all_money_list=[get_sum(transaction_list.filter(transaction_type=type_i[0])) for type_i in TransactionInfoModel.transaction_type_list]
         return render(request, 'report_panel/money_flow.html',{'title':'Aylık Para Akışı','monthly_sum':all_money_list})
-    else: return redirect('http://www.dormoni.com/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def get_sum(transaction_list):
     transaction_list = [transaction_list.filter(transaction_time__month=str(i)) for i in range(1, 13)]
