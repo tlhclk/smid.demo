@@ -43,7 +43,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Genel Hesap Tablosu</li>
-          <small><li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/account_add/">Yeni Hesap Aç</a></li></small>
+          <small><li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_add/">Yeni Hesap Aç</a></li></small>
       </ol>
 
     </section>
@@ -55,8 +55,8 @@ $(document).ready(function() {
             <th>Hesap No</th><th>Hesap Adı</th><th>Hesap Türü</th><th>Hesaptaki Para Miktarı</th><th>Hesap Açıklaması</th><th></th>
         </tr></thead><tbody>
             {% for account in account_list %}<tr>
-            <td><a href="http://www.dormoni.com/account_panel/account/{{ account.account_no }}">{{ account.account_no }}</a></td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td><td><small> <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/account_edit/{{ account.account_no }}">Düzenle</a>
-                <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/account_delete/{{ account.account_no }}">Sil</a></small>
+            <td><a href="http://127.0.0.1:8000/account_panel/account/{{ account.account_no }}">{{ account.account_no }}</a></td><td>{{ account.account_name }}</td><td>{{ account.account_type_name }}</td><td>{{ account.account_amount }}</td><td>{{ account.account_desc }}</td><td><small> <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_edit/{{ account.account_no }}">Düzenle</a>
+                <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_delete/{{ account.account_no }}">Sil</a></small>
                 </td>
             </tr>
                 {% endfor %}

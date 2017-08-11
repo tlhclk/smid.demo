@@ -42,7 +42,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Öğrenci İzin Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/operation_panel/leave_add/">Yeni İzin Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/operation_panel/leave_add/">Yeni İzin Kaydı</a></li>
       </ol>
 
     </section>
@@ -53,8 +53,8 @@ $(document).ready(function() {
                 <th>Id</th><th>TCN</th><th>Adı</th><th>İzin Başlangıcı</th><th>İzin Bitimi</th><th>İzin Sebebi</th><th></th>
             </tr></thead><tbody>
                 {% for leave in leave_list %}<tr>
-                <td><a href="http://www.dormoni.com/operation_panel/leave/{{ leave.id }}">{{ leave.id }}</a></td><td>{{ leave.person_id.student_tcn_id }}</td><td>{{ leave.person_id.full_name }}</td><td>{{ leave.leave_start }}</td><td>{{ leave.leave_end }}</td><td>{{ leave.leave_reason }}</td><td>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/operation_panel/leave_delete/{{ leave.id }}">Sil</a>
+                <td><a href="http://127.0.0.1:8000/operation_panel/leave/{{ leave.id }}">{{ leave.id }}</a></td><td>{{ leave.person_id.student_tcn_id }}</td><td>{{ leave.person_id.full_name }}</td><td>{{ leave.leave_start }}</td><td>{{ leave.leave_end }}</td><td>{{ leave.leave_reason }}</td><td>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/operation_panel/leave_delete/{{ leave.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

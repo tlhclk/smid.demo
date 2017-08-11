@@ -42,7 +42,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">İşlem Geçmişi Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="http://www.dormoni.com/account_panel/transaction_add/">Yeni İşlem Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/account_panel/transaction_add/">Yeni İşlem Kaydı</a></li>
       </ol>
 
     </section>
@@ -54,8 +54,8 @@ $(document).ready(function() {
             </tr></thead><tbody>
                 {% for transaction in transaction_list %}<tr>
                 <td>{{ transaction.id }}</td><td>{{ transaction.account_name }}</td><td>{{ transaction.transaction_type_name }}</td><td>{{ transaction.transaction_amount }}</td><td>{{ transaction.transaction_time }}</td><td>{{ transaction.transaction_desc }}</td><td>
-            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/transaction_edit/{{ transaction.id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/transaction_delete/{{ transaction.id }}">Sil</a>
+            <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/transaction_edit/{{ transaction.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/transaction_delete/{{ transaction.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

@@ -42,7 +42,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Ödeme Planı Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/asset_add/">Yeni Ödeme Planı Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/asset_add/">Yeni Ödeme Planı Kaydı</a></li>
       </ol>
 
     </section>
@@ -53,9 +53,9 @@ $(document).ready(function() {
             <th>Ödeme Planı No</th><th>Öğrencinin Adı</th><th>Öğrencinin <br>Ödediği Miktar</th><th>Öğrencinin <br>Kalan Borcu</th><th>Taksit Miktarı</th><th>Ödeme Türü</th><th></th>
         </tr></thead><tbody>
             {% for asset in asset_list %}<tr>
-            <td><a href="http://www.dormoni.com/account_panel/asset/{{ asset.asset_id }}">{{ asset.asset_id }}</a></td><td>{{ asset.person_id.full_name }}</td><td>{{ asset.asset_amount }}</td><td>{{ asset.asset_debt }}</td><td>{{ asset.asset_period }}</td><td>{{ asset.asset_type }}</td>
-            <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/asset_edit/{{ asset.asset_id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/asset_delete/{{ asset.asset_id }}">Sil</a></td></tr>
+            <td><a href="http://127.0.0.1:8000/account_panel/asset/{{ asset.asset_id }}">{{ asset.asset_id }}</a></td><td>{{ asset.person_id.full_name }}</td><td>{{ asset.asset_amount }}</td><td>{{ asset.asset_debt }}</td><td>{{ asset.asset_period }}</td><td>{{ asset.asset_type }}</td>
+            <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/asset_edit/{{ asset.asset_id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/asset_delete/{{ asset.asset_id }}">Sil</a></td></tr>
             {% endfor %}
         </tbody></table>
       <!-- Your Page Content Here -->
