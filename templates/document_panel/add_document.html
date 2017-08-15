@@ -66,7 +66,7 @@ $(document).ready(function() {
                 <label for="id_person_id">Dosyanın İlişkili Olduğu Kişi: </label>
                 <select class="form-control select2" style="width: 100%;" name="person_id" id="id_person_id">
                   <option value="{{ formdocument.person_id.value }}"></option>
-                    {% for person in model_info.person_list %}
+                    {% for person in person_list %}
                         <option value="{{ person }}">{{ person.full_name }}</option>
                     {% endfor %}
                 </select>
@@ -79,7 +79,7 @@ $(document).ready(function() {
                     <label for="id_document_type">Dosya Türü: </label>
                     <select class="form-control select2" style="width: 100%;" name="document_type" id="id_document_type">
                   <option value="{{ formdocument.document_type.value }}"></option>
-                    {% for doc_type in model_info.document_type_list %}
+                    {% for doc_type in document_type_list %}
                         <option value="{{ doc_type.0 }}">{{ doc_type.1 }}</option>
                     {% endfor %}
                 </select>

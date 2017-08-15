@@ -55,8 +55,8 @@ $(document).ready(function() {
                 <label for="id_person_id">Öğrenci Adı: </label>
                 <select class="form-control select2" style="width: 100%;" name="person_id" id="id_person_id">
                   <option value="{{ form.person_id.value }}"></option>
-                    {% for person in model_info.person_list %}
-                        <option value="{{ person }}">{{ person.full_name }}</option>
+                    {% for person in student_list %}
+                        <option value="{{ person.id }}">{{ person.full_name }}</option>
                     {% endfor %}
                 </select>
               </div>

@@ -70,7 +70,7 @@ $(document).ready(function() {
                 <label for="id_personal_tcn">Personel Kimlik Numarası: </label>
                 <select class="form-control select2" style="width: 100%;" name="personal_tcn" id="id_personal_tcn">
                   <option value="{{ form.personal_tcn.value }}"></option>
-                    {% for personal in model_info %}
+                    {% for personal in tcn_list %}
                         <option value="{{ personal }}">{{ personal.s_tcn }}</option>
                     {% endfor %}
                 </select>

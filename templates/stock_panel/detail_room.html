@@ -1,23 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail-{{ room.room_no }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Oda Tablosu</li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
+      </ol>
 
-<h1>{{ room.room_no }}</h1>
-<h1>{{ room.room_floor }}</h1>
-<h1>{{ room_people }}</h1>
-<h1>{{ room_type }}</h1>
-<h1>{{ room.room_desc }}</h1>
-{% for student in student_list %}
-    <h1>{{ student.full_name }}</h1>
-{% endfor %}
-{% for bos in bos_list %}
-    <h1>Boş Kontenjan</h1>
-{% endfor %}
-<img src="/../../media/{{ room.room_image }}" alt="room-image" height="400">
+    </section>
 
-</body>
-</html>
+    <!-- Main content -->
+    <section class="content">
+<div class="content">
+      <!-- Your Page Content Here -->
+        <!-- left column -->
+    <div class="row">
+            <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body" style="column-count: 2">
+                    <h3><b>Oda No: </b>{{ room.room_no }}</h3>
+                    <h3><b>Oda Türü: </b>{{ room.room_type_name }}</h3>
+                    <h3><b>Oda Kişi Sayısı: </b>{{ room.room_people_name }}</h3>
+                    <h3><b>Oda Katı: </b>{{ room.room_floor }}</h3>
+                    <h3><b>Oda Açıklaması: </b>{{ room.room_desc }}</h3>
+                    <h3><b>Oda Resmi: </b>{{ room.room_image.name }}</h3>
+                </div>
+            </div></div>
+    </div>
+
+    <!-- /.content -->
+    </div>
+    </section>
+{% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block script %}
+
+{% endblock %}

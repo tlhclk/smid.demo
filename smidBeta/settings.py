@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 ]
 
+
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

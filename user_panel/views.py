@@ -5,7 +5,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import(authenticate,login,logout)
 from django.contrib.auth.models import User,Group,Permission,ContentType
-from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup
+from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup,CompanyInfoForm
+from .models import CompanyInfoModel
 
 
 def option_menu(request):
@@ -25,11 +26,11 @@ def log_in(request):
                     request.session.set_expiry(604800)#bir haftalık
                 else:
                     request.session.set_expiry(0)
-                return redirect('http://127.0.0.1:8000/user_panel/login/')
+                return redirect('http://127.0.0.1:8000/home/')
 
         return render(request,'user_panel/login.html',{'form':formuser})
     else:
-        return HttpResponse('Already an user singed in: ' + str(request.user))
+        return redirect('http://127.0.0.1:8000/home/')
 
 def log_out(request):
     if str(request.user) != 'AnonymousUser':
@@ -118,7 +119,6 @@ def permission_add(request):
         return render(request, 'user_panel/default_form.html', {'form': form,'title':title})
     else: return HttpResponse('You have no authorization to create new permission')
 
-
 def group_permission_add(request):
     if 1==1:#request.user.has_perm('auth.change_permission'):
         title='Group Permssion Add'
@@ -148,3 +148,42 @@ def add_group(request):
             return redirect('../')
     group_form=AddGroup()
     return render(request,'user_panel/default_form.html',{'form':group_form})
+
+def add_company(request):
+    if request.user.has_perm('user_panel.add_companyinfomodel'):
+        if request.method=='POST':
+            formcompany = CompanyInfoForm(request.POST)
+            if formcompany.is_valid():
+                formcompany.save()
+                return redirect('http://127.0.0.1:8000/home/')
+        formcompany=CompanyInfoForm()
+        return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def detail_company(request,company_id):
+    if request.user.has_perm('user_panel.view_companyinfomodel'):
+        company=CompanyInfoModel.objects.get(pk=company_id)
+        return render(request,'user_panel/detail_company.html',{'title':'Yurt Detayları','company':company})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def table_company(request):
+    if request.user.has_perm('user_panel.view_companyinfomodel'):
+        company_list=CompanyInfoModel.objects.all()
+        return render(request, 'user_panel/table_company.html', {'title': 'Yurtlar Tablosu', 'company_list': company_list})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def edit_company(request,company_id):
+    if request.user.has_perm('user_panel.change_companyinfomodel'):
+        if request.method=='POST':
+            formcompany = CompanyInfoForm(request.POST,CompanyInfoModel.objects.get(pk=company_id))
+            if formcompany.is_valid():
+                formcompany.save()
+                return redirect('http://127.0.0.1:8000/home/')
+        formcompany=CompanyInfoForm(CompanyInfoModel.objects.get(pk=company_id))
+        return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def delete_company(request,company_id):
+    if request.user.has_perm('user_panel.delete_companyinfomodel'):
+        CompanyInfoModel.objects.get(pk=company_id).delete()
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')

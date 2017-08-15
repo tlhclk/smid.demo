@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User,Group,Permission,ContentType
 from django.contrib.auth import (authenticate, get_user_model, password_validation)
+from .models import CompanyInfoModel,UserCompanyModel
 
 UserModel=get_user_model()
 
@@ -94,3 +95,21 @@ class AddGroup(forms.Form):
     class Meta:
         model=Group
         fields=['group_name']
+
+class CompanyInfoForm(forms.ModelForm):
+    class Meta:
+        model=CompanyInfoModel
+        fields=['company_id',
+                'company_name',
+                'company_vno',
+                'company_adress',
+                'company_account_no',
+                'company_payment_detail',
+                'company_desc'
+                ]
+
+class UserCompanyForm(forms.ModelForm):
+    class Meta:
+        model=UserCompanyModel
+        fields=['user',
+                'company']

@@ -55,7 +55,7 @@ $(document).ready(function() {
                 <label for="id_s_nation">Uyruk: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_nation" id="id_s_nation">
                   <option value="{{ form.s_nation.value }}"></option>
-                    {% for nation in model_info.nation_list %}
+                    {% for nation in nation_list %}
                         <option value="{{ nation.0 }}">{{ nation.1 }}</option>
                     {% endfor %}
                 </select>
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 <label for="id_s_idcard_type">Kimlik Kartı Türü: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_idcard_type" id="id_s_idcard_type">
                   <option value="{{ form.s_idcard_type.value }}"></option>
-                    {% for id_card in model_info.idcard_type_list %}
+                    {% for id_card in id_card_list %}
                         <option value="{{ id_card.0 }}">{{ id_card.1 }}</option>
                     {% endfor %}
                 </select>
@@ -73,7 +73,7 @@ $(document).ready(function() {
                 <label for="id_s_gender">Cinsiyet: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_gender" id="id_s_gender">
                   <option value="{{ form.s_gender.value }}"></option>
-                    {% for gender in model_info.gender_list %}
+                    {% for gender in gender_list %}
                         <option value="{{ gender.0 }}">{{ gender.1 }}</option>
                     {% endfor %}
                 </select>
@@ -82,7 +82,7 @@ $(document).ready(function() {
                 <label for="id_s_medeni_hali">Medeni Hali: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_medeni_hali" id="id_s_medeni_hali">
                   <option value="{{ form.s_medeni_hali.value }}"></option>
-                    {% for medeni_hal in model_info.medeni_hal_list %}
+                    {% for medeni_hal in medeni_hal_list %}
                         <option value="{{ medeni_hal.0 }}">{{ medeni_hal.1 }}</option>
                     {% endfor %}
                 </select>
@@ -117,7 +117,7 @@ $(document).ready(function() {
                 <label for="id_s_birth_place">Doğum Yeri: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_birth_place" id="id_s_birth_place">
                   <option value="{{ form.s_birth_place.value }}"></option>
-                    {% for city in model_info.city_list %}
+                    {% for city in city_list %}
                         <option value="{{ city.0 }}">{{ city.1 }}</option>
                     {% endfor %}
                 </select>
@@ -126,7 +126,7 @@ $(document).ready(function() {
                 <label for="id_s_register_vilage">Nüfusa Kayıtlı Olduğu İl: </label>
                 <select class="form-control select2" style="width: 100%;" name="s_register_vilage" id="id_s_register_vilage">
                   <option value="{{ form.s_register_vilage.value }}"></option>
-                    {% for city in model_info.city_list %}
+                    {% for city in city_list %}
                         <option value="{{ city.0 }}">{{ city.1 }}</option>
                     {% endfor %}
                 </select>

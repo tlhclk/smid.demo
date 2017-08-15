@@ -70,7 +70,7 @@ $(document).ready(function() {
                     <label for="id_room_people">Oda Kontenjanı: </label>
                     <select class="form-control select2" style="width: 100%;" name="room_people" required id="id_room_people">
                   <option value="{{ formroom.room_people.value }}"></option>
-                    {% for fix_type in model_info.room_people_list %}
+                    {% for fix_type in room_people_list %}
                         <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
                     {% endfor %}
                 </select>
@@ -79,7 +79,7 @@ $(document).ready(function() {
                     <label for="id_room_type">Oda Türü: </label>
                     <select class="form-control select2" style="width: 100%;" name="room_type" required id="id_room_type">
                   <option value="{{ formroom.room_type.value }}"></option>
-                    {% for fix_type in model_info.room_type_list %}
+                    {% for fix_type in room_type_list %}
                         <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
                     {% endfor %}
                 </select>

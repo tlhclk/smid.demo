@@ -43,12 +43,12 @@
             {% if request.user.username %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user }}.jpg" class="user-image" alt="User Image">
+              <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user.id }}.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user.email }}.jpg" class="img-circle" alt="User Image">
+                <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user.id }}.jpg" class="img-circle" alt="User Image">
                 <p>
                   {{ request.user.first_name }} {{ request.user.last_name }}
                 </p>
@@ -160,6 +160,8 @@
             <li><a href="http://127.0.0.1:8000/report_panel/contact_table/">Rehber</a></li>
             <li><a href="http://127.0.0.1:8000/operation_panel/leave_table/">İzinli Öğrenci Tablosu</a></li>
             <li><a href="http://127.0.0.1:8000/report_panel/money_flow/">Para Akışı</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/account_amount/">Hesap Miktarı</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/monthly_flow/">Aylık Para Akışı</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Oda-Eşya Bilgileri</span>

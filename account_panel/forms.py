@@ -15,8 +15,6 @@ class TransactionInfoForm(forms.ModelForm):
             'transaction_desc',
         ]
 
-    def account_list(self):
-        return [(account.account_no,account.account_name) for account in AccountInfoModel.objects.all()]
 
 class PersonAssetInfoForm(forms.ModelForm):
     class Meta:

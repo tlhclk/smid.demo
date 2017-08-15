@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from stock_panel.models import RoomInfoModel
+from user_panel.models import CompanyInfoModel
 from localflavor.tr.tr_provinces import PROVINCE_CHOICES
 from django.contrib.auth.models import User
 
@@ -36,6 +37,7 @@ class PersonIDInfoModel(models.Model):
     s_nufus_ailesira = models.CharField(max_length=5, verbose_name='Aile Sira No',default='')
     s_nufus_sirano = models.CharField(max_length=4, verbose_name='Sira No',default='')
     s_medeni_hali = models.CharField(max_length=10, verbose_name='Medeni Hali', default='1', choices=medeni_hal_list)
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='personid_info'
@@ -82,6 +84,7 @@ class PersonalInfoModel(models.Model):
     health_notes = models.CharField(max_length=200, default='',verbose_name='Sağlık Notları')
     special_notes = models.CharField(max_length=200, default='',verbose_name='Özel Notlar')
     image_field = models.ImageField(upload_to='profile_pic/',default='',verbose_name='Profil Resmi')
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='personal_info'
@@ -105,7 +108,7 @@ class PersonalInfoModel(models.Model):
         return self.personal_tcn.full_name()
 
     def group(self):
-        return 'Personal'
+        return 'Personel'
 
 
 class StudentInfoModel(models.Model):
@@ -123,8 +126,7 @@ class StudentInfoModel(models.Model):
     student_city = models.CharField(max_length=20,choices=PROVINCE_CHOICES,verbose_name='Adres Şehri',default='1')
     student_town = models.CharField(max_length=20,default='',verbose_name='Adres İlçesi')
     student_adress = models.CharField(max_length=100,default='',verbose_name='Adres')
-
-    room_no = models.ForeignKey(RoomInfoModel,verbose_name='Oda Numarası',default='101')
+    room_id = models.ForeignKey(RoomInfoModel,verbose_name='Oda Numarası',default='101')
     student_type = models.CharField(max_length=10, choices=student_type_list, default='1',verbose_name='Öğrenci Türü')
     school_name = models.CharField(max_length=50, default='',verbose_name='Okul')
     education_year = models.CharField(max_length=20, choices=year_list, default='1',verbose_name='Eğitim Yılı')
@@ -133,6 +135,7 @@ class StudentInfoModel(models.Model):
     special_notes = models.CharField(max_length=200, default='',verbose_name='Özel Notlar')
     image_field = models.ImageField(upload_to='profile_pic/',default='',verbose_name='Profil Resmi',blank=True,null=True)
     student_position= models.BooleanField(verbose_name='Öğrenci Konumu',default='1')
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
 
     class Meta:
@@ -159,12 +162,6 @@ class StudentInfoModel(models.Model):
     def student_type_name(self):
         return self.student_type_list[int(self.student_type)][1]
 
-    def tcn_list(self):
-        return PersonIDInfoModel.objects.all()
-
-    def room_list(self):
-        return RoomInfoModel.objects.all()
-
     def city_list(self):
         return PROVINCE_CHOICES
 
@@ -172,8 +169,11 @@ class StudentInfoModel(models.Model):
         from account_panel.models import PersonAssetInfoModel
         return PersonAssetInfoModel.objects.filter(person_id=self.id)
 
+    def room_id_str(self):
+        return str(self.room_id_id)
+
     def group(self):
-        return 'Student'
+        return 'Öğrenci'
 
 
 
@@ -188,6 +188,7 @@ class ParentInfoModel(models.Model):
     parent_email=models.EmailField(verbose_name='Veli Email Adresi',default='')
     relative_degree=models.CharField(max_length=20,verbose_name='Yakınlık Derecesi',default='')
     parent_job=models.CharField(max_length=20,verbose_name='Veli Mesleği',default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='parent_info'
@@ -199,5 +200,5 @@ class ParentInfoModel(models.Model):
         return '%s %s'% (self.parent_name,self.parent_lastname)
 
     def group(self):
-        return 'Parent'
+        return 'Veli'
 

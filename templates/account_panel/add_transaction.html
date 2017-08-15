@@ -64,7 +64,7 @@ $(document).ready(function() {
                   <div class="form-group has-feedback">
                       <label for="id_account_no"> İşlem Yapılacak Hesap : </label><select name="account_no" class="form-control select2" style="height: 40px" required id="id_account_no">
                       <option value="{{ form.account_no.value }}" selected>---------</option>
-                      {% for account in form.account_list %}
+                      {% for account in account_list %}
                           <option value="{{ account.0 }}">{{ account.1 }}</option>
                       {% endfor %}
                     </select>

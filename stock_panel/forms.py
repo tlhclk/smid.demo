@@ -8,7 +8,7 @@ class FixtureInfoForm(forms.ModelForm):
     class Meta:
         model=FixtureInfoModel
         fields=('fixture_no',
-                'room_no',
+                'room_id',
                 'fixture_type',
                 'fixture_notes',
                 'fixture_image'

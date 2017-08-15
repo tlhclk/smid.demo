@@ -17,6 +17,11 @@ urlpatterns = [
     url(r'^permission_table/',views.table_permission ,name='Permission Table'),
     url(r'^permission_add/',views.permission_add,name='Permission add'),
     url(r'^group_permission_add/',views.group_permission_add,name='asd'),
-    url(r'^add_group/',views.add_group,name='qwe')
+    url(r'^add_group/',views.add_group,name='qwe'),
+    url(r'company_add/',views.add_company,name=''),
+    url(r'company_detail/(?P<company_id>[0-9]+)',views.detail_company,name=''),
+    url(r'company_table/',views.table_company,name=''),
+    url(r'company_edit/(?P<company_id>[0-9]+)',views.edit_company,name=''),
+    url(r'company_delete/(?P<company_id>[0-9]+)',views.delete_company,name=''),
 
 ]

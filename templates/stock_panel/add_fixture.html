@@ -66,8 +66,8 @@ $(document).ready(function() {
                 <label for="id_room_no">Oda Numarası: </label>
                 <select class="form-control select2" style="width: 100%;" name="room_no" id="id_room_no">
                   <option value="{{ formfixture.person_id.value }}"></option>
-                    {% for room in model_info.room_list %}
-                        <option value="{{ room }}">{{ room.room_no }}</option>
+                    {% for room in room_list %}
+                        <option value="{{ room.id }}">{{ room.room_no }}</option>
                     {% endfor %}
                 </select>
               </div>
@@ -75,7 +75,7 @@ $(document).ready(function() {
                     <label for="id_fixture_type">Eşya Türü: </label>
                     <select class="form-control select2" style="width: 100%;" name="fixture_type" id="id_fixture_type">
                   <option value="{{ formfixture.fixture_type.value }}"></option>
-                    {% for fix_type in model_info.fixture_type_list %}
+                    {% for fix_type in fixture_type_list %}
                         <option value="{{ fix_type.0 }}">{{ fix_type.1 }}</option>
                     {% endfor %}
                 </select>

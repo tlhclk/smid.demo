@@ -74,7 +74,7 @@ class StudentInfoForm(forms.ModelForm):
                 'student_city',
                 'student_town',
                 'student_adress',
-                'room_no',
+                'room_id',
                 'student_type',
                 'school_name',
                 'education_year',

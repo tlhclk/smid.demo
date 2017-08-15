@@ -1,0 +1,77 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Yoklama Tablosu</li>
+      </ol>
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+  <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+          <th>Öğrenci No</th>
+          <th>Adı</th>
+          <th>Telefon No</th>
+            <th>E-mail Adresi</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for student in student_list %}
+          <tr>
+              <td><a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a></td>
+              <td>{{ student.full_name }}</td><td>{{ student.student_phone }}</td><td>{{ student.e_mail }} </td>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a>
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody></table>
+      <!-- Your Page Content Here -->
+
+    </section>
+
+{% endblock %}
+{% block css %}
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+{% endblock %}
+{% block script %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
+    <script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#myTable').DataTable(
+
+      {
+          "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
+        "order": [[ 0, "order" ]],
+        responsive: true,
+{#	dom:'Bftrlip',#}
+		dom: "<'row'<'col-sm-6 col-lg-3'B><'col-sm-1 col-lg-9'f>>" +
+		"<'row'<'col-lg-12'tr>>" +
+		"<'row'<'col-sm-2 col-lg-2'l><'col-sm-4 col-lg-4'i><'col-sm-6 col-lg-6'p>>",
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
+
+      }
+    );
+
+} );
+</script>
+{% endblock %}

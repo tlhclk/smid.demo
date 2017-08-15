@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^person_id_edit/(?P<person_id>[0-9]+)', views.edit_person_id, name='person id Edit'),
     url(r'^person_id_delete/(?P<person_id>[0-9]+)', views.delete_person_id, name='person id Delete'),
     url(r'^person_id/(?P<person_id>[0-9]+)',views.detail_person_id,name='person id detay'),
-    url(r'^(?P<person_id>[0-9]+)',views.show_profile,name='')
+    url(r'^(?P<person_id>[0-9]+)',views.show_profile,name=''),
 ]

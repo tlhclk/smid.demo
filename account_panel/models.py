@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 import datetime
 from person_panel.models import StudentInfoModel
+from user_panel.models import CompanyInfoModel
 
 def get_time():
     return datetime.datetime.now()
@@ -22,7 +23,7 @@ class PersonAssetInfoModel(models.Model):
     asset_desc=models.CharField(max_length=50,verbose_name='Asset Description: ',default='')
     asset_period=models.CharField(max_length=2,blank=True,default='')
     asset_type=models.CharField(max_length=10,verbose_name='Asset Type',blank=True,choices=asset_type_list)
-
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='personasset_info'
@@ -33,7 +34,6 @@ class PersonAssetInfoModel(models.Model):
     def asset_type_name(self):
         return dict(self.asset_type_list)[self.asset_type]
 
-
 class AccountInfoModel(models.Model):
     account_type_list=[('1','Vadesiz Banka Hesabı'),('2','Vadeli Banka Hesabı'),('3','Nakit'),('4','Senet'),('5','Çek'),('6','Kredi Kartı Hesabı')]
     bank_code=[('149','HalkBank'),('150','Vakıfbank'),('151','Yapı Kredi'),('152','Ziraat Bankası'),('153','İş Bankası'),('154','Akbank')]
@@ -43,6 +43,7 @@ class AccountInfoModel(models.Model):
     account_amount=models.CharField(max_length=10,verbose_name='Account Amount: ',default='')
     account_desc=models.CharField(max_length=100,verbose_name='Account Description: ',default='')
     account_bank=models.CharField(max_length=20, verbose_name='Account Bank', choices=bank_code)
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='account_info'
@@ -66,14 +67,13 @@ class BillInfoModel(models.Model):
     bill_address=models.CharField(max_length=200,verbose_name='Bill Adress: ',default='')
     bill_period=models.CharField(max_length=10,verbose_name='Bill Period: ',default='')
     bill_lastday=models.DateField(default=get_date,max_length=10)
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='bill_info'
 
     def bill_type_name(self):
         return self.bill_type_list[int(self.bill_type)-1][1]
-
-
 
 class TransactionInfoModel(models.Model):
     transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
@@ -84,6 +84,7 @@ class TransactionInfoModel(models.Model):
     transaction_amount = models.CharField(max_length=10, verbose_name='İşlem Miktarı',default='')
     transaction_time = models.DateTimeField(default='',verbose_name='İşlem Zamanı')
     transaction_desc = models.CharField(max_length=100, verbose_name='İşlem Açıklaması',null=True,blank=True,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table = 'transaction_info'

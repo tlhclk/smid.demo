@@ -7,99 +7,121 @@ from .models import StudentLeaveModel,AttendanceInfoModel
 from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
 from django.core import mail
 from person_panel.models import StudentInfoModel
+from user_panel.models import CompanyInfoModel,UserCompanyModel
 import datetime
 import imaplib
 import email
 
-
-
 def add_student_leave(request):
     if request.user.has_perm('operation_panel.add_studentleavemodel'):
+        company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id
         leave_form=StudentLeaveForm()
         if request.method=='POST':
             leave_form = StudentLeaveForm(request.POST)
             if leave_form.is_valid():
                 leave_form.save()
+                leave_record=StudentLeaveModel.objects.last()
+                leave_record.company_id=CompanyInfoModel.objects.get(pk=company_id)
+                leave_record.save()
                 return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
-        return render(request,'operation_panel/add_leave.html',{'form':leave_form,'title':'Yeni İzin Kaydı','model_info':StudentLeaveModel})
+        student_list=StudentInfoModel.objects.filter(company_id=company_id)
+        return render(request,'operation_panel/add_leave.html',{'form':leave_form,'title':'Yeni İzin Kaydı','student_list':student_list})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_student_leave(request):
     if request.user.has_perm('operation_panel.view_studentleavemodel'):
-        leave_list=StudentLeaveModel.objects.all()
+        leave_list=StudentLeaveModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
         return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'İzin Tablosu'})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def add_attendance(request):
-    formattendance=AttendanceInfoForm()
-    if request.method=='POST':
-        formattendance=AttendanceInfoForm(request.POST)
-        if formattendance.is_valid():
-            formattendance.save()
-            return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
-    return render(request,'operation_panel/default_form.html',{'form':formattendance,'model_info':'','title':'Yeni Yoklama Kaydı'})
+    if request.user.has_perm('operation_panel.add_attendanceinfomodel'):
+        formattendance=AttendanceInfoForm()
+        if request.method=='POST':
+            formattendance=AttendanceInfoForm(request.POST)
+            if formattendance.is_valid():
+                formattendance.save()
+                attendance=AttendanceInfoModel.objects.last()
+                attendance.company_id=CompanyInfoModel.objects.get(pk=UserCompanyModel.objects.get(pk=request.user.id).company_id)
+                attendance.save()
+                return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
+        return render(request,'operation_panel/default_form.html',{'form':formattendance,'title':'Yeni Yoklama Kaydı'})
+    else:
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_attendance(request):
-    record_list=AttendanceInfoModel.objects.all()
-    return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list})
+    if request.user.has_perm('person_panel.delete_studentinfomodel'):
+        record_list=AttendanceInfoModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
+        return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list,'title':'Attendance Table'})
+    else:
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def send_a_mail(request,person_mail):
-    if request.method=='POST':
-        formmail=MailSendForm(request.POST)
-        print (formmail)
-        if formmail.is_valid():
-            subject=request.POST['subject']
-            message=request.POST['message']
-            selected_people=request.POST.getlist('people_selection')
-            written_people=request.POST['people_manual'].split(', ')
-            to_ma=selected_people+written_people
-            mail.send_mail(subject,message,'tlhclk1312@gmail.com',to_ma)
-            return redirect('http://127.0.0.1:8000/user_panel/login/')
-    if person_mail:
-        formmail=MailSendForm(initial={'people_manual':person_mail})
+    if request.user.has_perm('person_panel.view_studentinfomodel'):
+        if request.method=='POST':
+            formmail=MailSendForm(request.POST)
+            print (formmail)
+            if formmail.is_valid():
+                subject=request.POST['subject']
+                message=request.POST['message']
+                selected_people=request.POST.getlist('people_selection')
+                written_people=request.POST['people_manual'].split(', ')
+                to_ma=selected_people+written_people
+                mail.send_mail(subject,message,'tlhclk1312@gmail.com',to_ma)
+                return redirect('http://127.0.0.1:8000/user_panel/login/')
+        if person_mail:
+            formmail=MailSendForm(initial={'people_manual':person_mail})
+        else:
+            formmail=MailSendForm()
+        return render(request,'operation_panel/send_mail.html',{'form':formmail,'person_list':StudentInfoModel.objects.all(),'title':'Mail Gönder'})
     else:
-        formmail=MailSendForm()
-    return render(request,'operation_panel/send_mail.html',{'form':formmail,'person_list':StudentInfoModel.objects.all(),'title':'Mail Gönder'})
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
-def mail_inbox():
-    mail = imaplib.IMAP4_SSL('smtp.gmail.com')
-    mail.login('tlhclk1312@gmail.com', 'Tlhclk.12')
-    mail.select('inbox')
-    print (mail)
-    type, data = mail.search(None, 'ALL')
-    mail_ids = data[0]
-    id_list = mail_ids.split()
-    print (id_list)
-    for i in range(int(id_list[-1]),int(id_list[0]),-1):
-        result, data = mail.uid('fetch', str(i), '(X-GM-THRID X-GM-MSGID)')
-        print (result,data)
-        # typ,data=mail.fetch(str(i),'(RFC3501)')
-        #
-        # for response_part in data:
-        #     if isinstance(response_part, tuple):
-        #         msg = email.message_from_string(response_part[1])
-        #         email_subject = msg['subject']
-        #         email_from = msg['from']
-        #         print ('From : ' + email_from + '\n')
-        #         print ('Subject : ' + email_subject + '\n')
+def mail_inbox(request):
+    if request.user.has_perm('person_panel.add_studentinfomodel'):
+        mail = imaplib.IMAP4_SSL('smtp.gmail.com')
+        mail.login('tlhclk1312@gmail.com', 'Tlhclk.12')
+        mail.select('inbox')
+        print (mail)
+        type, data = mail.search(None, 'ALL')
+        mail_ids = data[0]
+        id_list = mail_ids.split()
+        print (id_list)
+        for i in range(int(id_list[-1]),int(id_list[0]),-1):
+            result, data = mail.uid('fetch', str(i), '(X-GM-THRID X-GM-MSGID)')
+            print (result,data)
+            # typ,data=mail.fetch(str(i),'(RFC3501)')
+            #
+            # for response_part in data:
+            #     if isinstance(response_part, tuple):
+            #         msg = email.message_from_string(response_part[1])
+            #         email_subject = msg['subject']
+            #         email_from = msg['from']
+            #         print ('From : ' + email_from + '\n')
+            #         print ('Subject : ' + email_subject + '\n')
+    else:
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def change_student_position(request,student_id):
-    student=StudentInfoModel.objects.get(pk=student_id)
-    if student.student_position==True:
-        student.student_position=False
+    if request.user.has_perm('person_panel.add_studentinfomodel') and StudentInfoModel.objects.get(pk=student_id).company_id_id==UserCompanyModel.objects.get(pk=request.user.id).company_id:
+        student=StudentInfoModel.objects.get(pk=student_id)
+        if student.student_position==True:
+            student.student_position=False
+        else:
+            student.student_position=True
+        student.save()
+        return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
     else:
-        student.student_position=True
-    student.save()
-    return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def create_egm_xml(request):
-    if request.user.has_perm('person_panel.delete_studentinfomodel'):
+    if request.user.has_perm('person_panel.add_studentinfomodel'):
         if request.method=='POST':
             sstudent_list=request.POST.getlist('sstudent_list')
             if len(sstudent_list)==0:
-                sstudent_list=StudentInfoModel.objects.all()
+                sstudent_list=StudentInfoModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
 
             file2 = open('deneme.xml', 'w+')
             file=File(file2)

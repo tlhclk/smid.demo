@@ -53,7 +53,7 @@ $(document).ready(function() {
                 <th>Öğrenci No</th><th>Adı</th><th>Oda Numarası</th><th>Kayıt Tarihi</th><th>Okulu</th><th>Borcu</th><th></th>
             </tr></thead><tbody>
                 {% for student in student_list %}<tr>
-                <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_no_id }}</td><td>{{ student.student_regday }}</td><td>{{ student.school_name }}</td><td>{{ student.payment_info.0.asset_debt }}</td><td>
+                <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_id_id }}</td><td>{{ student.student_regday }}</td><td>{{ student.school_name }}</td><td>{{ student.payment_info.0.asset_debt }}</td><td>
             <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a>
                 </td>

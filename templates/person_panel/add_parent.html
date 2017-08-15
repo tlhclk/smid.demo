@@ -72,7 +72,7 @@ $(document).ready(function() {
                 <label for="id_student_id">Öğrenci Adı: </label>
                 <select class="form-control select2" style="width: 100%;" name="student_id" id="id_student_id">
                   <option value="{{ form.student_id.value }}"></option>
-                    {% for student in model_info %}
+                    {% for student in person_list %}
                         <option value="{{ student }}">{{ student.full_name }}</option>
                     {% endfor %}
                 </select>
@@ -87,7 +87,7 @@ $(document).ready(function() {
                 </div>
                 <div class="form-group">
                     <label for="id_parent_TCN">Kimlik Numarası: </label>
-                    <input type="text" class="form-control" placeholder="Kimlik Numarası" name="parent_TCN" required id="id_parent_TCN" value="{{ form.parent_TCN.value }}" maxlength="11">
+                    <input type="text" class="form-control" placeholder="Kimlik Numarası" name="parent_TCN" required id="id_parent_TCN" value="{{ form.parent_TCN.value }}" maxlength="11" data-inputmask='"mask": "99999999999"' data-mask>
                 </div>
               <div class="form-group">
                 <label for="id_parent_phone">Telefon Numarası:</label>
