@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
   <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
@@ -39,7 +40,7 @@ $(document).ready(function() {
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/account_panel/asset_table"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
+        <li class="active"><a href="http://www.dormoni.com/account_panel/asset_table"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
           <li class="active">Yeni Ödeme Planı Kaydı</li>
       </ol>
 
@@ -61,47 +62,7 @@ $(document).ready(function() {
 
               <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                  <div class="form-group has-feedback">
-                          <label for="id_person_id">Öğrenci No : </label>
-                      <select name="person_id" class="form-control select2" style="height: 40px" required id="id_person_id">
-                          <option value="{{ form.person_id.value }}" selected></option>
-                          {% for person in student_list %}
-                              <option value="{{ person }}">{{ person.full_name }}</option>
-                           {% endfor %}
-                        </select>
-                      </div><div class="form-group has-feedback">
-                          <label for="id_asset_id">Ödeme Planı No: </label>
-                        <input type="text" class="form-control" placeholder="Ödeme Planı No" name="asset_id" required id="id_asset_id" value="{{ form.asset_id.value }}" maxlength="7">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
-                  <div class="form-group has-feedback">
-                          <label for="id_asset_amount">Ödenen Miktarı : </label>
-                        <input type="text" class="form-control" placeholder="Ödenen Miktarı" name="asset_amount" required id="id_asset_amount" value="{{ form.asset_amount.value }}" max="100000">
-                        <span class="fa fa-money form-control-feedback"></span>
-                      </div>
-                    <div class="form-group has-feedback">
-                          <label for="id_asset_debt">Borç Miktarı : </label>
-                        <input type="text" class="form-control" placeholder="Borç Miktarı" name="asset_debt" required id="id_asset_debt" value="{{ form.asset_debt.value }}" max="100000">
-                        <span class="fa fa-money form-control-feedback"></span>
-                      </div>
-                  <div class="form-group has-feedback">
-                          <label for="id_asset_period">Taksit Adedi : </label>
-                        <input type="text" class="form-control" placeholder="Taksit Adedi" name="asset_period" required id="id_asset_period" value="{{ form.asset_period.value }}" maxlength="2">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
-                  <div class="form-group has-feedback">
-                          <label for="id_asset_type">Ödeme Türü : </label><select name="asset_type" class="form-control select2" style="height: 40px" required id="id_asset_type">
-                          <option value="{{ form.asset_type.value }}" selected></option>
-                          {% for asset_type in form.asset_type_list %}
-                              <option value="{{ asset_type.0 }}">{{ asset_type.1 }}</option>
-                           {% endfor %}
-                        </select>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_asset_desc">Ödeme Planı Açıklaması : </label>
-                        <input type="text" class="form-control" placeholder="Ödeme Planı Açıklaması" name="asset_desc" required id="id_asset_desc" value="{{ form.asset_desc.value }}" maxlength="100">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
+                  {% bootstrap_form form %}
                       <div class="row">
                         <!-- /.col -->
                         <div class="col-xs-12">

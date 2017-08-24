@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
   <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
@@ -30,7 +33,8 @@ $(document).ready(function() {
     $('input[type="radio"].minimal').iCheck({
       radioClass: 'iradio_minimal-blue'
     });
-
+    $("select").click(function() {
+});
 
 } );
 </script>
@@ -39,7 +43,7 @@ $(document).ready(function() {
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-table"></i> İşlem Geçmişi</a></li>
+        <li class="active"><a href="http://www.dormoni.com/account_panel/transaction_table/"><i class="fa fa-table"></i> İşlem Geçmişi</a></li>
           <li class="active">Yeni İşlem Kaydı</li>
       </ol>
 
@@ -61,44 +65,14 @@ $(document).ready(function() {
 
               <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                  <div class="form-group has-feedback">
-                      <label for="id_account_no"> İşlem Yapılacak Hesap : </label><select name="account_no" class="form-control select2" style="height: 40px" required id="id_account_no">
-                      <option value="{{ form.account_no.value }}" selected>---------</option>
-                      {% for account in account_list %}
-                          <option value="{{ account.0 }}">{{ account.1 }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_transaction_type">İşlem Türü :</label><select name="transaction_type" class="form-control select2" style="height: 40px" required id="id_transaction_type">
-                          <option value="{{ form.transaction_type.value }}" selected>---------</option>
-                          {% for transaction_type in transaction_type_list %}
-                              <option value="{{ transaction_type.0 }}">{{ transaction_type.1 }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_transaction_amount">İşlem Miktarı : </label>
-                        <input type="text" class="form-control" placeholder="İşlem Miktarı" name="transaction_amount" required id="id_transaction_amount" value="{{ form.transaction_amount.value }}" maxlength="5">
-                        <span class="fa fa-money form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback"><label for="id_transaction_time">İşlem Zamanı : </label>
-                          <input type="text" class="form-control datetime-picker" placeholder="İşlem Zamanı" name="transaction_time" required id="id_transaction_time" value="{{ form.transaction_time.value.year }}-{{ form.transaction_time.value.month }}-{{ form.transaction_time.value.day }} {{ form.transaction_time.value.hour }}:{{ form.transaction_time.value.minute }}:{{ form.transaction_time.value.second }}">
-                            <span class="fa fa-calendar form-control-feedback"></span>
-                      </div>
-                      <div class="form-group has-feedback">
-                          <label for="id_transaction_desc">İşlem Açıklaması : </label>
-                        <input type="text" class="form-control" placeholder="İşlem Açıklaması" name="transaction_desc" id="id_transaction_desc" value="{{ form.transaction_desc.value }}" maxlength="100">
-                        <span class="glyphicon glyphicon-comment form-control-feedback"></span>
-                      </div>
-                      <div class="row">
-                        <!-- /.col -->
-                        <div class="col-xs-12">
+                    {% bootstrap_form form %}
+                  <div class="row">
+                        <div class="col-lg-12">
                             <div class="pull-right">
                           <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
                         </div></div>
-                        <!-- /.col -->
-                      </div></form>
+                      </div>
+              </form>
 
                 </div>
                 </div>

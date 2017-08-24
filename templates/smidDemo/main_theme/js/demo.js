@@ -11,8 +11,6 @@ $(function () {
    * Get access to plugins
    */
 
-  $('[data-toggle="control-sidebar"]').controlSidebar()
-  $('[data-toggle="push-menu"]').pushMenu()
 
   var $pushMenu       = $('[data-toggle="push-menu"]').data('lte.pushmenu')
   var $controlSidebar = $('[data-toggle="control-sidebar"]').data('lte.controlsidebar')

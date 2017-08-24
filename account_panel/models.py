@@ -15,7 +15,7 @@ def get_date():
 
 class PersonAssetInfoModel(models.Model):
     asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
-    asset_id=models.CharField(max_length=10,primary_key=True,verbose_name='Individual Asset ID: ')
+    asset_id=models.CharField(max_length=10,primary_key=True,verbose_name='Ödeme Planı Numarası: ')
     person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person id')
     #person_id=models.CharField(max_length=10,verbose_name='Person ID: ')
     asset_amount=models.CharField(max_length=5,verbose_name='Asset Amount: ',default='')
@@ -29,7 +29,7 @@ class PersonAssetInfoModel(models.Model):
         db_table='personasset_info'
 
     def __str__(self):
-        return self.asset_id
+        return self.id
 
     def asset_type_name(self):
         return dict(self.asset_type_list)[self.asset_type]
@@ -49,7 +49,7 @@ class AccountInfoModel(models.Model):
         db_table='account_info'
 
     def __str__(self):
-        return self.account_no
+        return (self.account_no+' - '+self.account_name)
 
     def account_type_name(self):
         return self.account_type_list[int(self.account_type)-1][1]
@@ -76,7 +76,7 @@ class BillInfoModel(models.Model):
         return self.bill_type_list[int(self.bill_type)-1][1]
 
 class TransactionInfoModel(models.Model):
-    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
+    transaction_type_list = [('',''),('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
     #transaction_no = models.CharField(max_length=10, primary_key=True, verbose_name='Transaction No: ')
     account_no=models.ForeignKey(AccountInfoModel,verbose_name='Hesap Numarası')
     #account_no = models.CharField(max_length=10, blank=True, null=True)

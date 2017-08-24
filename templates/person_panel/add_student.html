@@ -38,8 +38,8 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/person_panel/personal_table"><i class="fa fa-table"></i> Öğrenci Tablosu</a></li>
+        <li><a href="http://www.dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://www.dormoni.com/person_panel/personal_table"><i class="fa fa-table"></i> Öğrenci Tablosu</a></li>
           <li class="active">{{ title }}</li>
       </ol>
 
@@ -62,7 +62,7 @@ $(document).ready(function() {
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                <div class="form-group">qw
+                <div class="form-group">
                     <label for="id_id">Öğrenci No: </label>
                     <input type="text" class="form-control" placeholder="Öğrenci No" name="id" required id="id_id" value="{{ form.id.value }}" maxlength="11">
                 </div>

@@ -23,18 +23,18 @@ def add_student_leave(request):
                 leave_record=StudentLeaveModel.objects.last()
                 leave_record.company_id=CompanyInfoModel.objects.get(pk=company_id)
                 leave_record.save()
-                return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
+                return redirect('http://www.dormoni.com/operation_panel/leave_table/')
         student_list=StudentInfoModel.objects.filter(company_id=company_id)
         return render(request,'operation_panel/add_leave.html',{'form':leave_form,'title':'Yeni İzin Kaydı','student_list':student_list})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_student_leave(request):
     if request.user.has_perm('operation_panel.view_studentleavemodel'):
         leave_list=StudentLeaveModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
         return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'İzin Tablosu'})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def add_attendance(request):
     if request.user.has_perm('operation_panel.add_attendanceinfomodel'):
@@ -46,17 +46,17 @@ def add_attendance(request):
                 attendance=AttendanceInfoModel.objects.last()
                 attendance.company_id=CompanyInfoModel.objects.get(pk=UserCompanyModel.objects.get(pk=request.user.id).company_id)
                 attendance.save()
-                return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
+                return redirect('http://www.dormoni.com/operation_panel/attendance_table/')
         return render(request,'operation_panel/default_form.html',{'form':formattendance,'title':'Yeni Yoklama Kaydı'})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_attendance(request):
     if request.user.has_perm('person_panel.delete_studentinfomodel'):
         record_list=AttendanceInfoModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
         return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list,'title':'Attendance Table'})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def send_a_mail(request,person_mail):
     if request.user.has_perm('person_panel.view_studentinfomodel'):
@@ -70,14 +70,14 @@ def send_a_mail(request,person_mail):
                 written_people=request.POST['people_manual'].split(', ')
                 to_ma=selected_people+written_people
                 mail.send_mail(subject,message,'tlhclk1312@gmail.com',to_ma)
-                return redirect('http://127.0.0.1:8000/user_panel/login/')
+                return redirect('http://www.dormoni.com/user_panel/login/')
         if person_mail:
             formmail=MailSendForm(initial={'people_manual':person_mail})
         else:
             formmail=MailSendForm()
         return render(request,'operation_panel/send_mail.html',{'form':formmail,'person_list':StudentInfoModel.objects.all(),'title':'Mail Gönder'})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def mail_inbox(request):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
@@ -102,7 +102,7 @@ def mail_inbox(request):
             #         print ('From : ' + email_from + '\n')
             #         print ('Subject : ' + email_subject + '\n')
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def change_student_position(request,student_id):
     if request.user.has_perm('person_panel.add_studentinfomodel') and StudentInfoModel.objects.get(pk=student_id).company_id_id==UserCompanyModel.objects.get(pk=request.user.id).company_id:
@@ -112,9 +112,9 @@ def change_student_position(request,student_id):
         else:
             student.student_position=True
         student.save()
-        return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
+        return redirect('http://www.dormoni.com/person_panel/student/%s'%student_id)
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')
 
 def create_egm_xml(request):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
@@ -140,4 +140,4 @@ def create_egm_xml(request):
         student_list=StudentInfoModel.objects.all()
         return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('http://www.dormoni.com/user_panel/login/')

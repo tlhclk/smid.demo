@@ -142,7 +142,7 @@ class StudentInfoModel(models.Model):
         db_table= 'student_info'
 
     def __str__(self):
-        return self.id
+        return (self.id+' - '+self.full_name())
 
     def __unicode__(self):
         return str(self.id)

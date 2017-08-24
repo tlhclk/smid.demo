@@ -136,5 +136,11 @@
         "end": "2017-12-19",
         "start": "2017-12-19",
         "title": "Ad6 Soyad6"
+    },
+    {
+        "allDay": true,
+        "end": "2017-6-22",
+        "start": "2017-6-22",
+        "title": "yok var"
     }
 ]

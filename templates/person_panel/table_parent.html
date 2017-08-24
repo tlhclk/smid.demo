@@ -42,7 +42,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Veli Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/person_panel/parent_add/">Yeni Veli Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://www.dormoni.com/person_panel/parent_add/">Yeni Veli Kaydı</a></li>
       </ol>
 
     </section>
@@ -68,8 +68,8 @@ $(document).ready(function() {
               <td><a href="/person_panel/parent/{{ parent.i }}/">{{ parent.student_id_id }}</a></td>
               <td>{{ parent.parent_name }}</td><td>{{ parent.parent_phone }}</td><td>{{ parent.parent_email }} </td>
               <td>{{ parent.relative_degree }} </td><td>{{ parent.parent_job }}</td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/parent_edit/{{ parent.id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/parent_delete/{{ parent.id }}">Sil</a>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/parent_edit/{{ parent.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/person_panel/parent_delete/{{ parent.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

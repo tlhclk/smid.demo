@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^money_flow/(?P<account_no>[0-9]*)',views.money_flow,name='Para Akışı'),
     url(r'^account_amount/',views.account_amount,name='Hesap Miktarı'),
     url(r'^attendance_table/(?P<room_no>[0-9]*)-(?P<student_id>[0-9]*)',views.student_attendance,name='Yoklama Tablosu'),
-    url(r'^monthly_flow/',views.monthly_flow,name='Aylık Akış')
+    url(r'^monthly_flow/',views.monthly_flow,name='Aylık Akış'),
+    url(r'^multiple_filtering/',views.filter_form,name='Filter Form')
 ]

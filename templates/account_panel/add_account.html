@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+  <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
+  <link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+{% endblock %}
+{% block script %}
+
+<script src="{%  static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+<script src="/static/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="/static/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+<script src="{%  static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script type="text/javascript">
+$(document).ready(function() {
+    $(".select2").select2();
+
+    $("[data-mask]").inputmask();
+
+    $('.date-picker').datepicker({timePicker:true,
+      autoclose: true,format: 'yyyy-mm-dd'
+    });
+
+    $('.datetime-picker').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'
+    });
+    $('input[type="radio"].minimal').iCheck({
+      radioClass: 'iradio_minimal-blue'
+    });
+
+
+} );
+</script>
+{% endblock %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://www.dormoni.com/account_panel/account_table"><i class="fa fa-table"></i> Hesap Tablosu</a></li>
+          <li class="active">Yeni Hesap Kaydı</li>
+      </ol>
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Your Page Content Here -->
+
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Yeni Hesap</h3>
+            </div>
+
+              <div class="box-body">
+
+              <form method="POST" class="post-form" enctype="multipart/form-data">
+                        {% csrf_token %}{% bootstrap_form form %}
+                      <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <div class="pull-right">
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                        </div></div>
+                        <!-- /.col -->
+                      </div>
+                    </form>
+
+                </div>
+                </div>
+        </div></div>
+    </section>
+
+{% endblock %}

@@ -3,7 +3,7 @@
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/person_panel/personal_table"><i class="fa fa-table"></i> Personel Tablosu</a></li>
+        <li class="active"><a href="http://www.dormoni.com/person_panel/personal_table"><i class="fa fa-table"></i> Personel Tablosu</a></li>
           <li class="active">Personel Detayı: {{ personal.id }}</li>
       </ol>
 
@@ -19,7 +19,7 @@
                 <div class="panel-body">
                     <div class="media">
                         <div align="center">
-                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ personal.image_field }}" width="300px" height="300px">
+                            <img class="thumbnail img-responsive" src="http://www.dormoni.com/media/{{ personal.image_field }}" width="300px" height="300px">
                         </div>
                     </div>
                     <div class="media-body">
@@ -27,9 +27,9 @@
                         <p>{{ personal.personal_phone }}</p>
                         <hr>
                         <h3><strong>E-mail Adresi</strong></h3>
-                        <p><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ personal.e_mail }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ personal.e_mail }}</p>
+                        <p><a href="http://www.dormoni.com/operation_panel/mail_send/{{ personal.e_mail }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ personal.e_mail }}</p>
                         <hr>
-                        <a href="http://127.0.0.1:8000/account_panel/asset/{{ personal.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Muhasebe Durumu</a>
+                        <a href="http://www.dormoni.com/account_panel/asset/{{ personal.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Muhasebe Durumu</a>
 
                     <span class="pull-right">
                     </span>

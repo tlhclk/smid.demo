@@ -26,11 +26,11 @@ def log_in(request):
                     request.session.set_expiry(604800)#bir haftalık
                 else:
                     request.session.set_expiry(0)
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('http://www.dormoni.com/home/')
 
         return render(request,'user_panel/login.html',{'form':formuser})
     else:
-        return redirect('http://127.0.0.1:8000/home/')
+        return redirect('http://www.dormoni.com/home/')
 
 def log_out(request):
     if str(request.user) != 'AnonymousUser':
@@ -155,22 +155,22 @@ def add_company(request):
             formcompany = CompanyInfoForm(request.POST)
             if formcompany.is_valid():
                 formcompany.save()
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('http://www.dormoni.com/home/')
         formcompany=CompanyInfoForm()
         return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def detail_company(request,company_id):
     if request.user.has_perm('user_panel.view_companyinfomodel'):
         company=CompanyInfoModel.objects.get(pk=company_id)
         return render(request,'user_panel/detail_company.html',{'title':'Yurt Detayları','company':company})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def table_company(request):
     if request.user.has_perm('user_panel.view_companyinfomodel'):
         company_list=CompanyInfoModel.objects.all()
         return render(request, 'user_panel/table_company.html', {'title': 'Yurtlar Tablosu', 'company_list': company_list})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def edit_company(request,company_id):
     if request.user.has_perm('user_panel.change_companyinfomodel'):
@@ -178,12 +178,12 @@ def edit_company(request,company_id):
             formcompany = CompanyInfoForm(request.POST,CompanyInfoModel.objects.get(pk=company_id))
             if formcompany.is_valid():
                 formcompany.save()
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('http://www.dormoni.com/home/')
         formcompany=CompanyInfoForm(CompanyInfoModel.objects.get(pk=company_id))
         return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')
 
 def delete_company(request,company_id):
     if request.user.has_perm('user_panel.delete_companyinfomodel'):
         CompanyInfoModel.objects.get(pk=company_id).delete()
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('http://www.dormoni.com/user_panel/login/')

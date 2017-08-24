@@ -19,21 +19,17 @@
         <div class="col-md-3">
           <div class="box box-solid">
             <div class="box-header with-border">
-              <h4 class="box-title">Doğum Günleri</h4>
+              <h4 class="box-title">Yakındaki Doğum Günleri</h4>
             </div>
             <div class="box-body">
               <div id="external-events">
 
-                <div class="external-event bg-green" id="div1">Öğle Yemeği</div>
-                <div class="external-event bg-yellow" id="div2">Eve git</div>
-                <div class="external-event bg-aqua">Ödev yap</div>
-                <div class="checkbox">
+                <div class="external-event bg-green">Öğle Yemeği</div>
 
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <div class="col-md-9">
           <div class="box box-primary">
             <div class="box-body no-padding">
@@ -53,9 +49,8 @@
 <script src="{% static 'plugins/fullcalendar/fullcalendar.min.js' %}"></script>
 <script>
   $(function () {
-      var new_data = [];
-d3.json('{% static "birthday_list.json" %}',function (data){new_data = data;
-    console.log(new_data);
+      var new_data=JSON.parse('{{ birthday_json }}'.replace(/&quot;/g,'"'));
+      console.log(new_data);
     var date = new Date();
     var d = date.getDate(),
         m = date.getMonth(),
@@ -73,37 +68,29 @@ d3.json('{% static "birthday_list.json" %}',function (data){new_data = data;
         day: 'day'
       },
 
-      events:new_data,
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar !!!
-      drop: function (date, allDay) { // this function is called when something is dropped
+      events:new_data
 
-        // retrieve the dropped element's stored Event Object
-        var originalEventObject = $(this).data('eventObject');
-
-        // we need to copy it, so that multiple events don't have a reference to the same object
-        var copiedEventObject = $.extend({}, originalEventObject);
-
-        // assign it the date that was reported
-        copiedEventObject.start = date;
-        copiedEventObject.allDay = allDay;
-        copiedEventObject.backgroundColor = $(this).css("background-color");
-        copiedEventObject.borderColor = $(this).css("border-color");
-
-        // render the event on the calendar
-        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-        // is the "remove after drop" checkbox checked?
-        if ($('#drop-remove').is(':checked')) {
-          // if so, remove the element from the "Draggable Events" list
-          $(this).remove();
-        }
-
-      }
     });
+    var element=document.getElementById('external-events');
+    var all_events='';
+    Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf());
+      dat.setDate(dat.getDate() + days);
+    return dat;
+        };
+    for (event in new_data){
+        var y_m_d=new_data[event].start.split('-');
+        var date1=new Date(y_m_d);
+        var date2=date.addDays(30);
+        if (date2>date1) {
+            if (date1>date){
+            all_events += '<div class="external-event bg-green"><span>' + new_data[event].title +'</span><span class="pull-right">'+date1.getDate() +'-'+ String(Number(date1.getMonth())+1) +'</span></div>'
+        }}
+    }
+
+      element.innerHTML=all_events
 });
-  });
+
 
 </script>
 {% endblock %}
