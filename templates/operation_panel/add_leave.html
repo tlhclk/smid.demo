@@ -1,5 +1,6 @@
 {% extends  "base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
   <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
@@ -39,7 +40,7 @@ $(document).ready(function() {
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://www.dormoni.com/operation_panel/leave_table/"><i class="fa fa-table"></i> İzin Tablosu</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/operation_panel/leave_table/"><i class="fa fa-table"></i> İzin Tablosu</a></li>
           <li class="active">Yeni İzin Kaydı</li>
       </ol>
 
@@ -50,33 +51,20 @@ $(document).ready(function() {
       <!-- Your Page Content Here -->
 
                 <form method="POST" class="post-form" enctype="multipart/form-data">
-                    {% csrf_token %}
-              <div class="form-group">
-                <label for="id_person_id">Öğrenci Adı: </label>
-                <select class="form-control select2" style="width: 100%;" name="person_id" id="id_person_id">
-                  <option value="{{ form.person_id.value }}"></option>
-                    {% for person in student_list %}
-                        <option value="{{ person.id }}">{{ person.full_name }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="id_leave_start">İzin Başlangıcı: </label>
-                  <input type="text" class="form-control pull-right date-picker" name="leave_start" id="id_leave_start" value="{{ form.leave_start.value.year }}-{{ form.leave_start.value.month }}-{{ form.leave_start.value.day }}" maxlength="10">
-              </div>
-                <div class="form-group">
-                <label for="id_leave_end">İzin Bitişi:</label>
-                  <input type="text" class="form-control pull-right date-picker" name="leave_end" id="id_leave_end" value="{{ form.leave_end.value.year }}-{{ form.leave_end.value.month }}-{{ form.leave_end.value.day }}" maxlength="10">
-              </div>
-                <div class="form-group">
-                    <label for="id_leave_reason">İzin Nedeni: </label>
-                    <input type="text" class="form-control" placeholder="İzin Nedeni" name="leave_reason" required id="id_leave_reason" value="{{ form.leave_reason.value }}" maxlength="20" >
-                </div>
-                <div class="col-xs-12">
-                    <div class="pull-right">
-                  <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
-                </div></div>
-
+                        {% csrf_token %}
+                  <div class="row">
+                      <div class="col-xs-12">
+                          {% bootstrap_form form %}
+                      </div>
+                  </div>
+                      <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <div class="pull-right">
+                          {% bootstrap_button "Kaydet" %}
+                        </div></div>
+                        <!-- /.col -->
+                      </div>
                 </form>
     </section>
     {% endblock %}

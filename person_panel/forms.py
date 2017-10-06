@@ -1,95 +1,255 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from .models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
-#from fixturepanel.models import RoomInfoModel
+from user_panel.models import CompanyInfoModel
+from stock_panel.models import RoomInfoModel
 import datetime
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberFormat
+from localflavor.tr.tr_provinces import PROVINCE_CHOICES
+from PIL import Image
 
 class ParentInfoForm(forms.ModelForm):
+    def __init__(self, user, POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(ParentInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+        self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
+    id=forms.CharField(max_length=8,label='Veli IDsi',initial=str(int(ParentInfoModel.objects.all().last().id)+1))
+    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    name=forms.CharField(max_length=20,label='Ad')
+    last_name=forms.CharField(max_length=20,label='Soyad')
+    tcn=forms.CharField(max_length=11,label='Kimlik Numarası',empty_value=True)
+    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
+    email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
+    relative_degree=forms.CharField(max_length=20,label='Yakınlık Derecesi')
+    job=forms.CharField(max_length=20,label='İşi')
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
     class Meta:
         model=ParentInfoModel
         fields=('id',
-                'student_id',
-                'parent_name',
-                'parent_lastname',
-                'parent_TCN',
-                'parent_phone',
-                'parent_email',
+                'person',
+                'name',
+                'last_name',
+                'tcn',
+                'phone',
+                'email',
                 'relative_degree',
-                'parent_job',
+                'job',
+                'company_id',
                 )
+    def clean(self):
+        tc_no=self.cleaned_data.get('tcn')
+        if tc_no:
+            list_tc =[int(x) for x in tc_no]
+            tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
+            tc11 = (sum(list_tc[0:9]) + tc10) % 10
+            if list_tc[9] == tc10 and list_tc[10] == tc11:
+                pass
+            else:
+                self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
 
 class PersonalInfoForm(forms.ModelForm):
+    def __init__(self, user, POST=None,FILES=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(PersonalInfoForm, self).__init__(POST,FILES,*args, **kwargs)
+        self.user=user
+        self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
+    id=forms.CharField(max_length=10,label='Personel IDsi',initial=str(int(PersonalInfoModel.objects.all().last().id)+1))
+    tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
+    email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
+    start_day=forms.DateField(label='İşe Başlama Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
+    end_day=forms.DateField(label='İşten Ayrılma Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today(),required=False)
+    city=forms.ChoiceField(PROVINCE_CHOICES,label='İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    town=forms.CharField(max_length=20,label='İlçe')
+    address=forms.CharField(max_length=100,label='Adres')
+    blood_type=forms.ChoiceField(PersonalInfoModel.blood_type_list,label='Emanet Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    health_notes=forms.CharField(max_length=100,label='Sağlık Notları')
+    special_notes=forms.CharField(max_length=100,label='Özel Notlar')
+    image_field=forms.ImageField(label='Profile Resmi',widget=forms.FileInput())
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
     class Meta:
         model=PersonalInfoModel
         fields=('id',
-                'personal_tcn',
-                'personal_phone',
-                'e_mail',
-                'personal_startday',
-                'personal_endday',
-                'personal_city',
-                'personal_town',
-                'personal_adress',
+                'tcn',
+                'phone',
+                'email',
+                'start_day',
+                'end_day',
+                'city',
+                'town',
+                'address',
                 'blood_type',
                 'health_notes',
                 'special_notes',
-                'image_field'
+                'image_field',
+                'company_id',
                 )
+    def clean(self):
+        image = self.cleaned_data.get('image')
+        print (image)
+        if image:
+            img = Image.open(image)
+
+            # validate content type
+            main, sub = image.content_type.split('/')
+            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                self.add_error('image','JPEG veya PNG dosyası yükleyiniz')
+
+            # validate file size
+            if len(image) > (1 * 1024 * 1024):
+                self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
+        else:
+            self.add_error('image','Yüklenen dosya okunamadı')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+
 
 class PersonIDInfoForm(forms.ModelForm):
+    def __init__(self, user, POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(PersonIDInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+    nation=forms.ChoiceField(PersonIDInfoModel.nation_list,label='Uyruğu',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    idcard_type=forms.ChoiceField(PersonIDInfoModel.idcard_type_list,label='Kimlik Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    gender=forms.ChoiceField(PersonIDInfoModel.gender_list,label='Cinsiyeti',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    medeni_hali=forms.ChoiceField(PersonIDInfoModel.medeni_hal_list,label='Medeni Hali',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    tcn=forms.CharField(max_length=11,label='Kimlik Numarası')
+    name=forms.CharField(max_length=20,label='Adı')
+    last_name=forms.CharField(max_length=20,label='Soyadı')
+    father=forms.CharField(max_length=20,label='Baba Adı')
+    mother=forms.CharField(max_length=20,label='Anne Adı')
+    birth_day=forms.DateField(label='Doğum Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
+    birth_place=forms.ChoiceField(PROVINCE_CHOICES,label='Doğum Yeri',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    register_vilage=forms.ChoiceField(PROVINCE_CHOICES,label='Kayıtlı Olduğu İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    register_town=forms.CharField(max_length=20,label='Kayıtlı Olduğu İlçe')
+    register_distinct=forms.CharField(max_length=20,label='Kayıtlı Olduğu Mahalle')
+    nufus_cilt=forms.CharField(max_length=4,label='Cilt No')
+    nufus_ailesira=forms.CharField(max_length=5,label='Aile Sıra No')
+    nufus_sirano=forms.CharField(max_length=4,label='Sıra No')
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
     class Meta:
         model=PersonIDInfoModel
-        fields=('s_nation',
-                's_idcard_type',
-                's_gender',
-                's_medeni_hali',
-                's_tcn',
-                's_name',
-                's_lastname',
-                's_father',
-                's_mother',
-                's_birthday',
-                's_birth_place',
-                's_register_vilage',
-                's_register_town',
-                's_register_distinct',
-                's_nufus_cilt',
-                's_nufus_ailesira',
-                's_nufus_sirano',
+        fields=('nation',
+                'idcard_type',
+                'gender',
+                'medeni_hali',
+                'tcn',
+                'name',
+                'last_name',
+                'father',
+                'mother',
+                'birth_day',
+                'birth_place',
+                'register_vilage',
+                'register_town',
+                'register_distinct',
+                'nufus_cilt',
+                'nufus_ailesira',
+                'nufus_sirano',
+                'company_id',
                 )
+    def clean(self):
+        tc_no=self.cleaned_data.get('tcn')
+        if tc_no:
+            list_tc =[int(x) for x in tc_no]
+            tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
+            tc11 = (sum(list_tc[0:9]) + tc10) % 10
+            if list_tc[9] == tc10 and list_tc[10] == tc11:
+                pass
+            else:
+                self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
 
 class StudentInfoForm(forms.ModelForm):
-    student_tcn=forms.ModelChoiceField(queryset=PersonIDInfoModel.objects.all())
+    def __init__(self, user, POST=None,FILES=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(StudentInfoForm, self).__init__(POST,FILES,*args, **kwargs)
+        self.user=user
+        self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['room_id'].queryset = RoomInfoModel.objects.filter(company_id=user.company_id)
+    id=forms.CharField(max_length=7,label='Öğrenci IDsi',initial=str(int(StudentInfoModel.objects.all().last().id)+1))
+    position=forms.BooleanField(widget=forms.NullBooleanSelect(),label='Öğrencinin Pozisyonu')
+    tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
+    email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
+    start_day=forms.DateField(label='Kayıt Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
+    leave_day = forms.DateField(label='Ayrılış Tarihi', widget=forms.DateInput(attrs={'class': 'date-picker'}),required=False)
+    city=forms.ChoiceField(PROVINCE_CHOICES,label='İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    town=forms.CharField(max_length=20,label='İlçe',initial='')
+    address=forms.CharField(max_length=100,label='Adres',initial='')
+    room_id=forms.ModelChoiceField(RoomInfoModel.objects.all(),label='Oda Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    type=forms.ChoiceField(StudentInfoModel.student_type_list,label='Öğrenci Tipi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    school_name=forms.CharField(max_length=30,label='Okul Adı',required=False,empty_value=True)
+    education_year=forms.ChoiceField(StudentInfoModel.year_list,label='Eğitim Yılı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    blood_type=forms.ChoiceField(StudentInfoModel.blood_type_list,label='Kan Grubu',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    health_notes=forms.CharField(max_length=200,label='Sağlık Notları',widget=forms.Textarea())
+    special_notes=forms.CharField(max_length=200,label='Özel Notlar',widget=forms.Textarea())
+    image_field=forms.ImageField(label='Profile Resmi',widget=forms.FileInput())
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
     class Meta:
         model=StudentInfoModel
         fields=(
                 'id',
-                'student_position',
-                'student_tcn',
-                'student_phone',
-                'e_mail',
-                'student_regday',
-                'student_city',
-                'student_town',
-                'student_adress',
+                'position',
+                'tcn',
+                'phone',
+                'email',
+                'start_day',
+                'leave_day',
+                'city',
+                'town',
+                'address',
                 'room_id',
-                'student_type',
+                'type',
                 'school_name',
                 'education_year',
                 'blood_type',
                 'health_notes',
                 'special_notes',
                 'image_field',
+                'company_id',
                 )
+    def clean(self):#kontrol edilmedi
+        image = self.cleaned_data.get('image')
+        room=self.cleaned_data.get('room_id')
+        print (room)
+        if image:
+            img = Image.open(image)
 
-    # def clean_room_number(self):
-    #     print self.cleaned_data.get('room_number')
-    #     room_max = int(RoomInfoModel.objects.get(pk=self.cleaned_data.get('room_number')).room_people)
-    #     room_people = len(StudentInfoModel.objects.filter(room_number=self.cleaned_data.get('room_number')))
-    #
-    #     if room_people <=room_max:
-    #         print (room_people, room_max)
-    #     else:
-    #         raise forms.ValidationError('Room has no quota',code='Room overload')
+            # validate content type
+            main, sub = image.content_type.split('/')
+            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                self.add_error('image','JPEG veya PNG dosyası yükleyiniz')
+
+            # validate file size
+            if len(image) > (1 * 1024 * 1024):
+                self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
+        if room:
+            roomid=RoomInfoModel.objects.get('room')
+            qouta=0
+            for row in StudentInfoModel.objects.all():
+                if row.room_id_id==roomid.no:
+                    qouta+=1
+            if qouta<roomid.people:
+                pass
+            else:
+                self.add_error('room_id','Seçilen Odada Kontenjan Doludur!')
+        if not image:
+            self.add_error('image','Yüklenen dosya okunamadı')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

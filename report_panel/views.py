@@ -16,21 +16,21 @@ import datetime
 
 
 def student_attendance(request,room_no,student_id):
-    if request.user.has_perm('person_panel.view_studentinfomodel'):
+    if request.user.has_perm('person_panel.add_studentinfomodel'):
         if room_no and not student_id:
             student_list=StudentInfoModel.objects.filter(student_position=True,room_number=room_no)
             all=len(StudentInfoModel.objects.filter(room_number=room_no))
             return render(request,'report_panel/table_attendance.html',{'student_list':student_list,'all':all})
         elif student_id and not room_no:
-            return redirect('http://www.dormoni.com/person_panel/student/%s'%student_id)
+            return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
         else:
             student_list=StudentInfoModel.objects.filter(student_position=True)
             all=len(StudentInfoModel.objects.all())
             return render(request,'report_panel/table_attendance.html',{'student_list':student_list,'all':all})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def dorm_capacity(request,room_no):
-    if request.user.has_perm('stock_panel.view_roominfomodel'):
+    if request.user.has_perm('stock_panel.add_roominfomodel'):
         if room_no!='':
             quota_number=RoomInfoModel.objects.get(pk=room_no).room_people
             student_number=len(StudentInfoModel.objects.filter(room_no=room_no))
@@ -40,11 +40,11 @@ def dorm_capacity(request,room_no):
             student_number=len(StudentInfoModel.objects.all())
             quota_number=sum([int(room.room_people) for room in all_rooms])-student_number
             return render(request,'report_panel/graph_capacity.html',{'student_number':student_number,'quota_number':quota_number,'title':'Kontenjan Grafiği'})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def room_plan(request):
-    if request.user.has_perm('stock_panel.view_roominfomodel'):
-        room_list=RoomInfoModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id).order_by('room_no')
+    if request.user.has_perm('stock_panel.add_roominfomodel'):
+        room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('room_no')
         room_list_four=[]
         for i in range(0,len(room_list),4):
             temp_list=[]
@@ -54,20 +54,20 @@ def room_plan(request):
                 except IndexError:
                     pass
             room_list_four.append(temp_list)
-        student_list=StudentInfoModel.objects.filter(company_id=UserCompanyModel.objects.get(pk=request.user.id).company_id)
+        student_list=StudentInfoModel.objects.filter(company_id=request.user.company_id_id)
         return render(request, 'report_panel/room_plan.html', {'room_list_four': room_list_four,'student_list':student_list,'title':'Oda Planı'})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def contact_table(request):
-    if request.user.has_perm('person_panel.view_personalinfomodel'):
+    if request.user.has_perm('person_panel.add_personalinfomodel'):
         student_list=StudentInfoModel.objects.all()
         personal_list=PersonalInfoModel.objects.all()
         parent_list=ParentInfoModel.objects.all()
         return render(request, 'report_panel/table_contact.html', {'title':'Rehber Tablosu','student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def unpaid_rate(request):
-    if request.user.has_perm('account_panel.view_accountinfomodel'):
+    if request.user.has_perm('account_panel.add_accountinfomodel'):
         all_assets=PersonAssetInfoModel.objects.all()
         paid_asset_rate={}
         unpaid_asset_rate={}
@@ -88,16 +88,16 @@ def unpaid_rate(request):
                     if str(rate_time) not in paid_asset_rate[asset.asset_id]:
                         unpaid_asset_rate[asset.asset_id].append(str(rate_time))
         return render(request,'report_panel/payment_info.html',{'paid_dict':paid_asset_rate,'unpaid_dict':unpaid_asset_rate})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def money_flow(request,account_no):
-    if request.user.has_perm('account_panel.view_accountinfomodel'):
+    if request.user.has_perm('account_panel.add_accountinfomodel'):
         transaction_list=TransactionInfoModel.objects.all()
         if account_no != '':
             transaction_list=TransactionInfoModel.objects.filter(account_no=account_no)
         all_money_list=[get_sum(transaction_list.filter(transaction_type=type_i[0])) for type_i in TransactionInfoModel.transaction_type_list]
         return render(request, 'report_panel/money_flow.html',{'title':'Aylık Para Akışı','monthly_sum':all_money_list})
-    else: return redirect('http://www.dormoni.com/user_panel/login/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def get_sum(transaction_list):
     transaction_list = [transaction_list.filter(transaction_time__month=str(i)) for i in range(1, 13)]
@@ -105,7 +105,7 @@ def get_sum(transaction_list):
     return monthly_sum
 
 def account_amount(request):
-    if request.user.has_perm('account_panel.view_accountinfomodel'):
+    if request.user.has_perm('account_panel.add_accountinfomodel'):
         account_list=AccountInfoModel.objects.all()
         month_list=['2017-1','2017-2','2017-3','2017-4','2017-5','2017-6','2017-7','2017-8','2017-9','2017-10','2017-11','2017-12']
         color_list=['rgba(255,0,0,0.6)','rgba(0,255,0,0.6)','rgba(0,0,255,0.6)','rgba(255,255,0,0.6)','rgba(255,0,255,0.6)',
@@ -141,10 +141,10 @@ def account_amount(request):
         account_info=json.dumps(all_account_flow_list)
         asd=all_account_flow_list
         return render(request,'report_panel/account_graph.html',{'title':'Hesap Miktarı','account_info':account_info,'model_info':check_box_list})
-    else: return redirect('http://www.dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def monthly_flow(request,month='07'):
-    if request.user.has_perm('account_panel.view_accountinfomodel'):
+    if request.user.has_perm('account_panel.add_accountinfomodel'):
         color_list = ["rgba(255,0,0,0.6)", "rgba(0,255,0,0.6)", "rgba(0,0,255,0.6)", "rgba(255,255,0,0.6)","rgba(255,0,255,0.6)","rgba(0,255,255,0.6)", "rgba(192,192,192,0.6)", "rgba(255,127,0.6)", "rgba(255,0,127,0.6)","rgba(127,255,0,0.6)"]
         account_list=AccountInfoModel.objects.all()
         transaction_list=TransactionInfoModel.objects.filter(transaction_time__month=month)
@@ -155,7 +155,7 @@ def monthly_flow(request,month='07'):
         transaction_json=json.dumps(transaction_json)
         return render(request,'report_panel/monthly_flow.html',{'title':'Aylık Akış','transaction_json':transaction_json,'transaction_data':transaction_data})
     else:
-        return redirect('http://www.dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 
 def filter_form(request):
@@ -163,8 +163,7 @@ def filter_form(request):
                   "rgba(255,0,255,0.6)", "rgba(0,255,255,0.6)", "rgba(192,192,192,0.6)", "rgba(255,127,0.6)",
                   "rgba(255,0,127,0.6)", "rgba(127,255,0,0.6)"]
     formfilter=FilterAccountForm(request.POST,None)
-    company_id=CompanyInfoModel.objects.get(pk=UserCompanyModel.objects.get(pk=request.user.id).company_id)
-    transation_list=TransactionInfoModel.objects.filter(company_id=company_id)
+    transation_list=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)
     if formfilter.is_valid():
         account_no=formfilter['account_no'].value()
         year=formfilter['year'].value()

@@ -42,7 +42,7 @@ $(document).ready(function() {
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Fatura Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/bill_add/">Yeni Fatura Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/bill_add/">Yeni Fatura Kaydı</a></li>
       </ol>
 
     </section>
@@ -54,9 +54,9 @@ $(document).ready(function() {
     <th>Fatura Id</th><th>Fatura No</th><th>Fatura Türü</th><th>Fatura Miktarı</th><th>Faturanın Son Ödeme Tarihi</th><th></th>
 </tr></thead><tbody>
     {% for bill in bill_list %}<tr>
-    <td><a href="http://www.dormoni.com/account_panel/bill/{{ bill.id }}">{{ bill.id }}</a></td><td>{{ bill.bill_code }}</td><td>{{ bill.bill_type_name }}</td><td>{{ bill.bill_amount }}</td><td>{{ bill.bill_lastday }}</td>
-    <td><small><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/bill_edit/{{ bill.id }}">Düzenle</a>
-        <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://www.dormoni.com/account_panel/bill_delete/{{ bill.id }}">Sil</a></small>
+    <td><a href="http://127.0.0.1:8000/account_panel/bill/{{ bill.id }}">{{ bill.id }}</a></td><td>{{ bill.bill_code }}</td><td>{{ bill.bill_type_name }}</td><td>{{ bill.bill_amount }}</td><td>{{ bill.bill_lastday }}</td>
+    <td><small><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/bill_edit/{{ bill.id }}">Düzenle</a>
+        <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/bill_delete/{{ bill.id }}">Sil</a></small>
                 </td>
             </tr>
                 {% endfor %}

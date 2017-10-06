@@ -7,20 +7,18 @@ from .models import CompanyInfoModel,UserCompanyModel
 UserModel=get_user_model()
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
+    email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
     password = forms.CharField(widget=forms.PasswordInput)
-    remember = forms.BooleanField(widget=forms.CheckboxInput,required=False)
 
     def clean(self, *args, **kwargs):
-        username = self.cleaned_data.get("username")
+        email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
-        if username and password:
-            user = authenticate(username=username, password=password)
+        if email and password:
+            user = authenticate(email=email, password=password)
             if not user:
                 raise forms.ValidationError("Boyle bir kullanici yok")
             if not user.check_password(password):
                 raise forms.ValidationError("Sifre yanlis veya eksik")
-
             return super(UserLoginForm, self).clean()
 
 class UserRegistrationForm(forms.ModelForm):
@@ -31,11 +29,13 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = UserModel
         fields = [
-            'first_name',
+            'email',
+            'name',
             'last_name',
             'password',
             'password2',
-            'email',
+            'phone',
+            'profile_image',
         ]
 
     def clean_password2(self):
@@ -43,7 +43,7 @@ class UserRegistrationForm(forms.ModelForm):
         password2 = self.cleaned_data.get("password2")
         if password and password2 and password != password2:
             raise forms.ValidationError("The two password fields didn't match.",code='password_mismatch',)
-        self.instance.username = self.cleaned_data.get('username')
+        self.instance.email = self.cleaned_data.get('email')
         password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
         return password2
 

@@ -13,24 +13,22 @@ def get_date():
     return datetime.date.today()
 
 class StudentLeaveModel(models.Model):
-    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Permitted Person: ')
-    #person_id=models.CharField(max_length=10,blank=True,null=True)
-    leave_start=models.DateField(verbose_name='leave Start: ',default=get_date)
-    leave_end=models.DateField(verbose_name='leave End: ',default=get_date)
-    leave_reason=models.CharField(max_length=100,verbose_name='leave Reason: ',blank=True,default='',null=True)
+    person=models.ForeignKey(StudentInfoModel,verbose_name='Permitted Person: ')
+    start=models.DateField(verbose_name='leave Start: ',default=get_date)
+    end=models.DateField(verbose_name='leave End: ',default=get_date)
+    reason=models.CharField(max_length=100,verbose_name='leave Reason: ',blank=True,default='',null=True)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
         db_table='student_leave'
 
     def __str__(self):
-        return  str(self.id)
+        return  str(self.person.full_name())+' - '+ str(self.reason)
 
 
 class AttendanceInfoModel(models.Model):
-    person_id=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')
-    #person_id=models.CharField(max_length=10,blank=True,null=True)
-    traffic_date=models.DateTimeField(default=get_time)
+    person=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')
+    time=models.DateTimeField(default=get_time)
     in_or_out=models.BooleanField(max_length=1,verbose_name='In or Out: ')
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
@@ -38,4 +36,4 @@ class AttendanceInfoModel(models.Model):
         db_table='attendance_info'
 
     def __str__(self):
-        return self.id
+        return str(self.person)+' - '+ str(self.time)+ ' - '+ str(self.in_or_out)

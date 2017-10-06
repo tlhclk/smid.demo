@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap4 %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
   <link rel="stylesheet" href="/static/plugins/datepicker/datepicker3.css ">
@@ -39,7 +40,7 @@ $(document).ready(function() {
     <section>
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://www.dormoni.com/document_panel/liability_table/"><i class="fa fa-table"></i> Emanet Tablosu</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/document_panel/liability_table/"><i class="fa fa-table"></i> Emanet Tablosu</a></li>
           <li class="active">{{ title }}</li>
       </ol>
 
@@ -55,49 +56,20 @@ $(document).ready(function() {
           <div class="row">
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
-                  {% csrf_token %}
-                <div class="form-group has-feedback">
-                <label for="id_person_id">Kayıtın İlişkili Olduğu Kişi: </label>
-                <select class="form-control select2" style="width: 100%;" name="person_id" id="id_person_id">
-                  <option value="{{ form.person_id.value }}"></option>
-                    {% for person in person_list %}
-                        <option value="{{ person }}">{{ person.full_name }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_type">Eşya Türü: </label>
-                    <select class="form-control select2" style="width: 100%;" name="liability_type" id="id_liability_type">
-                  <option value="{{ form.liability_type.value }}"></option>
-                    {% for doc_type in liability_type_list %}
-                        <option value="{{ doc_type.0 }}">{{ doc_type.1 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_desc">Eşya Açıklaması: </label>
-                    <input type="text" class="form-control" placeholder="Eşya Açıklaması" name="liability_desc" id="id_liability_desc" value="{{ form.liability_desc.value }}" maxlength="100">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_date">Eşya Alım Tarihi: </label>
-                    <input type="text" class="form-control datetime-picker" placeholder="Emanet Alım Tarihi" name="liability_date" required id="id_liability_date" value="{{ form.liability_date.value.year }}-{{ form.liability_date.value.month }}-{{ form.liability_date.value.day }} {{ form.liability_date.value.hour }}:{{ form.liability_date.value.minute }}:{{ form.liability_date.value.second }}" maxlength="20">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_lastday">Son Teslim Tarihi: </label>
-                    <input type="text" class="form-control datetime-picker" placeholder="Son Teslim Tarihi" name="liability_lastday" required id="id_liability_lastday" value="{{ form.liability_lastday.value.year }}-{{ form.liability_lastday.value.month }}-{{ form.liability_lastday.value.day }} {{ form.liability_lastday.value.hour }}:{{ form.liability_lastday.value.minute }}:{{ form.liability_lastday.value.second }}" maxlength="20">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_return">Teslim Edilen Tarihi: </label>
-                    <input type="text" class="form-control datetime-picker" placeholder="Teslim Edilen Tarihi" name="liability_return" id="id_liability_return" value="{{ form.liability_return.value.year }}-{{ form.liability_return.value.month }}-{{ form.liability_return.value.day }} {{ form.liability_return.value.hour }}:{{ form.liability_return.value.minute }}:{{ form.liability_return.value.second }}" maxlength="20">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_liability_penalty">Emanet Cezası: </label>
-                    <input type="text" class="form-control" placeholder="Emanet Cezası" name="liability_penalty" id="id_liability_penalty" value="{{ form.liability_penalty.value }}" maxlength="5">
-                </div>
-                  <div class="col-xs-12">
+                        {% csrf_token %}
+                  <div class="row">
+                      <div class="col-xs-12">
+                          {% bootstrap_form form %}
+                      </div>
+                  </div>
+                      <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
                             <div class="pull-right">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
-                            </div></div>
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                        </div></div>
+                        <!-- /.col -->
+                      </div>
                   </form>
               </div>
           </div>

@@ -4,9 +4,9 @@
       <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           {% if request.user.groups.all.0.id != 1 %}
-        <li class="active"><a href="http://www.dormoni.com/account_panel/asset_table/"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
           {% endif %}
-          <li class="active">Ödeme Planı Detayı: {{ asset.asset_id }}</li>
+          <li class="active">Ödeme Planı Detayı: {{ asset.id }} - {{ asset.person.full_name }}</li>
       </ol>
 
     </section>
@@ -20,23 +20,22 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-                <h1 class="panel-title pull-left" style="font-size:30px;"><b>{{ asset.person_id.full_name }} </b><small>Adlı Kişinin Ödeme Planı</small></h1>
+                <h1 class="panel-title pull-left" style="font-size:30px;"><b>{{ asset.person.full_name }} </b><small>Adlı Kişinin Ödeme Planı</small></h1>
             </div>
                 <div class="panel-body">
-                    <h3><b>Ödeme Planı No:  </b>{{ asset.asset_id }}</h3>
+                    <h3><b>Ödeme Planı No:  </b>{{ asset.id }}</h3>
                     <h3><b>Öğrenci No:  </b>{{ asset.person_id_id }}</h3>
-                    <h3><b>Ödenen Miktar:  </b>{{ asset.asset_amount }}</h3>
-                    <h3><b>Borç Miktar:  </b>{{ asset.asset_debt }}</h3>
-                    <h3><b>Taksit Miktarı</b>{{ asset.asset_period }}</h3>
-                    <h3><b>Ödeme Türü:  </b>{{ asset.asset_type }}</h3>
-                    <h3><b>Ödeme Planı Açıklaması:  </b>{{ asset.asset_desc }}</h3>
+                    <h3><b>Ödenen Miktar:  </b>{{ asset.amount }}</h3>
+                    <h3><b>Borç Miktar:  </b>{{ asset.debt }}</h3>
+                    <h3><b>Taksit Miktarı</b>{{ asset.period }}</h3>
+                    <h3><b>Ödeme Türü:  </b>{{ asset.type_name }}</h3>
+                    <h3><b>Ödeme Planı Açıklaması:  </b>{{ asset.desc }}</h3>
                     <hr>
                     <span class="pull-left">
                         {% if request.user.groups.all.0.id != 1 %}
-                        <a href="http://www.dormoni.com/account_panel/asset_table/" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-list" aria-hidden="true"></i>Ödeme Planı Tablosu</a>
-                        <a href="http://www.dormoni.com/account_panel/transaction_table/{{ asset.person_id_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-backward" aria-hidden="true"></i>İşlem Geçmişi </a>
+                        <a href="http://127.0.0.1:8000/account_panel/transaction_table/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-backward" aria-hidden="true"></i>İşlem Geçmişi </a>
                         {% endif %}
-                        <a href="http://www.dormoni.com/account_panel/transaction_add/{{ asset.person_id_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-plus" aria-hidden="true"></i>Taksit Ödeme</a>
+                        <a href="http://127.0.0.1:8000/account_panel/transaction_add/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-plus" aria-hidden="true"></i>Taksit Ödeme</a>
 
                     </span>
                     <span class="pull-right">

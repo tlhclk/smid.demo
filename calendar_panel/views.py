@@ -9,7 +9,7 @@ from user_panel.models import UserCompanyModel,CompanyInfoModel
 
 # Create your views here.
 def birthday_calendar(request):
-    student_list=PersonIDInfoModel.objects.filter(company_id=CompanyInfoModel.objects.get(pk=UserCompanyModel.objects.get(pk=request.user.id).company_id)).order_by('s_birthday')
+    student_list=PersonIDInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('s_birthday')
     json_list=[]
     birthday_list=[]
     for student in student_list:

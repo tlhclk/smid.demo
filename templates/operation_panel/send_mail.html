@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
 {% block content %}
 
     <section>
@@ -20,67 +22,24 @@
           <div class="row">
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      <div class="form-group">
-                          <label for="id_people_selection">Gönderilecek Öğrenci</label>
-                          <select name="people_selection" id="id_people_selection" class="form-control select2">
-                              <option value="">--------</option>
-                              {% for person in person_list %}
-                                  <option value="{{ person.id }}">{{ person.full_name }} - {{ person.e_mail }}</option>
-                              {% endfor %}
-                          </select>
+                        {% csrf_token %}
+                  <div class="row">
+                      <div class="col-xs-12">
+                          {% bootstrap_form form %}
                       </div>
-                <div class="form-group has-feedback">
-                    <label for="id_people_manual">Mail Adresleri: </label>
-                    <input type="text" class="form-control" placeholder="Mail Adresleri" name="people_manual" id="id_people_manual" value="{% if form.people_manual.value %}{{ form.people_manual.value }}{% endif %}" maxlength="100">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_subject">Konu: </label>
-                    <input type="text" class="form-control" placeholder="Konu" name="subject" required id="id_subject" value="" maxlength="100">
-                </div>
-                <div class="form-group has-feedback">
-                    <label for="id_message">İçerik: </label>
-{#                    <input type="text" class="form-control" placeholder="İçerik" name="message" required id="id_message" value="" maxlength="500" size="500" row="10">#}
-                    <textarea name="message" id="id_message" cols="30" rows="10" class="form-control" maxlength="660"></textarea>
-                </div>
-                  <div class="col-xs-12">
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Gönder</button>
-                    </div></div>
+                  </div>
+                      <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <div class="pull-right">
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                        </div></div>
+                        <!-- /.col -->
+                      </div>
                   </form>
               </div>
           </div>
-        </div></div>
-    <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-envelope"></i>
-
-              <h3 class="box-title">Quick Email</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
-                        title="Remove">
-                  <i class="fa fa-times"></i></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <div class="box-body">
-              <form action="#" method="post">
-                <div class="form-group">
-                  <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject">
-                </div>
-                <div>
-                  <textarea class="textarea" placeholder="Message"
-                            style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
-                <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
             </div>
           </div>
     </section>

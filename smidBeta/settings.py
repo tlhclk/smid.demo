@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.admindocs',
+    'django.contrib.sitemaps',
     'person_panel.apps.PersonPanelConfig',
     'bootstrap4',
     'document_panel.apps.DocumentPanelConfig',
@@ -99,6 +102,10 @@ MEDIA_URL = '/media/'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+AUTHENTICATION_BACKENDS = (
+'django.contrib.auth.backends.ModelBackend',
+)
+AUTH_USER_MODEL='user_panel.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

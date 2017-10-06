@@ -1,104 +1,162 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 from django import forms
 
 from .models import TransactionInfoModel,PersonAssetInfoModel,AccountInfoModel,BillInfoModel
 from person_panel.models import StudentInfoModel
+from user_panel.models import CompanyInfoModel
 
-import datetime
 class TransactionInfoForm(forms.ModelForm):
+    def __init__(self, user,POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(TransactionInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+        self.fields['account_no'].queryset =AccountInfoModel.objects.filter(company_id=user.company_id)
+
     account_no=forms.ModelChoiceField(AccountInfoModel.objects.all(),label='Hesap Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    transaction_type=forms.ChoiceField(choices=TransactionInfoModel.transaction_type_list,label='İşlem Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    transaction_amount=forms.CharField(max_length=10,label='İşlem Miktarı')
-    transaction_time=forms.DateTimeField(input_formats='%Y-%m-%d %H:%M:%S',widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='İşlem Zamanı')
-    transaction_desc=forms.CharField(max_length=100,label='İşlem Açıklaması',required=False,empty_value=True)
+    type=forms.ChoiceField(choices=TransactionInfoModel.transaction_type_list,label='İşlem Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    amount=forms.CharField(max_length=10,label='İşlem Miktarı')
+    time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='İşlem Zamanı')
+    desc=forms.CharField(max_length=100,label='İşlem Açıklaması',required=False,empty_value=True)
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=TransactionInfoModel
         fields=[
-            #'transaction_no',
             'account_no',
-            'transaction_type',
-            'transaction_amount',
-            'transaction_time',
-            'transaction_desc',
+            'type',
+            'amount',
+            'time',
+            'desc',
+            'company_id',
         ]
+    def clean(self):
+        amount=self.cleaned_data.get('amount')
+        if 0.0<float(amount)<10000.00:
+            print (amount)
+        else:
+            self.add_error('amount','Yanlış Miktar')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+
 
 
 class PersonAssetInfoForm(forms.ModelForm):
-    person_id=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci No',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    asset_amount=forms.CharField(max_length=5,label='Ödenen Miktar')
-    asset_debt=forms.CharField(max_length=5,label='Ödenecek Miktar')
-    asset_period=forms.CharField(max_length=2,label='Taksit Miktarı')
-    asset_type=forms.ChoiceField(choices=PersonAssetInfoModel.asset_type_list,label='Ödeme Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    asset_desc=forms.CharField(max_length=100,label='Ödeme Planı Açıklaması',required=False,empty_value=True)
+    def __init__(self, user,POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(PersonAssetInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+        self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
+
+    id=forms.CharField(max_length=10,label='Ödeme Planı ID',initial=str(int(PersonAssetInfoModel.objects.all().order_by('-id')[0].id)+1))
+    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci No',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    amount=forms.CharField(max_length=5,label='Ödenen Miktar')
+    debt=forms.CharField(max_length=5,label='Ödenecek Miktar')
+    period=forms.CharField(max_length=2,label='Taksit Miktarı')
+    type=forms.ChoiceField(choices=PersonAssetInfoModel.asset_type_list,label='Ödeme Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    desc=forms.CharField(max_length=100,label='Ödeme Planı Açıklaması',required=False,empty_value=True)
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=PersonAssetInfoModel
         fields=[
-            'asset_id',
-            'person_id',
-            'asset_amount',
-            'asset_debt',
-            'asset_period',
-            'asset_type',
-            'asset_desc',
+            'id',
+            'person',
+            'amount',
+            'debt',
+            'period',
+            'type',
+            'desc',
+            'company_id',
         ]
+    def clean(self):
+        amount=self.cleaned_data.get('amount')
+        if 0.0<float(amount)<10000.00:
+            print (amount)
+        else:
+            self.add_error('amount','Yanlış Miktar')
+        debt=self.cleaned_data.get('debt')
+        if 0.0<float(debt)<10000.00:
+            print (debt)
+        else:
+            self.add_error('debt','Yanlış Miktar')
+        period=self.cleaned_data.get('period')
+        if 0<int(period)<13:
+            print(period)
+        else:
+            self.add_error('period','Yanlış Dönem')
 
-    def asset_type_list(self):
-        return PersonAssetInfoModel.asset_type_list
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+
 
 class AccountInfoForm(forms.ModelForm):
-    account_no=forms.CharField(max_length=10,label='Hesap Numarası')
-    account_name=forms.CharField(max_length=20,label='Hesap Adı')
-    account_type=forms.ChoiceField(choices=AccountInfoModel.account_type_list,widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}),label='Hesap türü')
-    account_amount=forms.CharField(max_length=10,label='Hesap Müktarı')
-    account_desc=forms.CharField(max_length=100,label='Hesap Açıklaması')
-    account_bank=forms.ChoiceField(choices=AccountInfoModel.bank_code,label='Banka Kodu',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    def __init__(self, user,POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(AccountInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+
+    no=forms.CharField(max_length=10,label='Hesap Numarası')
+    name=forms.CharField(max_length=20,label='Hesap Adı')
+    type=forms.ChoiceField(choices=AccountInfoModel.account_type_list,label='Hesap Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    amount=forms.CharField(max_length=10,label='Hesap Miktarı')
+    desc=forms.CharField(max_length=100,label='Hesap Açıklaması',required=False,empty_value=True)
+    bank_code=forms.ChoiceField(choices=AccountInfoModel.bank_code_list,label='Banka Şubesi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=AccountInfoModel
         fields=[
-            'account_no',
-            'account_name',
-            'account_type',
-            'account_amount',
-            'account_desc',
-            'account_bank',
+            'no',
+            'name',
+            'type',
+            'amount',
+            'desc',
+            'bank_code',
+            'company_id',
         ]
+    def clean(self):
+        amount=self.cleaned_data.get('amount')
+        if 0.0<float(amount)<100000.00:
+            print (amount)
+        else:
+            self.add_error('amount','Yanlış Miktar')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+
 
 class BillInfoForm(forms.ModelForm):
-    bill_type=forms.ChoiceField(choices=BillInfoModel.bill_type_list,label='Fatura Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    bill_code=forms.CharField(max_length=10,label='Fatura Kodu')
-    bill_amount=forms.CharField(max_length=10,label='Fatura Miktarı')
-    bill_period=forms.CharField(max_length=10,label='Fatura Dönemi')
-    bill_lastday=forms.DateField(input_formats='%Y-%m-%d',widget=forms.DateInput(attrs={"pickTime": False,"startDate": "2007","class":"date-picker","style":"height: 30px"}),label='Fatura Son Ödeme Tarihi')
-    bill_address=forms.CharField(max_length=200,label='Fatura Adresi')
-    bill_desc=forms.CharField(max_length=100,label='Fatura Açıklaması')
+    def __init__(self, user,POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(BillInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+        #self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
+    id=forms.CharField(max_length=10,initial=str(int(BillInfoModel.objects.all().order_by('-id')[0].id)+1))
+    type=forms.ChoiceField(choices=BillInfoModel.bill_type_list,label='Fatura Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    code=forms.CharField(max_length=10,label='Fatura Kodu')
+    amount=forms.CharField(max_length=10,label='Fatura Miktarı')
+    period=forms.CharField(max_length=10,label='Fatura Dönemi')
+    last_day=forms.DateField(widget=forms.DateInput(attrs={"pickTime": False,"startDate": "2007","class":"date-picker","style":"height: 30px"}),label='Fatura Son Ödeme Tarihi')
+    address=forms.CharField(max_length=200,label='Fatura Adresi',required=False,empty_value=True)
+    desc=forms.CharField(max_length=100,label='Fatura Açıklaması',required=False,empty_value=True)
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=BillInfoModel
         fields=[
-            'bill_type',
-            'bill_code',
-            'bill_amount',
-            'bill_period',
-            'bill_lastday',
-            'bill_address',
-            'bill_desc',
+            'type',
+            'code',
+            'amount',
+            'period',
+            'last_day',
+            'address',
+            'desc',
+            'company_id',
         ]
+    def clean(self):
+        amount = self.cleaned_data.get('amount')
+        if 0.0 < float(amount) < 10000.00:
+            print(amount)
+        else:
+            self.add_error('amount', 'Yanlış Miktar')
 
-class MoneyTransferForm(forms.Form):
-    from_account=forms.ModelChoiceField(AccountInfoModel)
-    to_account=forms.ModelChoiceField(AccountInfoModel)
-    transfer_type=forms.ChoiceField(TransactionInfoModel.transaction_type_list)
-    transfer_amount=forms.CharField(max_length=10)
-    transfer_datetime=forms.DateTimeField(widget=forms.SplitDateTimeWidget)
-    transfer_desc=forms.CharField(max_length=100)
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
-    class Meta:
-        fields=[
-            'from_account',
-            'to_account',
-            'transfer_type',
-            'transfer_amount',
-            'transfer_datetime',
-            'transfer_desc',
-                ]
-    def check_to_account(self):
-        pass
