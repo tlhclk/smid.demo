@@ -14,11 +14,11 @@
         {% for room in room_list %}
       <div class="col-md-3">
         <div class="well">
-            <div class="header"> <h4 class="text-danger">Oda numarası: {{ room.room_no }}</h4></div>
+            <div class="header"> <h4 class="text-danger">Oda numarası: <a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></h4></div>
             <div class="body">
     {% for student in student_list %}
-        {% if room.room_no == student.room_id_str %}
-          <h4 class="text-danger"><span class="label label-danger">{{ student.id }} - {{ student.full_name }}</span></h4>
+        {% if room.no == student.room_id.no %}
+          <h4 class="text-danger"><span class="label label-danger"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.tcn_id }} - {{ student.full_name }}</a></span></h4>
         {% endif %}
         {% endfor %}
                 </div>

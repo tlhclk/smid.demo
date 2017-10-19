@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.conf.urls import (handler400, handler403, handler404, handler500)
-from django.conf.urls.static import static
+from django.conf.urls.static import static,serve
 from django.conf import settings
 from .views import home_page,main_page
 
@@ -17,4 +17,9 @@ urlpatterns = [
     url(r'^stock_panel/',include('stock_panel.urls')),
     url(r'^user_panel/',include('user_panel.urls')),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+if  not settings.DEBUG:
+    urlpatterns += [url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
+                    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}), ]
+else:
+    urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

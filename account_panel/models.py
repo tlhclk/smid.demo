@@ -13,15 +13,15 @@ def get_date():
     return datetime.date.today()
 
 
-class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki gereksiz verbose_name,default ifadeleri kaldırılacak null,black ifadeleri gereken yerlere yerleştirilecek
+class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki default ifadeleri kaldırılacak null,black ifadeleri gereken yerlere yerleştirilecek
     asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
-    id=models.CharField(max_length=10,primary_key=True,verbose_name='Ödeme Planı Numarası: ')
-    person=models.ForeignKey(StudentInfoModel,verbose_name='Person id')
-    amount=models.CharField(max_length=5,verbose_name='Asset Amount: ',default='')
-    debt=models.CharField(max_length=5,verbose_name='Asset Debt: ',default='')
-    desc=models.CharField(max_length=50,verbose_name='Asset Description: ',null=True, blank=True)
-    period=models.CharField(max_length=2,blank=True,default='')
-    type=models.CharField(max_length=10,verbose_name='Asset Type',blank=True,choices=asset_type_list)
+    id=models.CharField(max_length=10,primary_key=True)
+    person=models.ForeignKey(StudentInfoModel)
+    amount=models.CharField(max_length=5,default='0')
+    debt=models.CharField(max_length=5,default='')
+    desc=models.CharField(max_length=50,null=True, blank=True)
+    period=models.CharField(max_length=2,default='')
+    type=models.CharField(max_length=10,choices=asset_type_list)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
@@ -37,11 +37,11 @@ class AccountInfoModel(models.Model):
     account_type_list=[('1','Vadesiz Banka Hesabı'),('2','Vadeli Banka Hesabı'),('3','Nakit'),('4','Senet'),('5','Çek'),('6','Kredi Kartı Hesabı')]
     bank_code_list=[('149','HalkBank'),('150','Vakıfbank'),('151','Yapı Kredi'),('152','Ziraat'),('153','İş bankası'),('154','Akbank')]
     # TODO: bankalar listelenicek
-    no=models.CharField(max_length=10,verbose_name='Account No: ',primary_key=True)
-    name=models.CharField(max_length=20,verbose_name='Account Name: ',default='')
-    type=models.CharField(max_length=40,verbose_name='Account Type: ',choices=account_type_list)
-    amount=models.CharField(max_length=10,verbose_name='Account Amount: ',default='')
-    desc=models.CharField(max_length=100,verbose_name='Account Description: ',null=True, blank=True)
+    no=models.CharField(max_length=10,primary_key=True)
+    name=models.CharField(max_length=20,default='')
+    type=models.CharField(max_length=40,choices=account_type_list)
+    amount=models.CharField(max_length=10,default='')
+    desc=models.CharField(max_length=100,null=True, blank=True)
     bank_code=models.CharField(max_length=5,choices=bank_code_list)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
@@ -59,12 +59,12 @@ class AccountInfoModel(models.Model):
 
 class BillInfoModel(models.Model):
     bill_type_list=[('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('6','Vergi')]
-    type=models.CharField(max_length=10,verbose_name='Bill Type: ',choices=bill_type_list,)
-    code=models.CharField(max_length=10,verbose_name='Bill Code: ',default='')
-    amount=models.CharField(max_length=10,verbose_name='Bill Amount: ',default='')
-    desc=models.CharField(max_length=100,verbose_name='Bill Description: ',null=True,blank=True)
-    address=models.CharField(max_length=200,verbose_name='Bill Adress: ',null=True, blank=True)
-    period=models.CharField(max_length=10,verbose_name='Bill Period: ',default='')
+    type=models.CharField(max_length=10,choices=bill_type_list,)
+    code=models.CharField(max_length=10,default='')
+    amount=models.CharField(max_length=10,default='')
+    desc=models.CharField(max_length=100,null=True,blank=True)
+    address=models.CharField(max_length=200,null=True, blank=True)
+    period=models.CharField(max_length=10,default='')
     last_day=models.DateField(default=get_date,max_length=10)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
@@ -78,13 +78,12 @@ class BillInfoModel(models.Model):
         return self.bill_type_list[int(self.type)-1][1]
 
 class TransactionInfoModel(models.Model):
-    transaction_type_list = [('',''),('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
-    #no = models.CharField(max_length=10, primary_key=True, verbose_name='Transaction No: ')
-    account_no=models.ForeignKey(AccountInfoModel,verbose_name='Hesap Numarası')
-    type = models.CharField(max_length=10, choices=transaction_type_list,verbose_name='İşlem Türü', default='1')
-    amount = models.CharField(max_length=10, verbose_name='İşlem Miktarı',default='')
-    time = models.DateTimeField(default='',verbose_name='İşlem Zamanı')
-    desc = models.CharField(max_length=100, verbose_name='İşlem Açıklaması',null=True,blank=True,default='')
+    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
+    account_no=models.ForeignKey(AccountInfoModel)
+    type = models.CharField(max_length=10, choices=transaction_type_list, default='1')
+    amount = models.CharField(max_length=10,default='')
+    time = models.DateTimeField(default='')
+    desc = models.CharField(max_length=100,null=True,blank=True,default='')
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:

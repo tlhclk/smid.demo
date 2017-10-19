@@ -21,12 +21,12 @@
         </div>
         <div class="col-md-2">
           <ul class="chart-legend clearfix">
-              {% if room_no %}
-            <li><a href="http://127.0.0.1:8000/stock_panel/room/{{ room_no }}"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
+              {% if room %}
+            <li><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.no }}"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
               {% else %}
                   <li><a href="http://127.0.0.1:8000/person_panel/student_table/"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
               {% endif %}
-            <li><a href="http://127.0.0.1:8000/report_panel/room_plan/{{ room_no }}"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ quota_number }}</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/room_plan/{{ room.no }}"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ room.people }}-{{ student_number }}</a></li>
           </ul>
         </div>
     </div></div></div></section>
@@ -53,13 +53,13 @@
     var pieChart       = new Chart(pieChartCanvas);
     var PieData        = [
       {
-        value    : {{ student_number }},
+        value    : {{ student_number}},
         color    : '#3c8dbc',
         highlight: '#3c8dbc',
         label    : 'Kayıtlı Öğrenci'
       },
       {
-        value    : {{ quota_number }},
+        value    : {{ room.people }} - {{ student_number }},
         color    : '#d2d6de',
         highlight: '#d2d6de',
         label    : 'Boş Kontenjan'

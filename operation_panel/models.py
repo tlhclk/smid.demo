@@ -27,9 +27,9 @@ class StudentLeaveModel(models.Model):
 
 
 class AttendanceInfoModel(models.Model):
-    person=models.ForeignKey(StudentInfoModel,verbose_name='Person: ')
+    person=models.ForeignKey(StudentInfoModel)
     time=models.DateTimeField(default=get_time)
-    in_or_out=models.BooleanField(max_length=1,verbose_name='In or Out: ')
+    in_or_out=models.BooleanField(max_length=1)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class meta:
@@ -37,3 +37,9 @@ class AttendanceInfoModel(models.Model):
 
     def __str__(self):
         return str(self.person)+' - '+ str(self.time)+ ' - '+ str(self.in_or_out)
+
+    def in_or_out_name(self):
+        if self.in_or_out==True:
+            return 'İçeri Girdi'
+        else:
+            return 'Dışarı Çıktı'

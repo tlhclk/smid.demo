@@ -22,9 +22,9 @@ $(document).ready(function() {
 
     $("[data-mask]").inputmask();
 
-    $('.date-picker').datepicker({timePicker:true,
-      autoclose: true,format: 'yyyy-mm-dd'
+    $('.date-picker').datepicker({"autoclose": true,"format": 'yyyy-mm-dd',"startDate":'2015-01-01'
     });
+
 
     $('.datetime-picker').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'
     });

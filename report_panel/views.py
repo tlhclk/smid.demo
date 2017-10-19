@@ -1,7 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.utils import timezone
 from operation_panel.models import StudentLeaveModel,AttendanceInfoModel
 from stock_panel.models import FixtureInfoModel,RoomInfoModel
 from document_panel.models import LiabilityInfoModel,DocumentInfoModel
@@ -10,41 +7,38 @@ from account_panel.models import AccountInfoModel,PersonAssetInfoModel,Transacti
 from user_panel.models import CompanyInfoModel,UserCompanyModel
 from .forms import FilterAccountForm
 import json
-
 import datetime
 
 
-
-def student_attendance(request,room_no,student_id):
+def student_attendance(request,room_id,student_id):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
-        if room_no and not student_id:
-            student_list=StudentInfoModel.objects.filter(student_position=True,room_number=room_no)
-            all=len(StudentInfoModel.objects.filter(room_number=room_no))
-            return render(request,'report_panel/table_attendance.html',{'student_list':student_list,'all':all})
-        elif student_id and not room_no:
+        if room_id and not student_id:
+            student_list=StudentInfoModel.objects.filter(position=True,room_id=room_id,company_id=request.user.company_id_id)
+            return render(request,'person_panel/table_student.html',{'student_list':student_list,'title':"%s No'lu Oda Yoklama Tablosu"% room_id}) #TODO: table_student.html dosyasında bi sorun var
+        elif student_id and not room_id:
             return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
         else:
-            student_list=StudentInfoModel.objects.filter(student_position=True)
-            all=len(StudentInfoModel.objects.all())
-            return render(request,'report_panel/table_attendance.html',{'student_list':student_list,'all':all})
+            student_list=StudentInfoModel.objects.filter(position=True,company_id=request.user.company_id_id)
+            return render(request,'person_panel/table_student.html',{'student_list':student_list,'title':'Yoklama Tablosu'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
-def dorm_capacity(request,room_no):
+def dorm_capacity(request,room_id):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
-        if room_no!='':
-            quota_number=RoomInfoModel.objects.get(pk=room_no).room_people
-            student_number=len(StudentInfoModel.objects.filter(room_no=room_no))
-            return render(request,'report_panel/graph_capacity.html',{'room_no':room_no,'student_number':student_number,'quota_number':quota_number,'title':'Kontenjan Grafiği'})
+        if room_id!='':
+            room=RoomInfoModel.objects.get(pk=room_id)
+            if room.company_id_id==request.user.company_id_id:
+                student_number=len(StudentInfoModel.objects.filter(room_id=room_id,company_id=request.user.company_id_id))
+                return render(request,'report_panel/graph_capacity.html',{'room':room,'student_number':student_number,'title':'Kontenjan Grafiği'})
         else:
-            all_rooms=RoomInfoModel.objects.all()
-            student_number=len(StudentInfoModel.objects.all())
+            all_rooms=RoomInfoModel.objects.filter(company_id=request.user.company_id_id)
+            student_number=len(StudentInfoModel.objects.filter(company_id=request.user.company_id_id))
             quota_number=sum([int(room.room_people) for room in all_rooms])-student_number
             return render(request,'report_panel/graph_capacity.html',{'student_number':student_number,'quota_number':quota_number,'title':'Kontenjan Grafiği'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def room_plan(request):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
-        room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('room_no')
+        room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('no')
         room_list_four=[]
         for i in range(0,len(room_list),4):
             temp_list=[]
@@ -60,53 +54,52 @@ def room_plan(request):
 
 def contact_table(request):
     if request.user.has_perm('person_panel.add_personalinfomodel'):
-        student_list=StudentInfoModel.objects.all()
-        personal_list=PersonalInfoModel.objects.all()
-        parent_list=ParentInfoModel.objects.all()
+        student_list=StudentInfoModel.objects.filter(company_id=request.user.company_id_id)
+        personal_list=PersonalInfoModel.objects.filter(company_id=request.user.company_id_id)
+        parent_list=ParentInfoModel.objects.filter(company_id=request.user.company_id_id)
         return render(request, 'report_panel/table_contact.html', {'title':'Rehber Tablosu','student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
-def unpaid_rate(request):
+def unpaid_rate(request):# TODO: tekrar gözden geçirilecek yanlış sonuç veriyor
     if request.user.has_perm('account_panel.add_accountinfomodel'):
-        all_assets=PersonAssetInfoModel.objects.all()
+        all_assets=PersonAssetInfoModel.objects.filter(company_id=request.user.company_id_id)
         paid_asset_rate={}
         unpaid_asset_rate={}
         for asset in all_assets:
-            all_transactions=TransactionInfoModel.objects.filter(transaction_desc__contains=asset.person_id_id)
-            period = str((datetime.date.today() - asset.person_id.student_regday).days/30+1).split('.')[0]
-            paid_asset_rate.setdefault(asset.asset_id, [])
-            unpaid_asset_rate.setdefault(asset.asset_id, [])
+            all_transactions=TransactionInfoModel.objects.filter(desc__contains=asset.person_id,company_id=request.user.company_id_id)
+            period = str((datetime.date.today() - asset.person.start_day).days/30+1).split('.')[0]
+            paid_asset_rate.setdefault(asset.id, [])
+            unpaid_asset_rate.setdefault(asset.id, [])
             for transaction in all_transactions:
-                rate = str((transaction.transaction_time.date() - asset.person_id.student_regday).days / 30 + 1).split('.')[0]
-                print (rate)
-                if len(paid_asset_rate[asset.asset_id])!=0:
-                    paid_asset_rate[asset.asset_id].append(str(int(paid_asset_rate[asset.asset_id][-1])+1))
+                rate = str((transaction.time.date() - asset.person.start_day).days / 30 + 1).split('.')[0]
+                if len(paid_asset_rate[asset.id])!=0:
+                    paid_asset_rate[asset.id].append(str(int(paid_asset_rate[asset.id][-1])+1))
                 else:
-                    paid_asset_rate[asset.asset_id].append('1')
-            if len(paid_asset_rate[asset.asset_id])<int(period):
+                    paid_asset_rate[asset.id].append('1')
+            if len(paid_asset_rate[asset.id])<int(period):
                 for rate_time in range(1,int(period)+1):
-                    if str(rate_time) not in paid_asset_rate[asset.asset_id]:
-                        unpaid_asset_rate[asset.asset_id].append(str(rate_time))
+                    if str(rate_time) not in paid_asset_rate[asset.id]:
+                        unpaid_asset_rate[asset.id].append(str(rate_time))
         return render(request,'report_panel/payment_info.html',{'paid_dict':paid_asset_rate,'unpaid_dict':unpaid_asset_rate})
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def money_flow(request,account_no):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
-        transaction_list=TransactionInfoModel.objects.all()
+        transaction_list=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)
         if account_no != '':
-            transaction_list=TransactionInfoModel.objects.filter(account_no=account_no)
-        all_money_list=[get_sum(transaction_list.filter(transaction_type=type_i[0])) for type_i in TransactionInfoModel.transaction_type_list]
+            transaction_list=TransactionInfoModel.objects.filter(account_no=account_no,company_id=request.user.company_id_id)
+        all_money_list=[get_sum(transaction_list.filter(type=type_i[0])) for type_i in TransactionInfoModel.transaction_type_list]
         return render(request, 'report_panel/money_flow.html',{'title':'Aylık Para Akışı','monthly_sum':all_money_list})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def get_sum(transaction_list):
-    transaction_list = [transaction_list.filter(transaction_time__month=str(i)) for i in range(1, 13)]
-    monthly_sum = [sum([float(x.transaction_amount) for x in transaction_list[i]]) for i in range(12)]
+    transaction_list = [transaction_list.filter(time__month=str(i)) for i in range(1, 13)]
+    monthly_sum = [sum([float(x.amount) for x in transaction_list[i]]) for i in range(12)]
     return monthly_sum
 
 def account_amount(request):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
-        account_list=AccountInfoModel.objects.all()
+        account_list=AccountInfoModel.objects.filter(company_id=request.user.company_id_id)
         month_list=['2017-1','2017-2','2017-3','2017-4','2017-5','2017-6','2017-7','2017-8','2017-9','2017-10','2017-11','2017-12']
         color_list=['rgba(255,0,0,0.6)','rgba(0,255,0,0.6)','rgba(0,0,255,0.6)','rgba(255,255,0,0.6)','rgba(255,0,255,0.6)',
                     'rgba(0,255,255,0.6)','rgba(192,192,192,0.6)','rgba(255,127,0.6)','rgba(255,0,127,0.6)','rgba(127,255,0,0.6)']
@@ -114,23 +107,23 @@ def account_amount(request):
         check_box_list=[]
         for i,account in enumerate(account_list):
             i=i%10
-            check_box_list.append((account.account_name,color_list[i]))
+            check_box_list.append((account.name,color_list[i]))
             account_process_dict={}
             for month in month_list:
                 account_process_dict[month]=0.0
-            transaction_list=TransactionInfoModel.objects.filter(account_no=account.account_no)
+            transaction_list=TransactionInfoModel.objects.filter(account_no=account.no,company_id=request.user.company_id_id)
             for transaction in transaction_list:
-                key=str(transaction.transaction_time.year)+'-'+str(transaction.transaction_time.month)
-                if transaction.transaction_type == '1' or transaction.transaction_type == '7' or transaction.transaction_type == '8':
-                    account_process_dict[key]-=float(transaction.transaction_amount)
+                key=str(transaction.time.year)+'-'+str(transaction.time.month)
+                if transaction.type == '1' or transaction.type == '7' or transaction.type == '8':
+                    account_process_dict[key]-=float(transaction.amount)
                 else:
-                    account_process_dict[key] += float(transaction.transaction_amount)
+                    account_process_dict[key] += float(transaction.amount)
             account_process_list=[]
-            amount=account.account_amount
+            amount=account.amount
             for month in month_list:
                 amount=float(amount)-float(account_process_dict[month])
                 account_process_list.append(amount)
-            all_account_flow_list.append({"label": account.account_name,
+            all_account_flow_list.append({"label": account.name,
                                           "fillColor": color_list[i],
                                           "strokeColor": color_list[i],
                                           "pointColor": color_list[i],
@@ -139,26 +132,24 @@ def account_amount(request):
                                           "pointHighlightStroke": color_list[i],
                                           "data": account_process_list})
         account_info=json.dumps(all_account_flow_list)
-        asd=all_account_flow_list
         return render(request,'report_panel/account_graph.html',{'title':'Hesap Miktarı','account_info':account_info,'model_info':check_box_list})
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def monthly_flow(request,month='07'):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
         color_list = ["rgba(255,0,0,0.6)", "rgba(0,255,0,0.6)", "rgba(0,0,255,0.6)", "rgba(255,255,0,0.6)","rgba(255,0,255,0.6)","rgba(0,255,255,0.6)", "rgba(192,192,192,0.6)", "rgba(255,127,0.6)", "rgba(255,0,127,0.6)","rgba(127,255,0,0.6)"]
-        account_list=AccountInfoModel.objects.all()
-        transaction_list=TransactionInfoModel.objects.filter(transaction_time__month=month)
+        transaction_list=TransactionInfoModel.objects.filter(time__month=month,company_id=request.user.company_id_id)
         transaction_json=[]
         transaction_data=[(color_list[int(index)-1],tra_type,index) for index,tra_type in TransactionInfoModel.transaction_type_list]
         for index,tra_type in enumerate(TransactionInfoModel.transaction_type_list):
-            transaction_json.append({"value":sum([float(transaction.transaction_amount) for transaction in transaction_list.filter(transaction_type=tra_type[0])]),"color":color_list[index],"highlight":color_list[index],"label":tra_type[1]})
+            transaction_json.append({"value":sum([float(transaction.amount) for transaction in transaction_list.filter(type=tra_type[0])]),"color":color_list[index],"highlight":color_list[index],"label":tra_type[1]})
         transaction_json=json.dumps(transaction_json)
         return render(request,'report_panel/monthly_flow.html',{'title':'Aylık Akış','transaction_json':transaction_json,'transaction_data':transaction_data})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 
-def filter_form(request):
+def filter_form(request):#TODO: sonuç gösterilmiyor tekrar düzenlenecek
     color_list = ["rgba(255,0,0,0.6)", "rgba(0,255,0,0.6)", "rgba(0,0,255,0.6)", "rgba(255,255,0,0.6)",
                   "rgba(255,0,255,0.6)", "rgba(0,255,255,0.6)", "rgba(192,192,192,0.6)", "rgba(255,127,0.6)",
                   "rgba(255,0,127,0.6)", "rgba(127,255,0,0.6)"]
@@ -173,23 +164,23 @@ def filter_form(request):
         student_id=formfilter['student_id'].value()
         deposito=formfilter['deposito'].value()
         if account_no:
-            transation_list=transation_list.filter(account_no__account_no=account_no)
+            transation_list=transation_list.filter(account_no=account_no)
         if year:
-            transation_list =transation_list.filter(transaction_time__year=year)
+            transation_list =transation_list.filter(time__year=year)
         if month:
-            transation_list =transation_list.filter(transaction_time__month=month)
+            transation_list =transation_list.filter(time__month=month)
         if day:
-            transation_list =transation_list.filter(transaction_time__day=day)
+            transation_list =transation_list.filter(time__day=day)
         if transation_type:
-            transation_list =transation_list.filter(transaction_type=transation_type)
+            transation_list =transation_list.filter(type=transation_type)
         if student_id:
-            transation_list =transation_list.filter(transaction_desc__contains=student_id)
+            transation_list =transation_list.filter(desc__contains=student_id)
         if deposito:
-            transation_list =transation_list.filter(transaction_desc__contains='deposito')
+            transation_list =transation_list.filter(desc__contains='deposito')
         json_list=[]
         data=[]
         for index, amount in enumerate(transation_list):
-            data.append(float(amount.transaction_amount))
+            data.append(float(amount.amount))
         i=0
         json_list=[{"label":data,
                   "fillColor": color_list[i],

@@ -52,7 +52,7 @@ $(document).ready(function() {
                 <th>Id</th><th>Adı</th><th>Zaman Damgası</th><th>İçeri-Dışarı</th><th></th>
             </tr></thead><tbody>
                 {% for record in record_list %}<tr>
-                    <td>{{ record.id }}</td><td>{{ record.person_id.full_name }}</td><td>{{ record.traffic_date }}</td><td>{{ record.in_or_out }}</td><td>
+                    <td>{{ record.id }}</td><td>{{ record.person }}</td><td>{{ record.time }}</td><td>{{ record.in_or_out_name }}</td><td>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/operation_panel/record_delete/{{ record.id }}">Sil</a>
                 </td>
             </tr>

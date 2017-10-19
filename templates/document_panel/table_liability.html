@@ -67,7 +67,7 @@ $(document).ready(function() {
     {% for liability in liability_list %}
           <tr>
               <td><a href="http://127.0.0.1:8000/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
-              <td>{{ liability.person_id.full_name }}</td><td>{{ liability.liability_type_name }}</td><td>{{ liability.liability_desc }}</td><td>{{ liability.liability_date }}</td><td>{{ liability.liability_lastday }}</td><td>{{ liability.liability_return }}</td><td>{{ liability.liability_penalty }}</td>
+              <td>{{ liability.person }}</td><td>{{ liability.type_name }}</td><td>{{ liability.desc }}</td><td>{{ liability.give_day }}</td><td>{{ liability.last_day }}</td><td>{{ liability.take_day }}</td><td>{{ liability.penalty }}</td>
           <td>
               <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
               <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_delete/{{ liability.id }}">Sil</a>

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>DORMONİ</title>
+    <title>Yurt Yönetim Yazılımı | Dormoni </title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
@@ -25,13 +25,6 @@
     <!-- Theme CSS -->
     <link href="{% static 'css_home/creative_home.min.css' %}" rel="stylesheet">
 
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <link rel="shortcut icon" href="{% static 'login_st/ico/favicon.png' %}">
 
@@ -54,38 +47,40 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#about">FARKIMIZ </a>
+                        <a class="page-scroll" href="#about"> <i>FARKIMIZ</i> </a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">FİYATLAR</a>
+                        <a class="page-scroll" href="#services"> <i>FİYATLAR </i></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#portfolio">REFERANSLAR</a>
+                        <a class="page-scroll" href="#portfolio"><i>REFERANSLAR </i></a>
                     </li>
 
                     <li>
-                        <a class="page-scroll" href="#sss">SSS</a>
+                        <a class="page-scroll" href="#sss"><i>SSS </i></a>
                     </li>
 
                     <li>
-                        <a class="page-scroll" href="#contact">İLETİŞİM</a>
+                        <a class="page-scroll" href="#contact"> <i>İLETİŞİM </i></a>
                     </li>
 
-                    <li>
-                        <a class="page-scroll" ></a>
-                    </li>
+
 
                     {% if request.user.id %}
 
                     <li>
-                        <a class="page-scroll" href="http://127.0.0.1:8000/home/">Otomasyon</a>
+                        <a class="page-scroll" href="http://127.0.0.1:8000/home/"><i>Otomasyon </i></a>
                     </li>
                     {% else %}
 
                     <li>
-                        <a button type="button" class="btn-primary" href="http://127.0.0.1:8000/user_panel/login">SİSTEME GİRİŞ</a>
+                        <a button type="button" class="btn-primary" href="http://127.0.0.1:8000/user_panel/login"><i>SİSTEME GİRİŞ </i></a>
                     </li>
                     {% endif %}
+
+                     <li>
+                        <a class="page-scroll" href="ücretsiz"> <i> <b>ÜCRETSİZ</b> DENEYİN</i></a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -96,10 +91,10 @@
     <header>
         <div class="header-content">
             <div class="header-content-inner">
-                <h1 id="homeHeading">DORMONİ</h1>
+                <h1 id="homeHeading"> <b>Yurt</b> YÖNETİMİNİN en kolay yolu !</h1>
                 <hr>
-                <p>Yüksek güvenlik,hızlı erişim, detaylı raporlama  !</p>
-                <a href="#about" class="btn btn-primary btn-xl page-scroll">FİYATLARIMIZ</a>
+                <p></p>
+                <a href="#about" class="btn btn-primary btn-xl page-scroll">ÜCRETSİZ DENEYİN</a>
             </div>
         </div>
     </header>
@@ -108,10 +103,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">İhtiyacınız olan herşeye sahip tek Akıllı Yurt Otomasyonu!</h2>
+                    <h2 class="section-heading">Neden online <b>yurt</b> yönetimi?</h2>
                     <hr class="light">
-                    <p class="text-faded">GFHJ!</p>
-                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">FİYATLARIMIZ</a>
+                    <p class="text-faded">Excel dosyaları veya kağıt kaleme son! Çalışan bilgilerini online saklayan ve istediğiniz an istediğiniz yerden bu bilgilere ulaşmanızı sağlayan bir sisteme geçin.!</p>
+                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">ÜCRETSİZ DENEYİN</a>
                 </div>
             </div>
         </div>
@@ -467,7 +462,7 @@
 
 
     <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="{% static 'main_theme/js/jquery-easing.min.js' %}s"></script>
     <script src="{% static 'vendor/scrollreveal/scrollreveal.min.js' %}"></script>
     <script src="{% static 'vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 

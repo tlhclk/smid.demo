@@ -63,10 +63,10 @@ $(document).ready(function() {
     <tbody>
     {% for document in document_list %}
           <tr>
-              <td><a href="http://127.0.0.1:8000/document_panel/document/{{ document.document_id }}/">{{ document.document_id }}</a></td>
-              <td>{{ document.person_id_name }}</td><td>{{ document.document_type_name }}</td><td>{{ document.document_date }} </td><td>{{ document.document_description }}</td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_edit/{{ document.document_id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_delete/{{ document.document_id }}">Sil</a></td></tr>
+              <td><a href="http://127.0.0.1:8000/document_panel/document/{{ document.id }}/">{{ document.id }}</a></td>
+              <td>{{ document.person }}</td><td>{{ document.type_name }}</td><td>{{ document.date }} </td><td>{{ document.desc }}</td>
+          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_edit/{{ document.id }}">Düzenle</a>
+                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/document_delete/{{ document.id }}">Sil</a></td></tr>
     {% endfor %}
 
     </tbody>

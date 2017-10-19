@@ -18,8 +18,8 @@ class DocumentInfoForm(forms.ModelForm):
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     type=forms.ChoiceField(DocumentInfoModel.document_type_list,label='Dosya Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     desc=forms.CharField(max_length=100,label='Dosya Açıklaması',required=False)
-    date=forms.DateField(label='Dosya Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
-    image_field=forms.ImageField(label='Dosya',widget=forms.FileInput())
+    date=forms.DateField(label='Dosya Tarihi',widget=forms.DateInput(attrs={"pickTime": False, "class": "date-picker", "style": "height: 30px"  }))
+    image_field=forms.ImageField(label='Dosya',widget=forms.FileInput(),required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=DocumentInfoModel
@@ -31,28 +31,43 @@ class DocumentInfoForm(forms.ModelForm):
                 'image_field',
                 'company_id',
                 ]
+    def clean_image_field(self):
+        image =self.cleaned_data.get('image_field')
+        return image
+
     def clean(self):
-        image = self.cleaned_data.get('image')
-        print (image)
+        image = self.cleaned_data.get('image_field')
+        #print (image.path.split('.')[-1] if '.' in image.path else None)
         if image:
-            img = Image.open(image)
+            try:
+                # validate content type
+                main, sub = image.content_type.split('/')
+                if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                    self.add_error('image_field','JPEG veya PNG dosyası yükleyiniz')
 
-            # validate content type
-            main, sub = image.content_type.split('/')
-            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
-                self.add_error('image','JPEG veya PNG dosyası yükleyiniz')
+                # validate file size
+                if len(image) > (1 * 4140 * 5520):
+                    self.add_error('image_field','10 MB den düşük dosyalar yükleyiniz ')
+            except AttributeError:
+                img = Image.open(image)
+                main, sub = 'image',img.format
+                if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                    self.add_error('image_field','JPEG veya PNG dosyası yükleyiniz')
 
-            # validate file size
-            if len(image) > (1 * 1024 * 1024):
-                self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
+                # validate file size
+                if len(image) > (1 * 4140 * 5520):
+                    self.add_error('image_field','10 MB den düşük dosyalar yükleyiniz ')
+
         else:
-            self.add_error('image','Yüklenen dosya okunamadı')
+            self.add_error('image_field','Yüklenen dosya okunamadı')
+
+
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
 
-class LiabilityInfoForm(forms.ModelForm):
+class LiabilityInfoForm(forms.ModelForm):# TODO: DatetimeField'larda editleme sayfasında zamanlar kayıyor. tekrardan düzenlem yapılması gerekiyor.
     def __init__(self, user, POST=None,FILES=None,*args, **kwargs):
         # user is a required parameter for this form.
         super(LiabilityInfoForm, self).__init__(POST,FILES,*args, **kwargs)
@@ -60,10 +75,10 @@ class LiabilityInfoForm(forms.ModelForm):
         self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
 
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    type=forms.ChoiceField(DocumentInfoModel.document_type_list,label='Emanet Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    type=forms.ChoiceField(LiabilityInfoModel.fixture_type_list,label='Emanet Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     desc=forms.CharField(max_length=100,label='Emanet Açıklaması',required=False)
     give_day=forms.DateTimeField(label='Emanet Verilme Tarihi',widget=forms.DateTimeInput(attrs={'class':'datetime-picker',"pickTime": False,"style":"height: 30px"}))
-    take_day=forms.DateTimeField(label='Emanet Teslim Tarihi',widget=forms.DateTimeInput(attrs={'class':'datetime-picker',"pickTime": False,"style":"height: 30px"}))
+    take_day=forms.DateTimeField(label='Emanet Teslim Tarihi',widget=forms.DateTimeInput(attrs={'class':'datetime-picker',"pickTime": False,"style":"height: 30px"}),required=False)
     last_day=forms.DateTimeField(label='Emanet Son Teslim Tarihi',widget=forms.DateTimeInput(attrs={'class':'datetime-picker',"pickTime": False,"style":"height: 30px"}))
     penalty=forms.CharField(max_length=5,label='Gecikme Cezası',required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
@@ -95,8 +110,13 @@ class LiabilityInfoForm(forms.ModelForm):
         if lastd and taked:
             if lastd<taked:
                 penalty= ((taked-lastd).days*2)
+                print (penalty)
                 return penalty
-        return self.cleaned_data.get('penalty')
+            else:
+                penalty=0
+        else:
+            penalty=0
+        return penalty
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

@@ -18,17 +18,17 @@
           <!-- general form elements -->
 <div class="box box-primary">
             <div class="box-header with-border">
-              <h1 class="panel-title pull-left" style="font-size:30px;">{{ bill.bill_type_name }} - {{ bill.bill_code }}</h1>
+              <h1 class="panel-title pull-left" style="font-size:30px;">{{ bill.type_name }} - {{ bill.code }}</h1>
             </div>
                 <div class="panel-body">
                     <h3><b>Fatura ID:  </b>{{ bill.id }}</h3>
-                    <h3><b>Fatura Türü:  </b>{{ bill.bill_type_name }}</h3>
-                    <h3><b>Fatura Kodu:  </b>{{ bill.bill_code }}</h3>
-                    <h3><b>Fatura Miktarı:  </b>{{ bill.bill_amount }}</h3>
-                    <h3><b>Fatura Dönemi:  </b>{{ bill.bill_period }}</h3>
-                    <h3><b>Fatura Son Ödeme Tarihi:  </b>{{ bill.bill_lastday }}</h3>
-                    <h3><b>Fatura Adresi: </b>{{ bill.bill_address }}</h3>
-                    <h3><b>Fatura Açıklaması: </b>{{ bill.bill_desc }}</h3>
+                    <h3><b>Fatura Türü:  </b>{{ bill.type_name }}</h3>
+                    <h3><b>Fatura Kodu:  </b>{{ bill.code }}</h3>
+                    <h3><b>Fatura Miktarı:  </b>{{ bill.amount }}</h3>
+                    <h3><b>Fatura Dönemi:  </b>{{ bill.period }}</h3>
+                    <h3><b>Fatura Son Ödeme Tarihi:  </b>{{ bill.last_day }}</h3>
+                    <h3><b>Fatura Adresi: </b>{{ bill.address }}</h3>
+                    <h3><b>Fatura Açıklaması: </b>{{ bill.desc }}</h3>
                     <hr>
                     <span class="pull-left">
                         <a href="http://127.0.0.1:8000/account_panel/bill_table/" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-list" aria-hidden="true"></i>Fatura Tablosu</a>

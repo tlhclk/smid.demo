@@ -15,7 +15,7 @@ def add_student(request):
         if request.method == "POST":
             formstudent = StudentInfoForm(user=request.user,POST=request.POST, FILES=request.FILES)
             if formstudent.is_valid():
-                new_user_add(formstudent)
+                #new_user_add(formstudent) TODO: ilerleyen süreçte tekrar düzenlenecek
                 formstudent.save()
             return redirect('http://127.0.0.1:8000/account_panel/asset_add/')
         return render(request, 'person_panel/add_student.html', {'form': formstudent,'title':'Yeni Öğrenci Kaydı'})

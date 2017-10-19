@@ -31,23 +31,21 @@ ALLOWED_HOSTS = ['207.154.214.85','www.dormoni.com','127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'django.contrib.admindocs',
-    'django.contrib.sitemaps',
-    'person_panel.apps.PersonPanelConfig',
     'bootstrap4',
-    'document_panel.apps.DocumentPanelConfig',
+    'bootstrap3',
+    'person_panel',
+    'document_panel',
     'user_panel',
-    'stock_panel.apps.StockPanelConfig',
-    'account_panel.apps.AccountPanelConfig',
-    'operation_panel.apps.OperationPanelConfig',
-    'calendar_panel.apps.CalendarPanelConfig',
+    'stock_panel',
+    'account_panel',
+    'operation_panel',
+    'calendar_panel',
     'django_mailbox',
     'localflavor',
     'phonenumber_field',
@@ -69,8 +67,7 @@ ROOT_URLCONF = 'smidBeta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

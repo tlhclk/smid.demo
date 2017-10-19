@@ -62,8 +62,8 @@ $(document).ready(function() {
     <tbody>
     {% for room in room_list %}
           <tr>
-              <td><a href="/stock_panel/room/{{ room.id }}/">{{ room.room_no }}</a></td>
-              <td>{{ room.room_floor }}</td><td>{{ room.room_people_name }}</td><td>{{ room.room_type_name }} </td>
+              <td><a href="/stock_panel/room/{{ room.id }}/">{{ room.no }}</a></td>
+              <td>{{ room.floor }}</td><td>{{ room.people_name }}</td><td>{{ room.type_name }} </td>
           <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_edit/{{ room.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_delete/{{ room.id }}">Sil</a></td></tr>
     {% endfor %}

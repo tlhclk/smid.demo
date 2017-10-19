@@ -64,7 +64,7 @@ $(document).ready(function() {
     {% for personal in personal_list %}
           <tr><td>
                 <a href="/person_panel/personal/{{ personal.id }}/">{{ personal.id }}</a>
-          </td><td>{{ personal.personal_tcn.s_name }}</td><td>{{ personal.personal_tcn.s_lastname }}</td><td>{{ personal.e_mail }} </td><td>{{ personal.personal_phone }} </td>
+          </td><td>{{ personal.tcn.name }}</td><td>{{ personal.tcn.last_name }}</td><td>{{ personal.email }} </td><td>{{ personal.phone }} </td>
           <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_edit/{{ personal.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_delete/{{ personal.id }}">Sil</a>
                 </td>

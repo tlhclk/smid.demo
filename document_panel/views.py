@@ -29,13 +29,14 @@ def document_detail(request,document_id):
 def table_document(request,student_id):
     if request.user.has_perm('document_panel.add_documentinfomodel'):
         document_list=DocumentInfoModel.objects.filter(company_id=request.user.company_id_id)
-        if student_id: document_list=document_list.filter(person_id=StudentInfoModel.objects.get(pk=student_id))
+        if student_id: document_list=document_list.filter(person_id=student_id)
         return render(request, 'document_panel/table_document.html', {'document_list':document_list,'title':'Dosya Tablosu'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_document(request,document_id):
-    if request.user.has_perm('document_panel.change_documentinfomodel') and DocumentInfoModel.objects.get(pk=document_id).company_id.company_id == request.user.company_id_id:
-        formdocument = DocumentInfoForm(user=request.user,instance=DocumentInfoModel.objects.get(pk=document_id))
+    document=DocumentInfoModel.objects.get(pk=document_id)
+    if request.user.has_perm('document_panel.change_documentinfomodel') and document.company_id_id == request.user.company_id_id:
+        formdocument = DocumentInfoForm(user=request.user,instance=document,initial={'image_field':document.image_field})
         if request.method=='POST':
             formdocument=DocumentInfoForm(user=request.user,POST=request.POST,FILES=request.FILES,instance=DocumentInfoModel.objects.get(pk=document_id))
             if formdocument.is_valid():

@@ -5,7 +5,6 @@ from . import views,apps
 app_name='account_panel'
 urlpatterns = [
     url(r'^transaction_add/(?P<filter_no>[0-9]*)', views.add_transaction, name='Add transaction'),
-    url(r'^transaction/(?P<transaction_no>[0-9]+)', views.detail_transaction, name='transaction Details'),
     url(r'^transaction_table/(?P<filter_no>[0-9]*)', views.table_transaction, name='transaction Table'),
     url(r'^transaction_edit/(?P<transaction_no>[0-9]+)', views.edit_transaction, name='transaction Edit'),
     url(r'^transaction_delete/(?P<transaction_no>[0-9]+)', views.delete_transaction, name='transaction Delete'),

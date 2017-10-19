@@ -12,4 +12,4 @@ def contract(request):
     return render(request,'contract.html',{'title':'Sözleşme'})
 
 def rules(request):
-    return render(request,'rules.html',{'title':'Kurallar'})
+    return render(request, 'rules.html', {'title': 'Kurallar'})

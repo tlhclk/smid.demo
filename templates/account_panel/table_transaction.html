@@ -53,7 +53,7 @@ $(document).ready(function() {
                 <th>İşlem Numarası</th><th>Hesap Adı</th><th>İşlem Türü</th><th>İşlem Miktarı</th><th>İşlem Zamanı</th><th>İşlem Açıklaması</th><th></th>
             </tr></thead><tbody>
                 {% for transaction in transaction_list %}<tr>
-                <td>{{ transaction.id }}</td><td>{{ transaction.account_name }}</td><td>{{ transaction.transaction_type_name }}</td><td>{{ transaction.transaction_amount }}</td><td>{{ transaction.transaction_time }}</td><td>{{ transaction.transaction_desc }}</td><td>
+                <td>{{ transaction.id }}</td><td>{{ transaction.account_name }}</td><td>{{ transaction.type_name }}</td><td>{{ transaction.amount }}</td><td>{{ transaction.time }}</td><td>{{ transaction.desc }}</td><td>
             <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/transaction_edit/{{ transaction.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/transaction_delete/{{ transaction.id }}">Sil</a>
                 </td>

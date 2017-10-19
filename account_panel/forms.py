@@ -16,7 +16,7 @@ class TransactionInfoForm(forms.ModelForm):
     type=forms.ChoiceField(choices=TransactionInfoModel.transaction_type_list,label='İşlem Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     amount=forms.CharField(max_length=10,label='İşlem Miktarı')
     time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='İşlem Zamanı')
-    desc=forms.CharField(max_length=100,label='İşlem Açıklaması',required=False,empty_value=True)
+    desc=forms.CharField(max_length=100,label='İşlem Açıklaması',required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=TransactionInfoModel
@@ -49,18 +49,18 @@ class PersonAssetInfoForm(forms.ModelForm):
 
     id=forms.CharField(max_length=10,label='Ödeme Planı ID',initial=str(int(PersonAssetInfoModel.objects.all().order_by('-id')[0].id)+1))
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci No',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    amount=forms.CharField(max_length=5,label='Ödenen Miktar')
+    #amount=forms.CharField(max_length=5,label='Ödenen Miktar')
     debt=forms.CharField(max_length=5,label='Ödenecek Miktar')
     period=forms.CharField(max_length=2,label='Taksit Miktarı')
     type=forms.ChoiceField(choices=PersonAssetInfoModel.asset_type_list,label='Ödeme Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    desc=forms.CharField(max_length=100,label='Ödeme Planı Açıklaması',required=False,empty_value=True)
+    desc=forms.CharField(max_length=100,label='Ödeme Planı Açıklaması',required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=PersonAssetInfoModel
         fields=[
             'id',
             'person',
-            'amount',
+            #'amount',
             'debt',
             'period',
             'type',
@@ -68,13 +68,13 @@ class PersonAssetInfoForm(forms.ModelForm):
             'company_id',
         ]
     def clean(self):
-        amount=self.cleaned_data.get('amount')
-        if 0.0<float(amount)<10000.00:
-            print (amount)
-        else:
-            self.add_error('amount','Yanlış Miktar')
+        # amount=self.cleaned_data.get('amount')
+        # if 0.0<float(amount)<10000.00:
+        #     print (amount)
+        # else:
+        #     self.add_error('amount','Yanlış Miktar')
         debt=self.cleaned_data.get('debt')
-        if 0.0<float(debt)<10000.00:
+        if 0.0<float(debt)<100000.00:
             print (debt)
         else:
             self.add_error('debt','Yanlış Miktar')
@@ -129,14 +129,13 @@ class BillInfoForm(forms.ModelForm):
         super(BillInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
         #self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
-    id=forms.CharField(max_length=10,initial=str(int(BillInfoModel.objects.all().order_by('-id')[0].id)+1))
     type=forms.ChoiceField(choices=BillInfoModel.bill_type_list,label='Fatura Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     code=forms.CharField(max_length=10,label='Fatura Kodu')
     amount=forms.CharField(max_length=10,label='Fatura Miktarı')
     period=forms.CharField(max_length=10,label='Fatura Dönemi')
     last_day=forms.DateField(widget=forms.DateInput(attrs={"pickTime": False,"startDate": "2007","class":"date-picker","style":"height: 30px"}),label='Fatura Son Ödeme Tarihi')
-    address=forms.CharField(max_length=200,label='Fatura Adresi',required=False,empty_value=True)
-    desc=forms.CharField(max_length=100,label='Fatura Açıklaması',required=False,empty_value=True)
+    address=forms.CharField(max_length=200,label='Fatura Adresi',required=False)
+    desc=forms.CharField(max_length=100,label='Fatura Açıklaması',required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=BillInfoModel

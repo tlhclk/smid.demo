@@ -14,12 +14,12 @@ def get_date():
 
 class DocumentInfoModel(models.Model):
     document_type_list=[('1','Kimlik Kartı'),('2','Sigorta'),('3','Fatura'),('4','İzin Kağıdı'),('5','Öğrenci Sertifikası'),]
-    id=models.CharField(max_length=10,primary_key=True,verbose_name='Document Id: ',default='')
-    person=models.ForeignKey(StudentInfoModel,verbose_name='Person id: ')
-    date=models.DateField(default=get_date,verbose_name='Document Record Date: ',max_length=10)
-    type=models.CharField(max_length=20,verbose_name='Document Type: ',choices=document_type_list)
-    desc=models.CharField(max_length=100,verbose_name='Documnet Description: ',default='')
-    image_field=models.ImageField(default='',upload_to='document_image/',verbose_name='Documnet Image or Scan',max_length=100,blank=True)
+    id=models.CharField(max_length=10,primary_key=True,default='')
+    person=models.ForeignKey(StudentInfoModel)
+    date=models.DateField(max_length=10)
+    type=models.CharField(max_length=20,choices=document_type_list)
+    desc=models.CharField(max_length=100,default='')
+    image_field=models.ImageField(upload_to='document_image/',max_length=100)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:# TODO: db_table adı düzenlenecek
@@ -42,13 +42,12 @@ class LiabilityInfoModel(models.Model):
     fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
                          ('6', 'Tül'), ('7', 'Perde'), ('8', 'Masa'), ('9', 'Sandalye'), ('10', 'Askılık'),
                          ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna')]# TODO: liste düzenlenecek
-    #record_no=models.CharField(max_length=10,verbose_name='Record No: ',primary_key=True,default='1')
-    person=models.ForeignKey(StudentInfoModel,verbose_name='Person Id: ',unique=False)
-    type=models.CharField(max_length=50,verbose_name='Liability Type: ',choices=fixture_type_list)
-    desc=models.CharField(max_length=100,verbose_name='Liability Description: ',default='',blank=True)
-    give_day=models.DateTimeField(default='',verbose_name='Liability Day',max_length=20)
-    last_day=models.DateTimeField(blank=True,verbose_name='Liability Last day',max_length=20,null=True)
-    take_day=models.DateTimeField(blank=True,verbose_name='Liability Return day',null=True)
+    person=models.ForeignKey(StudentInfoModel,unique=False)
+    type=models.CharField(max_length=50,choices=fixture_type_list)
+    desc=models.CharField(max_length=100,default='',blank=True)
+    give_day=models.DateTimeField(default='',max_length=20)
+    last_day=models.DateTimeField(blank=True,max_length=20,null=True)
+    take_day=models.DateTimeField(blank=True,null=True)
     penalty=models.CharField(max_length=30,blank=True,default='')
     company_id = models.ForeignKey(CompanyInfoModel, default='None')
 

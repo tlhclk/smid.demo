@@ -33,10 +33,11 @@ def add_attendance(request):
         formattendance=AttendanceInfoForm(user=request.user)
         if request.method=='POST':
             formattendance=AttendanceInfoForm(POST=request.POST,user=request.user)
+            print (formattendance)
             if formattendance.is_valid():
                 formattendance.save()
                 return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
-        return render(request,'operation_panel/default_form.html',{'form':formattendance,'title':'Yeni Yoklama Kaydı'})
+        return render(request,'operation_panel/add_attendance.html',{'form':formattendance,'title':'Yeni Yoklama Kaydı'})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 

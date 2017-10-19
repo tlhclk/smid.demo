@@ -52,39 +52,39 @@ $(document).ready(function() {
 <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-          <th>Person ID</th>
-          <th>Person Full Name</th>
-          <th>Person Group</th>
-            <th>Person TCN</th>
-          <th>Person Phone</th>
-          <th>Person Email</th>
+          <th>Kimlik No</th>
+          <th>Adı Soyadı</th>
+          <th>Kategori</th>
+          <th>Telefon Numarası</th>
+          <th>E-Posta</th>
+            <th>Adres</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
     {% for student in student_list %}
           <tr>
-              <td><a href="/person_panel/student/{{ student.id }}/">{{ student.id }}</a></td>
-              <td>{{ student.full_name }}</td><td>{{ student.group }}</td><td>{{ student.student_tcn }} </td>
-              <td>{{ student.student_phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ student.e_mail }}" class="btn btn-link" style="text-decoration:none;">{{ student.e_mail }}</a></td>
+              <td><a href="/person_panel/student/{{ student.id }}/">{{ student.tcn_id }}</a></td>
+              <td>{{ student.full_name }}</td><td>{{ student.group }}</td>
+              <td>{{ student.phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ student.email }}" class="btn btn-link" style="text-decoration:none;">{{ student.email }}</a></td><td>{{ student.city_name }}</td>
           <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a></td></tr>
     {% endfor %}
 
     {% for parent in parent_list %}
           <tr>
-              <td><a href="/person_panel/parent/{{ parent.id }}/">{{ parent.id }}</a></td>
-              <td>{{ parent.full_name }}</td><td>{{ parent.group }}</td><td>{{ parent.parent_TCN }} </td>
-              <td>{{ parent.parent_phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ parent.e_mail }}" class="btn btn-link" style="text-decoration:none;">{{ parent.parent_email }}</a></td>
+              <td><a href="/person_panel/parent/{{ parent.id }}/">{% if parent.tcn_id %}{{ parent.tcn_id }}{% else %}{{ parent.id }}{% endif %}</a></td>
+              <td>{{ parent.full_name }}</td><td>{{ parent.group }}</td>
+              <td>{{ parent.phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ parent.email }}" class="btn btn-link" style="text-decoration:none;">{{ parent.email }}</a></td><td>{{ parent.city_name }}</td>
           <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/parent_edit/{{ parent.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/parent_delete/{{ parent.id }}">Sil</a></td></tr>
     {% endfor %}
 
     {% for personal in personal_list %}
           <tr>
-              <td><a href="/person_panel/personal/{{ personal.id }}/">{{ personal.id }}</a></td>
-              <td>{{ personal.full_name }}</td><td>{{ personal.group }}</td><td>{{ personal.personal_tcn }} </td>
-              <td>{{ personal.personal_phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ personal.e_mail }}" class="btn btn-link" style="text-decoration:none;">{{ personal.e_mail }}</a></td>
+              <td><a href="/person_panel/personal/{{ personal.id }}/">{{ personal.tcn_id }}</a></td>
+              <td>{{ personal.full_name }}</td><td>{{ personal.group }}</td>
+              <td>{{ personal.phone }} </td><td><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ personal.email }}" class="btn btn-link" style="text-decoration:none;">{{ personal.email }}</a></td><td>{{ personal.city_name }}</td>
           <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_edit/{{ personal.id }}">Düzenle</a>
                           <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/personal_delete/{{ personal.id }}">Sil</a></td></tr>
     {% endfor %}

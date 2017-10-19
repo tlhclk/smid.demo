@@ -10,10 +10,10 @@ class FixtureInfoForm(forms.ModelForm):
         super(FixtureInfoForm, self).__init__(POST,FILE,*args, **kwargs)
         self.user=user
         self.fields['room'].queryset = RoomInfoModel.objects.filter(company_id=user.company_id)
-    no=forms.CharField(max_length=10,label='Eşya Kodu')
+    no=forms.CharField(max_length=10,label='Eşya Kodu',initial=str(int(FixtureInfoModel.objects.last().no)+1))
     room=forms.ModelChoiceField(RoomInfoModel.objects.all(),label='Oda Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     type=forms.ChoiceField(FixtureInfoModel.fixture_type_list,label='Eşya Tipi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    notes=forms.CharField(max_length=100,label='Eşya Notları')
+    notes=forms.CharField(max_length=100,label='Eşya Notları',required=False)
     image_field=forms.ImageField(label='Eşya Resmi',widget=forms.FileInput())
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
@@ -50,10 +50,10 @@ class RoomInfoForm(forms.ModelForm):
         super(RoomInfoForm, self).__init__(POST,FILE,*args, **kwargs)
         self.user=user
     no=forms.CharField(max_length=4,label='Oda Numarası')
-    floor=forms.CharField(max_length=2,label='Oda Katı')
+    floor=forms.CharField(max_length=2,label='Oda Katı',required=False)
     people=forms.ChoiceField(RoomInfoModel.room_people_list,label='Kişi Sayısı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     type=forms.ChoiceField(RoomInfoModel.room_type_list,label='Oda Tipi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    desc=forms.CharField(max_length=100,label='ODa Açıklması')
+    desc=forms.CharField(max_length=100,label='Oda Açıklması',required=False)
     image_field=forms.ImageField(label='Oda Resmi',widget=forms.FileInput())
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:

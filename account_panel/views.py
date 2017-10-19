@@ -29,23 +29,15 @@ def add_transaction(request,filter_no):
         return render(request,'account_panel/add_transaction.html',{'form':formtransaction,'title':'Yeni İşlem Kaydı'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
-def detail_transaction(request,transaction_no):
-    if request.user.has_perm('account_panel.add_transactioninfomodel'):
-        transaction=TransactionInfoModel.objects.get(pk=transaction_no)
-        if transaction.company_id_id==request.user.company_id_id:
-            return render(request,'account_panel/detail_transaction.html',{'transaction':transaction,'title':'İşlem Detayı'})
-        else: return redirect('http://127.0.0.1:8000/account_panel/transaction_table/')
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
-
 def table_transaction(request,filter_no):
     if request.user.has_perm('account_panel.add_transactioninfomodel'):
         transaction_list=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)
         if filter_no!='':
             if filter_no[:4]=='1701':
-                transaction_list = transaction_list.filter(transaction_desc__contains=filter_no)
+                transaction_list = transaction_list.filter(desc__contains=filter_no)
                 return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list,'title':'%s Kişisine Ait İşlem Geçmişi'%filter_no})
             elif filter_no[:4]=='1713':
-                transaction_list = transaction_list.filter(transaction_type='6')
+                transaction_list = transaction_list.filter(type='6').filter(company_id=request.user.company_id_id)
                 return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list,'title':'%s Türüne Ait İşlem Geçmişi'%filter_no})
             else:
                 transaction_list=transaction_list.filter(account_no=filter_no)
@@ -112,7 +104,7 @@ def edit_asset(request,asset_no):
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_asset(request,asset_no):
-    if request.user.has_perm('account_panel.delete_personassetinfomodel')and PersonAssetInfoModel.objects.get(pk=asset_no).company_id_id==request.user.company_id:
+    if request.user.has_perm('account_panel.delete_personassetinfomodel')and PersonAssetInfoModel.objects.get(pk=asset_no).company_id_id==request.user.company_id_id:
         PersonAssetInfoModel.objects.get(pk=asset_no).delete()
         return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
@@ -165,9 +157,9 @@ def add_bill(request):
         if request.method=='POST':
             formbill=BillInfoForm(user=request.user,POST=request.POST)
             if formbill.is_valid():
-                bill_transactionsync(formbill)
+                bill_transactionsync(formbill,request)
                 formbill.save()
-                return redirect('http://127.0.0.1:8000/account_panel/asset_table/')
+                return redirect('http://127.0.0.1:8000/account_panel/bill_table/')
         return render(request,'account_panel/add_bill.html',{'form':formbill,'title':'Yeni Fatura Kaydı'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
@@ -197,34 +189,34 @@ def edit_bill(request,bill_no):
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_bill(request,bill_no):
-    if request.user.has_perm('account_panel.delete_bilinfomodel') and BillInfoModel.objects.get(pk=bill_no).company_id_id==CompanyInfoModel.objects.get(pk=request.user.company_id_id):
+    if request.user.has_perm('account_panel.delete_bilinfomodel') and BillInfoModel.objects.get(pk=bill_no).company_id_id==request.user.company_id_id:
         BillInfoModel.objects.get(pk=bill_no).delete()
         return redirect('http://127.0.0.1:8000/account_panel/bill_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
-def transaction_accountsync(account_no,amount,transaction_type,transaction_desc):# TODO: bu fonk yeniden düzenlenecek
-    if transaction_type=='1' or transaction_type=='7':
+def transaction_accountsync(account_no,amount,type,desc):# TODO: bu fonk yeniden düzenlenecek
+    if type=='1' or type=='7':
         x=1
-    elif transaction_type=='8':
-        if re.search('1701\w{3}',transaction_desc):
-            transaction_to = re.search('1701\w{3}',transaction_desc).group()
+    elif type=='8':
+        if re.search('1701\w{3}',desc):
+            transaction_to = re.search('1701\w{3}',desc).group()
             x = 1
             asset = PersonAssetInfoModel.objects.filter(person_id=transaction_to)[0]
-            asset.asset_amount = str(float(asset.asset_amount) + x * float(amount))
-            asset.asset_debt = str(float(asset.asset_debt) - x * float(amount))
+            asset.amount = str(float(asset.amount) + x * float(amount))
+            asset.debt = str(float(asset.debt) - x * float(amount))
             asset.save()
         else:
             return redirect('http://127.0.0.1:8000/user_panel/login/')
     else:
         x=-1
-    account_no.account_amount=str(float(account_no.account_amount)+x*float(amount))
+    account_no.amount=str(float(account_no.amount)+x*float(amount))
     account_no.save()
 
-def bill_transactionsync(formbill):# TODO: bu fonk yeniden düzenlenecen
-    account_no=AccountInfoModel.objects.filter(account_name='Nakit')[0]
-    amount=formbill.cleaned_data.get('bill_amount')
-    description=formbill.cleaned_data.get('bill_desc')
-    transaction=TransactionInfoModel(account_no=account_no,transaction_type='6',transaction_amount=amount,transaction_time=datetime.datetime.now(),transaction_desc=description)
-    transaction_accountsync(account_no,amount,transaction_type='6',transaction_desc=description)
+def bill_transactionsync(formbill,request):# TODO: bu fonk yeniden düzenlenecen
+    account_no=AccountInfoModel.objects.filter(name='Nakit').filter(company_id=request.user.company_id_id)[0]
+    amount=formbill.cleaned_data.get('amount')
+    description=formbill.cleaned_data.get('desc')
+    transaction=TransactionInfoModel(account_no=account_no,type='6',amount=amount,time=datetime.datetime.now(),desc=description)
+    transaction_accountsync(account_no,amount,type='6',desc=description)
     transaction.save()
 

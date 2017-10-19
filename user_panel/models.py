@@ -18,10 +18,10 @@ class CompanyInfoModel(models.Model):
     company_id=models.CharField(max_length=10,primary_key=True)
     company_name=models.CharField(max_length=20,default='')
     company_vno=models.CharField(max_length=15,default='')
-    company_adress=models.CharField(max_length=100,default='',null=True,blank=True)
-    company_account_no=models.CharField(max_length=15,default='',null=True,blank=True)
-    company_payment_detail=models.CharField(max_length=50,default='',null=True,blank=True)
-    company_desc=models.CharField(max_length=100,default='',null=True,blank=True)
+    company_adress=models.CharField(max_length=100,null=True,blank=True)
+    company_account_no=models.CharField(max_length=15,null=True,blank=True)
+    company_payment_detail=models.CharField(max_length=50,null=True,blank=True)
+    company_desc=models.CharField(max_length=100,null=True,blank=True)
 
     class Meta:
         db_table='company_info'
