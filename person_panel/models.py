@@ -89,7 +89,7 @@ class PersonalInfoModel(models.Model):
         db_table='personal_info'
 
     def __str__(self):
-        return str(self.id)+'-'+str(self.tcn.tcn)+''+str(self.full_name())
+        return str(self.id)
 
     def __unicode__(self):
         return str(self.id)
@@ -141,7 +141,7 @@ class StudentInfoModel(models.Model):
         db_table= 'student_info'
 
     def __str__(self):
-        return str(self.id)+'-'+str(self.tcn.tcn)+'-'+str(self.full_name())
+        return str(self.id)
 
     def __unicode__(self):
         return str(self.id)
@@ -160,9 +160,6 @@ class StudentInfoModel(models.Model):
 
     def type_name(self):
         return self.student_type_list[int(self.type)][1]
-
-    def city_list(self):
-        return PROVINCE_CHOICES
 
     def payment_info(self):
         from account_panel.models import PersonAssetInfoModel
@@ -188,7 +185,7 @@ class ParentInfoModel(models.Model):
         db_table='parent_info'
 
     def __str__(self):
-        return str(self.person.full_name())+' - '+str(self.name)
+        return self.id
 
     def full_name(self):
         return '%s %s'% (self.name,self.last_name)

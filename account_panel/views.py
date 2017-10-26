@@ -41,9 +41,9 @@ def table_transaction(request,filter_no):
                 return render(request, 'account_panel/table_transaction.html', {'transaction_list': transaction_list,'title':'%s Türüne Ait İşlem Geçmişi'%filter_no})
             else:
                 transaction_list=transaction_list.filter(account_no=filter_no)
-                return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'İşlem Geçmişi'})
+                return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'Muhasebe'})
         else:
-            return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'İşlem Geçmişi'})
+            return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'Muhasebe'})
 
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
@@ -89,7 +89,7 @@ def detail_asset(request,asset_no):
 def table_asset(request):
     if request.user.has_perm('account_panel.add_personassetinfomodel'):
         asset_list=PersonAssetInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'account_panel/table_personasset.html',{'asset_list':asset_list,'title':'Ödeme Planı Tablosu'})
+        return render(request,'account_panel/table_personasset.html',{'asset_list':asset_list,'title':'Muhasebe'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_asset(request,asset_no):
@@ -131,7 +131,7 @@ def detail_account(request,account_no):
 def table_account(request):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
         account_list=AccountInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'account_panel/table_account.html',{'account_list':account_list,'title':'Hesap Tablosu'})
+        return render(request,'account_panel/table_account.html',{'account_list':account_list,'title':'Muhasebe'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_account(request,account_no):
@@ -174,7 +174,7 @@ def detail_bill(request,bill_no):
 def table_bill(request):
     if request.user.has_perm('account_panel.add_billinfomodel'):
         bill_list=BillInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'account_panel/table_bill.html',{'bill_list':bill_list,'title':'Fatura Tablosu'})
+        return render(request,'account_panel/table_bill.html',{'bill_list':bill_list,'title':'Muhasebe'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_bill(request,bill_no):

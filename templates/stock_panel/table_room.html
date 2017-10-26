@@ -4,6 +4,18 @@
  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+                  <style type="text/css">
+
+  .panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #e3c300;
+}
+  </style>
+
+
 {% endblock %}
 {% block script %}
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -40,8 +52,8 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-          <li class="active">Oda Tablosu</li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Zimmet</li>
           <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
       </ol>
 

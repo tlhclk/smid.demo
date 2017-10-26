@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,15 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Smart Dorms | {{ title }}</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css">
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.css' %}">
   <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
-  <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
 
+  <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
 {% block css %}
 {% endblock %}
 {# java script imports #}
@@ -53,7 +52,7 @@
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/profile_pic/{{ request.user.id }}.jpg" class="img-circle" alt="User Image">
+                <img src="http://127.0.0.1:8000/media/{{ request.user.profile_image }}" class="img-circle" alt="User Image">
                 <p>
                   {{ request.user.name }} {{ request.user.last_name }}
                 </p>
@@ -107,8 +106,8 @@
           <ul class="treeview-menu">
             <li><a href="http://127.0.0.1:8000/account_panel/account_table/"><i class="fa fa-circle-o"></i>Kasa</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Borçlar</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/bill_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/bill_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
               <li><a href="http://127.0.0.1:8000/report_panel/money_flow/"><i class="fa fa-circle-o"></i>Muhasebe Grafik</a></li>
               <li><a href="http://127.0.0.1:8000/report_panel/monthly_flow/"><i class="fa fa-circle-o"></i>Aylık Para Akışı</a></li>
               <li><a href="http://127.0.0.1:8000/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Hesap Miktarı</a></li>
@@ -165,7 +164,7 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="http://127.0.0.1:8000/report_panel/capacity/"><i class="fa fa-circle-o"></i>Kontenjan Grafiği</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/room_plan/"><i class="fa fa-circle-o"></i>Oda</a></li>
+              <li><a href="http://127.0.0.1:8000/report_panel/room_plan/"><i class="fa fa-circle-o"></i>Odalar</a></li>
 
 
 

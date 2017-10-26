@@ -1,14 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create xml file for EGM</title>
-</head>
-<body>
+{% extends  "base.html" %}
+{% load static %}
+{% block css %}
+          <style type="text/css">
+
+.panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #ffb733;
+}
+  </style>
+{% endblock %}
+
+{% block content %}
+<section>
+<ol class="breadcrumb">
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">EGM Dosyası Oluşturma</li>
+      </ol>
+
+    </section>
+
 <h1> Create xml file for EGM</h1>
 <form class="post-form" method="post">{% csrf_token %}
     <table><thead><tr>
-        <th></th><th>Student ID</th><th>Student Name</th><th>Student TCN</th><th>Student Phone</th><th>Student Email</th>
+        <th></th><th>Öğrenci No</th><th>Öğrencinin İsmi</th><th>TC KİMLİK NO</th><th>Öğrencinin Telefonu</th><th>Öğrencinin Mail Adresi</th>
     </tr></thead><tbody>
         {% for student in student_list %}
         <tr><td><input type="checkbox" name="sstudent_list" id="id_sstudent_list_{{ student.id }}" value={{ student }}></td><td>
@@ -21,5 +38,4 @@
 </form>
 
 
-</body>
-</html>
+{% endblock %}

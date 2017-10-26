@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from . import views
+from . import views,apps
 
 app_name='operation_panel'
 urlpatterns = [
@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^leave_table/',views.table_student_leave,name='Permission Assign Table'),
     url(r'^mail_send/(?P<person_mail>\w+@\w+\.com)*',views.send_a_mail,name='Send Collective Mesaj'),
     url(r'^change_position/(?P<student_id>[0-9]+)',views.change_student_position,name='change student position'),
-    url(r'^create_egm_xml/',views.create_egm_xml,name='Create EGM Xml'),
+    url(r'^create_egm_xml/',apps.create_adress_info,name='Create EGM Xml'),
 
 ]

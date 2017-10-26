@@ -43,3 +43,31 @@ class AttendanceInfoModel(models.Model):
             return 'İçeri Girdi'
         else:
             return 'Dışarı Çıktı'
+
+class CityInfoModel(models.Model):
+    city_name = models.CharField(max_length=50, blank=False)
+    city_slug = models.CharField(max_length=50, blank=False)
+    class Meta:
+        db_table='adres_city'
+
+class TownInfoModel(models.Model):
+    city = models.ForeignKey(CityInfoModel)
+    town_name = models.CharField(max_length=50, blank=False)
+    town_slug = models.CharField(max_length=50, blank=False)
+    class Meta:
+        db_table='adres_town'
+
+class NeighborhoodInfoModel(models.Model):
+    town = models.ForeignKey(TownInfoModel)
+    neighborhood_name = models.CharField(max_length=100, blank=False)
+    neighborhood_slug = models.CharField(max_length=100, blank=False)
+    class Meta:
+        db_table='adres_neigh'
+
+class PostalCodeInfoModel(models.Model):
+    neighborhood = models.ForeignKey(NeighborhoodInfoModel)
+    pk_name = models.CharField(max_length=100, blank=False)
+    pk_slug = models.CharField(max_length=100, blank=False)
+    postal_code = models.CharField(max_length=30, blank=False)
+    class Meta:
+        db_table='adres_postal'

@@ -12,7 +12,6 @@ class RoomInfoModel(models.Model):
     people=models.CharField(max_length=2,choices=room_people_list)
     type=models.CharField(max_length=20,choices=room_type_list)
     desc=models.CharField(max_length=100,blank=True,null=True)
-    image_field=models.ImageField(upload_to='room_image/',default='')
     company_id = models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
@@ -30,8 +29,18 @@ class RoomInfoModel(models.Model):
     def type_name(self):
         return self.room_type_list[int(self.type)-1][1]
 
-    def check_image(self):
-        print (self.image_field.path)
+
+    def people_list(self):
+        from person_panel.models import StudentInfoModel
+        return [person for person in StudentInfoModel.objects.filter(room_id=self.id)]
+
+    def situation(self):
+        if int(self.people)==0:
+            return 'pasif'
+        elif int(self.people)-len(self.people_list())==0:
+            return 'dolu'
+        else:
+            return 'bos'
 
 class FixtureInfoModel(models.Model):
     fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),

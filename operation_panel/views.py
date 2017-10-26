@@ -24,7 +24,7 @@ def add_student_leave(request):
 def table_student_leave(request):
     if request.user.has_perm('operation_panel.add_studentleavemodel'):
         leave_list=StudentLeaveModel.objects.filter(company_id=request.user.company_id)
-        return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'İzin Tablosu'})
+        return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'Öğrenci'})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 
@@ -44,7 +44,7 @@ def add_attendance(request):
 def table_attendance(request):
     if request.user.has_perm('person_panel.delete_studentinfomodel'):
         record_list=AttendanceInfoModel.objects.filter(company_id=request.user.company_id)
-        return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list,'title':'Attendance Table'})
+        return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list,'title':'Öğrenci'})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 
@@ -59,7 +59,7 @@ def send_a_mail(request,person_mail):
             formmail=MailSendForm(initial={'people_manual':person_mail},user=request.user)
         else:
             formmail=MailSendForm(user=request.user)
-        return render(request,'operation_panel/send_mail.html',{'form':formmail,'title':'Mail Gönder'})
+        return render(request,'operation_panel/send_mail.html',{'form':formmail,'title':'Öğrenci'})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
 

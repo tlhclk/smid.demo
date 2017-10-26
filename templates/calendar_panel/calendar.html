@@ -4,6 +4,16 @@
   <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.min.css' %}">
   <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.print.css' %}" media="print">
   <link rel="stylesheet" href="{% static 'main_theme/css/skins/_all-skins.min.css' %}">
+      <style type="text/css">
+
+  .panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #FFE495;
+}
+  </style>
 {% endblock %}
 {% block content %}
     <section>
@@ -19,17 +29,21 @@
         <div class="col-md-3">
           <div class="box box-solid">
             <div class="box-header with-border">
-              <h4 class="box-title">Yakındaki Doğum Günleri</h4>
+              <h4 class="box-title">Doğum Günleri</h4>
             </div>
             <div class="box-body">
               <div id="external-events">
 
-                <div class="external-event bg-green">Öğle Yemeği</div>
+                <div class="external-event bg-green" id="div1">Öğle Yemeği</div>
+                <div class="external-event bg-yellow" id="div2">Eve git</div>
+                <div class="external-event bg-aqua">Ödev yap</div>
+                <div class="checkbox">
 
                 </div>
               </div>
             </div>
           </div>
+        </div>
         <div class="col-md-9">
           <div class="box box-primary">
             <div class="box-body no-padding">
@@ -45,52 +59,78 @@
 <script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
 <script src="{% static 'main_theme/js/demo.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script type="text/javascript" src="http://d3js.org/d3.v4.js" charset="utf-8"></script>
 <script src="{% static 'plugins/fullcalendar/fullcalendar.min.js' %}"></script>
-<script>
-  $(function () {
+<script type="text/javascript">
+  function asd () {
       var new_data=JSON.parse('{{ birthday_json }}'.replace(/&quot;/g,'"'));
-      console.log(new_data);
+      var color_list=['rgba(255,0,0,0.6)','rgba(0,255,0,0.6)','rgba(0,0,255,0.6)','rgba(255,255,0,0.6)','rgba(255,0,255,0.6)', 'rgba(0,255,255,0.6)','rgba(192,192,192,0.6)','rgba(255,127,0.6)','rgba(255,0,127,0.6)','rgba(127,255,0,0.6)'];
+      var new_dataset=[];
+      for (i in new_data){
+        var dict0={};
+        dict0['title']=new_data[i][0];
+        dict0['start']=new_data[i][1];
+        dict0['end']=new_data[i][2];
+        dict0['allDay']=new_data[i][3];
+        dict0['backgroundColor']=color_list[i];
+        dict0['borderColor']=color_list[i];
+        new_dataset.push(dict0);
+
+      };
+
+    console.log(new_dataset);
     var date = new Date();
     var d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear();
     $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
+      header    : {
+        left  : 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right : 'month,agendaWeek,agendaDay'
       },
       buttonText: {
         today: 'today',
         month: 'month',
-        week: 'week',
-        day: 'day'
+        week : 'week',
+        day  : 'day'
       },
+      //Random default events
+      events    :[
+        {
+          title          : 'All Day Event',
+          start          : new Date(y, m, 1),
+          backgroundColor: '#f56954', //red
+          borderColor    : '#f56954' //red
+        }],
+      editable  : true,
+      droppable : true, // this allows things to be dropped onto the calendar !!!
+      drop      : function (date, allDay) { // this function is called when something is dropped
 
-      events:new_data
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject')
 
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject)
+
+        // assign it the date that was reported
+        copiedEventObject.start           = date
+        copiedEventObject.allDay          = allDay
+        copiedEventObject.backgroundColor = $(this).css('background-color')
+        copiedEventObject.borderColor     = $(this).css('border-color')
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove()
+        }
+
+      }
     });
-    var element=document.getElementById('external-events');
-    var all_events='';
-    Date.prototype.addDays = function(days) {
-    var dat = new Date(this.valueOf());
-      dat.setDate(dat.getDate() + days);
-    return dat;
-        };
-    for (event in new_data){
-        var y_m_d=new_data[event].start.split('-');
-        var date1=new Date(y_m_d);
-        var date2=date.addDays(30);
-        if (date2>date1) {
-            if (date1>date){
-            all_events += '<div class="external-event bg-green"><span>' + new_data[event].title +'</span><span class="pull-right">'+date1.getDate() +'-'+ String(Number(date1.getMonth())+1) +'</span></div>'
-        }}
-    }
-
-      element.innerHTML=all_events
-});
-
-
+}
+window.onload=asd()
 </script>
 {% endblock %}

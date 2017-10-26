@@ -34,6 +34,19 @@ class TransactionInfoForm(forms.ModelForm):
             print (amount)
         else:
             self.add_error('amount','Yanlış Miktar')
+        print (self.cleaned_data.get('type'))
+        desc=self.cleaned_data.get('desc')
+        if self.cleaned_data.get('type')=='7':
+            if re.search('1701\w{3}',desc):
+                asset=PersonAssetInfoModel.objects.filter(person=re.search('1701\w{3}',desc).group())[0]
+                total=float(asset.debt)+float(asset.amount)
+                period=int(asset.period)
+                rest=float(amount)%(total/period)
+                if rest!=0.0:
+                    self.add_error('amount','Lütfen Kişiye Belirlenmiş Taksit Miktarını Giriniz (%s)'%str(total/period))
+
+            else:
+                self.add_error('desc','Öğrenci Numarasını Açıklamayı Yazınız!')
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
@@ -98,7 +111,7 @@ class AccountInfoForm(forms.ModelForm):
     name=forms.CharField(max_length=20,label='Hesap Adı')
     type=forms.ChoiceField(choices=AccountInfoModel.account_type_list,label='Hesap Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     amount=forms.CharField(max_length=10,label='Hesap Miktarı')
-    desc=forms.CharField(max_length=100,label='Hesap Açıklaması',required=False,empty_value=True)
+    desc=forms.CharField(max_length=100,label='Hesap Aciklamasi',required=False)
     bank_code=forms.ChoiceField(choices=AccountInfoModel.bank_code_list,label='Banka Şubesi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:

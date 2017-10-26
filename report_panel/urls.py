@@ -8,9 +8,8 @@ urlpatterns = [
     url(r'^room_plan/',views.room_plan,name='Room Plan'),
     url(r'^contact_table/',views.contact_table,name='Contact Table'),
     url(r'^payment_info/',views.unpaid_rate,name='Ödeme Bilgileri'),
-    url(r'^money_flow/(?P<account_no>[0-9]*)',views.money_flow,name='Para Akışı'),
-    url(r'^account_amount/',views.account_amount,name='Hesap Miktarı'),
+    url(r'^account_amount/(?P<account_no>[0-9]*)',views.account_graphs,name='Hesap Miktarı'),
     url(r'^attendance_table/(?P<room_no>[0-9]*)-(?P<student_id>[0-9]*)',views.student_attendance,name='Yoklama Tablosu'),
-    url(r'^monthly_flow/',views.monthly_flow,name='Aylık Akış'),
+    url(r'^monthly_flow/(?P<month>[0-9]*)',views.monthly_flow,name='Aylık Akış'),
     url(r'^multiple_filtering/',views.filter_form,name='Filter Form')
 ]

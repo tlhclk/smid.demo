@@ -75,7 +75,7 @@ def liability_detail(request,record_no):
 def liability_table(request):
     if request.user.has_perm('document_panel.add_liabilityinfomodel'):
         liability_list=LiabilityInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'document_panel/table_liability.html',{'liability_list':liability_list,'title':'Emanet Tablosu'})
+        return render(request,'document_panel/table_liability.html',{'liability_list':liability_list,'title':'Eşya Bilgileri'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def liability_edit(request,record_no):

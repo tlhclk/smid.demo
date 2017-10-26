@@ -53,7 +53,7 @@ def add_room(request):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
         formroom=RoomInfoForm(user=request.user)
         if request.method=='POST':
-            formroom=RoomInfoForm(user=request.user,POST=request.POST,FILES=request.FILES)
+            formroom=RoomInfoForm(user=request.user,POST=request.POST)
             if formroom.is_valid():
                 formroom.save()
             return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
@@ -63,7 +63,7 @@ def add_room(request):
 def table_room(request):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
         room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'stock_panel/table_room.html',{'room_list':room_list,'title':'Oda Tablosu'})
+        return render(request,'stock_panel/table_room.html',{'room_list':room_list,'title':'Eşya Bilgileri'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def room_detail(request,room_id):
@@ -81,7 +81,7 @@ def edit_room(request,room_id):
     if request.user.has_perm('stock_panel.change_roominfomodel') and RoomInfoModel.objects.get(pk=room_id).company_id_id == request.user.company_id:
         formroom=RoomInfoForm(instance=RoomInfoModel.objects.get(pk=room_id),user=request.user)
         if request.method == "POST":
-            formroom = RoomInfoForm(request.POST,instance=RoomInfoModel.objects.get(pk=room_id))
+            formroom = RoomInfoForm(user=request.user,POST=request.POST,instance=RoomInfoModel.objects.get(pk=room_id))
             if formroom.is_valid():
                 formroom.save()
                 return redirect('http://127.0.0.1:8000/stock_panel/room_table/')

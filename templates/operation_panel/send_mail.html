@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% load static %}
+{% block css %}
+          <style type="text/css">
+
+.panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #ffb733;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-          <li class="active">Mail Gönder</li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Toplu Mail / SMS</li>
       </ol>
 
     </section>

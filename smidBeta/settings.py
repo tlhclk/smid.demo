@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1d^alrv3cj4)zu#f=t-zezpl#65x)al)bc0ca2=p$&6@pdx1fc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['207.154.214.85','www.dormoni.com','127.0.0.1']
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
-    'bootstrap3',
     'person_panel',
     'document_panel',
     'user_panel',

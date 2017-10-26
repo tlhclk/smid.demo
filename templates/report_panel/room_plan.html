@@ -1,39 +1,154 @@
 {%  extends 'base.html' %}
-{% load static %}
 {% block content %}
+<script src="https://s3.amazonaws.com/filter.js/filter.js"></script>
+
 
 <section>
     <ol class="breadcrumb">
         <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-          <li class="active">Oda Planları</li>
+          <li class="active">Odalar</li>
+        <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/report_panel/oda_ekle">Oda Ekle</a></li>
+
       </ol>
     </section>
-{% for room_list in room_list_four %}
+
+<div class="body"><div class="body-header">
+
+    <div class="selector">
+        <form name="selectform">
+
+      <select id="floorfilter" name="floorfilter" onchange="SelectChanged();" class="dropdown-toggle" data-toggle="dropdown">
+      <option value="0">Kat Seçiniz</option>
+      <option value="1">1. Kat</option>
+      <option value="2">2. Kat </option>
+      <option value="3">3. Kat</option>
+      <option value="4">4. Kat</option>
+      </select>
+        </form>
+        <div> &nbsp; </div>
+      <nav>
+    <a class="full" href="#" data-filter="#CF4232">Dolu Odalar</a>
+    <a class= "empty" href="#" data-filter="#FAC023">Bos Odalar</a>
+    <a class= "unused" href="#" data-filter="#068675">Kullanılmayan Odalar</a>
+      </nav>
+
+    </div>
+</div>
+<div class="body-content">
+  <section id="filter">
+<div class="container">
+    <br>
+    <div class="panel-group">
+
     <div class="row">
       <div class="col-lg-12">
         {% for room in room_list %}
-      <div class="col-md-3">
-        <div class="well">
-            <div class="header"> <h4 class="text-danger">Oda numarası: <a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></h4></div>
-            <div class="body">
-    {% for student in student_list %}
-        {% if room.no == student.room_id.no %}
-          <h4 class="text-danger"><span class="label label-danger"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.tcn_id }} - {{ student.full_name }}</a></span></h4>
+      <div class="col-lg-2">
+      {% if room.situation == 'dolu' %}
+        <div class="panel panel-block" style="background: #CF4232" data-filter-tags="#CF4232" >
+          {% elif room.situation == 'bos' %}
+          <div class="panel panel-block" style="background: #FAC023" data-filter-tags="#FAC023" >
+          {% else %}
+        <div class="panel panel-block" style="background: #068675" data-filter-tags="#068675" >
         {% endif %}
-        {% endfor %}
-                </div>
-
+                <div class="panel-heading"><b><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+            {% for student in room.people_list %}
+                    <div class="panel-footer"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.tcn_id }} - {{ student.full_name }}</a></div>
+            {% endfor %}
         </div>
       </div>
         {% endfor %}
-      </div></div>
-    {% endfor %}
+      </div>
+
+    </div><br>
+    </div>
+        </div></div></div>
+          </section></div>
+
+
+<br>  <br>
+
+      </div>
+
+
+<script type="text/javascript">
+  $('#filter').filter();
+  function SelectChanged()  {
+      var svalue=document.selectform.floorfilter.value;
+      var all_elements=document.getElementsByClassName('col-lg-2');
+      var x;
+      for (x in all_elements){
+          room_no=all_elements[x].getElementsByClassName('panel-heading')[0].innerText;
+          if (svalue === "0"){
+              all_elements[x].style.display="inline";
+          }
+          else {
+          if (svalue === room_no[0]) {
+              all_elements[x].style.display="inline";
+          }
+          else{
+              all_elements[x].style.display="none";
+          }
+      }}
+
+ }
+
+
+</script>
+
+
+
+
+<style type="text/css">
+.panel-heading {
+  font-family: sans-serif;
+  text-align: center;
+}
+.selector {
+  font-family: sans-serif;
+  text-align: center;
+}
+.full {
+  background: #CF4232;
+
+}
+.empty {
+  background: #FAC023;
+
+}
+.unused {
+  background: #068675;
+
+}
+nav {
+  background: #6B202E;
+  padding: 10px 0;
+  margin: 0 0 20px;
+}
+nav a {
+  background: #ccc;
+  padding: 5px;
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+}
+nav a.selected {
+  background: white;
+}
+.block {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  display: inline-block;
+}
+
+  .panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #f2dede;
+}
+  </style>
 
 {% endblock %}
-
-
-
-
-
-
-

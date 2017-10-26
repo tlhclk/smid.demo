@@ -34,7 +34,7 @@ def detail_student(request,student_id):
 def table_student(request):
     if request.user.has_perm('person_panel.add_studentinfomodel'):
         student_list=StudentInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return  render(request, 'person_panel/table_student.html',{'student_list':student_list, 'title': 'Öğrenci Tablosu'})
+        return  render(request, 'person_panel/table_student.html',{'student_list':student_list, 'title': 'Öğrenci'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_student(request,student_id):
@@ -104,7 +104,7 @@ def detail_parent(request,parent_id):
 def table_parent(request):
     if request.user.has_perm('person_panel.add_parentinfomodel'):
         parent_list=ParentInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request, 'person_panel/table_parent.html', {'parent_list':parent_list, 'title':'Veli Tablosu'})
+        return render(request, 'person_panel/table_parent.html', {'parent_list':parent_list, 'title':'Öğrenci'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_parent(request,parent_id):
@@ -148,7 +148,7 @@ def detail_personal(request,personal_id):
 def table_personal(request):
     if request.user.has_perm('person_panel.add_personalinfomodel'):
         personal_list=PersonalInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request, 'person_panel/table_personal.html', {'personal_list':personal_list, 'title':'Personel Tablosu'})
+        return render(request, 'person_panel/table_personal.html', {'personal_list':personal_list, 'title':'Personel'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_personal(request,personal_id):

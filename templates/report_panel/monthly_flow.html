@@ -4,7 +4,7 @@
 
     <section>
     <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:80000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Kontenjan Grafiği</li>
       </ol>
     </section>
@@ -22,9 +22,6 @@
         </div>
         <div class="col-md-2">
           <ul class="chart-legend clearfix">
-              {% for data in transaction_data %}
-                  <li><label for="id_checkbox_{{ data.2 }}" style="color: {{ data.0 }}"><input type="checkbox" class="minimal" id="id_checkbox_{{ data.2 }}" style="color: {{ data.0 }}" disabled checked>   {{ data.1 }}</label></li>
-              {% endfor %}
           </ul>
         </div>
     </div></div></div></section>
@@ -33,6 +30,17 @@
     <link rel="stylesheet" href="{% static 'main_theme/css/skins/_all-skins.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+      <style type="text/css">
+
+  .panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #cddc39;
+}
+  </style>
+
 {% endblock %}
 {% block script %}
 
@@ -47,14 +55,30 @@
     //-------------
     //- PIE CHART -
     //-------------
-      var element=document.getElementsByClassName('chart-legend clearfix');
-      var new_data=JSON.parse('{{ transaction_json }}'.replace(/&quot;/g,'"'));
-      console.log(new_data);
+      var elemet3=document.getElementsByClassName('chart-legend clearfix')[0];
+      var new_data3=JSON.parse('{{ transaction_json }}'.replace(/&quot;/g,'"'));
+      var new_dataset3=[];
+      for (i in new_data3){
+          var dict2={};
+          dict2['label'] = new_data3[i][0];
+          dict2['color'] = color_list[i];
+          dict2['highlight'] = color_list[i];
+          dict2['value'] = new_data3[i][1];
+          new_dataset3.push(dict2);
+          var li2=document.createElement('li');
+          var label2=document.createElement('label');
+          label2.setAttribute('for','id'+new_data3[i][0]);
+          label2.style.color=color_list[i];
+          label2.innerText=new_data3[i][0];
+          li2.appendChild(label2);
+          elemet3.appendChild(li2);
+      }
+      console.log(new_dataset3);
 
     // Get context with jQuery - using jQuery's .get() method.
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
     var pieChart       = new Chart(pieChartCanvas);
-    var PieData        = new_data;
+    var PieData        = new_dataset3;
     var pieOptions     = {
       //Boolean - Whether we should show a stroke on each segment
       segmentShowStroke    : true,
