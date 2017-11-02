@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/smid.demo.iml" filepath="$PROJECT_DIR$/.idea/smid.demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/postgreedit.iml" filepath="$PROJECT_DIR$/.idea/postgreedit.iml" />
     </modules>
   </component>
 </project>

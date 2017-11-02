@@ -10,11 +10,11 @@ class FixtureInfoForm(forms.ModelForm):
         super(FixtureInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
         self.fields['room'].queryset = RoomInfoModel.objects.filter(company_id=user.company_id)
-    no=forms.CharField(max_length=10,label='Eşya Kodu',initial=str(int(FixtureInfoModel.objects.last().no)+1))
+    no=forms.CharField(max_length=10,label='Eşya Kodu',)#initial=str(int(FixtureInfoModel.objects.last().no)+1))
     room=forms.ModelChoiceField(RoomInfoModel.objects.all(),label='Oda Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     type=forms.ChoiceField(FixtureInfoModel.fixture_type_list,label='Eşya Tipi',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     notes=forms.CharField(max_length=100,label='Eşya Notları',required=False)
-    image_field=forms.ImageField(label='Eşya Resmi',widget=forms.FileInput())
+    image_field=forms.ImageField(label='Eşya Resmi',widget=forms.FileInput(),required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=FixtureInfoModel
@@ -39,6 +39,7 @@ class FixtureInfoForm(forms.ModelForm):
                 self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
         else:
             self.add_error('image','Yüklenen dosya okunamadı')
+
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

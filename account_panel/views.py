@@ -31,7 +31,7 @@ def add_transaction(request,filter_no):
 
 def table_transaction(request,filter_no):
     if request.user.has_perm('account_panel.add_transactioninfomodel'):
-        transaction_list=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)
+        transaction_list=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)#
         if filter_no!='':
             if filter_no[:4]=='1701':
                 transaction_list = transaction_list.filter(desc__contains=filter_no)
@@ -187,6 +187,7 @@ def edit_bill(request,bill_no):
                 return redirect('http://127.0.0.1:8000/account_panel/bill_table/')
         return render(request,'account_panel/add_bill.html',{'form':formbill,'title':'Fatura Düzenleme'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
 
 def delete_bill(request,bill_no):
     if request.user.has_perm('account_panel.delete_bilinfomodel') and BillInfoModel.objects.get(pk=bill_no).company_id_id==request.user.company_id_id:

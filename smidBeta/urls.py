@@ -6,7 +6,7 @@ from .views import home_page,main_page
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^home/',home_page,name='home page'),
+    url(r'^home/',home_page,name='home'),
     url(r'^$',main_page,name='Main Page'),
     url(r'^account_panel/',include('account_panel.urls')),
     url(r'^calendar_panel/',include('calendar_panel.urls')),

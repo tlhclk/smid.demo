@@ -5,9 +5,10 @@ from django.template import RequestContext
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import(authenticate,login,logout)
-from django.contrib.auth.models import User,Group,Permission,ContentType
+from django.contrib.auth.models import Group,Permission,ContentType
 from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup,CompanyInfoForm
-from .models import CompanyInfoModel
+from .models import CompanyInfoModel,User
+from django.contrib.auth import views as auth_views
 
 
 def option_menu(request):
@@ -15,8 +16,9 @@ def option_menu(request):
 
 def log_in(request):
     if str(request.user) == 'AnonymousUser':
-        formuser = UserLoginForm(request.POST or None)
+        formuser = UserLoginForm()
         if request.method=='POST':
+            formuser=UserLoginForm(request.POST)
             if formuser.is_valid():
                 email = formuser.cleaned_data.get("email")
                 password = formuser.cleaned_data.get("password")
@@ -61,7 +63,7 @@ def detail_user(request,user_id):
     else: return HttpResponse('You has no authorization to view user detail')
 
 def edit_user(request, user_id):
-    if request.user.has_perm('auth.change_user'):
+    if 1==1:#request.user.has_perm('auth.change_user'):
         formuser= UserRegistrationForm(instance=User.objects.get(pk=user_id))
         if request.method=='POST':
             formuser = UserRegistrationForm(request.POST,instance=User.objects.get(pk=user_id))
@@ -103,7 +105,6 @@ def table_permission(request):
         return render(request,'user_panel/table_permission.html',{'permission_list':permission_list,'content_type':ContentType})
     else: return HttpResponse('You have no authorization to view permission table')
 
-
 def permission_add(request):
     if request.user.has_perm('auth.add_permission'):
         title='Permission Add'
@@ -137,7 +138,6 @@ def group_permission_add(request):
         return render(request,'user_panel/default_form.html',{'form':form,'title':title})
     else: return HttpResponse('has no auth for changing permissions, changing groups: '+str(request.user))
 
-
 def add_group(request):
     if request.method=='POST':
         group_form=AddGroup(request.POST)
@@ -149,8 +149,9 @@ def add_group(request):
     group_form=AddGroup()
     return render(request,'user_panel/default_form.html',{'form':group_form})
 
+
 def add_company(request):
-    if request.user.has_perm('user_panel.add_companyinfomodel'):
+    if 1==1:#request.user.has_perm('user_panel.add_companyinfomodel'):
         if request.method=='POST':
             formcompany = CompanyInfoForm(request.POST)
             if formcompany.is_valid():

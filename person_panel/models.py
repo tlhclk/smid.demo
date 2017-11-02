@@ -83,6 +83,7 @@ class PersonalInfoModel(models.Model):
     health_notes = models.CharField(max_length=200, null=True,blank=True)
     special_notes = models.CharField(max_length=200, null=True,blank=True)
     image_field = models.ImageField(upload_to='profile_pic/',default='')
+    salary=models.CharField(max_length=7,default='2000.0')
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:

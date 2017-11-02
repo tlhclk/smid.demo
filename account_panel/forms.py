@@ -4,6 +4,7 @@ from django import forms
 from .models import TransactionInfoModel,PersonAssetInfoModel,AccountInfoModel,BillInfoModel
 from person_panel.models import StudentInfoModel
 from user_panel.models import CompanyInfoModel
+import re
 
 class TransactionInfoForm(forms.ModelForm):
     def __init__(self, user,POST=None,*args, **kwargs):
@@ -60,9 +61,9 @@ class PersonAssetInfoForm(forms.ModelForm):
         self.user=user
         self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
 
-    id=forms.CharField(max_length=10,label='Ödeme Planı ID',initial=str(int(PersonAssetInfoModel.objects.all().order_by('-id')[0].id)+1))
+    id=forms.CharField(max_length=10,label='Ödeme Planı ID')#,initial=str(int(PersonAssetInfoModel.objects.all().order_by('-id')[0].id)+1))
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci No',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    #amount=forms.CharField(max_length=5,label='Ödenen Miktar')
+    amount=forms.CharField(max_length=5,label='Ödenen Miktar')
     debt=forms.CharField(max_length=5,label='Ödenecek Miktar')
     period=forms.CharField(max_length=2,label='Taksit Miktarı')
     type=forms.ChoiceField(choices=PersonAssetInfoModel.asset_type_list,label='Ödeme Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
@@ -141,7 +142,8 @@ class BillInfoForm(forms.ModelForm):
         # user is a required parameter for this form.
         super(BillInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
-        #self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
+
     type=forms.ChoiceField(choices=BillInfoModel.bill_type_list,label='Fatura Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     code=forms.CharField(max_length=10,label='Fatura Kodu')
     amount=forms.CharField(max_length=10,label='Fatura Miktarı')

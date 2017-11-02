@@ -78,7 +78,7 @@ class BillInfoModel(models.Model):
         return self.bill_type_list[int(self.type)-1][1]
 
 class TransactionInfoModel(models.Model):
-    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi')]
+    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi'),('8','Maaş')]
     account_no=models.ForeignKey(AccountInfoModel)
     type = models.CharField(max_length=10, choices=transaction_type_list, default='1')
     amount = models.CharField(max_length=10,default='')

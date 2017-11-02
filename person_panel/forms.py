@@ -15,7 +15,7 @@ class ParentInfoForm(forms.ModelForm):
         super(ParentInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
         self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
-    id=forms.CharField(max_length=8,label='Veli IDsi',initial=str(int(ParentInfoModel.objects.all().last().id)+1))
+    id=forms.CharField(max_length=8,label='Veli IDsi',)#initial=str(int(ParentInfoModel.objects.all().last().id)+1))
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     name=forms.CharField(max_length=20,label='Ad')
     last_name=forms.CharField(max_length=20,label='Soyad')
@@ -60,10 +60,11 @@ class PersonalInfoForm(forms.ModelForm):
         super(PersonalInfoForm, self).__init__(POST,FILES,*args, **kwargs)
         self.user=user
         self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
-    id=forms.CharField(max_length=10,label='Personel IDsi',initial=str(int(PersonalInfoModel.objects.all().last().id)+1))
+    id=forms.CharField(max_length=10,label='Personel IDsi',)#initial=str(int(PersonalInfoModel.objects.all().last().id)+1))
     tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
     email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
+    salary=forms.CharField(label='Maaş')
     start_day=forms.DateField(label='İşe Başlama Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
     end_day=forms.DateField(label='İşten Ayrılma Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today(),required=False)
     city=forms.ChoiceField(PROVINCE_CHOICES,label='İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
@@ -81,6 +82,7 @@ class PersonalInfoForm(forms.ModelForm):
                 'tcn',
                 'phone',
                 'email',
+                'salary',
                 'start_day',
                 'end_day',
                 'city',
@@ -93,6 +95,11 @@ class PersonalInfoForm(forms.ModelForm):
                 'company_id',
                 )
     def clean(self):
+        salary=self.cleaned_data.get('amount')
+        if 0.0<float(salary)<10000.00:
+            pass
+        else:
+            self.add_error('salary','Yanlış Miktar')
         image = self.cleaned_data.get('image')
         print (image)
         if image:
@@ -180,7 +187,7 @@ class StudentInfoForm(forms.ModelForm):
         self.user=user
         self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
         self.fields['room_id'].queryset = RoomInfoModel.objects.filter(company_id=user.company_id)
-    id=forms.CharField(max_length=7,label='Öğrenci IDsi',initial=str(int(StudentInfoModel.objects.all().last().id)+1))
+    id=forms.CharField(max_length=7,label='Öğrenci IDsi',)#initial=str(int(StudentInfoModel.objects.all().last().id)+1))
     position=forms.BooleanField(widget=forms.NullBooleanSelect(),label='Öğrencinin Pozisyonu')
     tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())

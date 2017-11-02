@@ -46,11 +46,14 @@ class FixtureInfoModel(models.Model):
     fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
                          ('6', 'Tül'), ('7', 'Perde'), ('8', 'Masa'), ('9', 'Sandalye'), ('10', 'Askılık'),
                          ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna')]
+    fixture_image_list=[('1', 'Baza.jpg'), ('2', 'Yatak.jpg'), ('3', 'Dolap.jpg'), ('4', 'Halı.jpg'), ('5', 'Komodin.jpg'),
+                         ('6', 'Tül.jpg'), ('7', 'Perde.jpg'), ('8', 'Masa.jpg'), ('9', 'Sandalye.jpg'), ('10', 'Askılık.jpg'),
+                         ('11', 'Kitaplık.jpg'), ('12', 'Lamba.jpg'), ('13', 'Klima.jpg'), ('14', 'Ayna.jpg')]
     no = models.CharField(max_length=10,primary_key=True)
     room=models.ForeignKey(RoomInfoModel,unique=False,default='')
     type=models.CharField(max_length=20,choices=fixture_type_list)
     notes=models.CharField(max_length=100,blank=True,null=True)
-    image_field = models.ImageField(upload_to='fixture_image/',default='')
+    image_field = models.ImageField(upload_to='fixture_image/',blank=True,null=True)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
@@ -61,5 +64,8 @@ class FixtureInfoModel(models.Model):
 
     def type_name(self):
         return self.fixture_type_list[int(self.type)-1][1]
+
+    def image_path(self):
+        return self.image_field.path
 
 

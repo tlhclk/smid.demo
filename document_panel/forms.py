@@ -14,7 +14,7 @@ class DocumentInfoForm(forms.ModelForm):
         self.user=user
         self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
 
-    id=forms.CharField(max_length=10,label='Dosya Numarası',initial=str(int(DocumentInfoModel.objects.last().id)+1))
+    id=forms.CharField(max_length=10,label='Dosya Numarası',)#initial=str(int(DocumentInfoModel.objects.last().id)+1))
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     type=forms.ChoiceField(DocumentInfoModel.document_type_list,label='Dosya Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     desc=forms.CharField(max_length=100,label='Dosya Açıklaması',required=False)

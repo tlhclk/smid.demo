@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+    <br>
+    <table><thead><th>Personel Adı</th><th>1. Ay</th><th>2. Ay</th><th>3. Ay</th><th>4. Ay</th><th>5. Ay</th><th>6. Ay</th><th>7.Ay</th><th>8. Ay</th><th>9. Ay</th><th>10. Ay</th><th>11. Ay</th><th>12. Ay</th></thead><tbody>
+    {% for person,list in yearly_salary_dict.items %}
+        <tr><td>{{ person.full_name }}</td>
+            {% for month in list %}
+                <td>{{ month }}</td>
+
+            {% endfor %}</tr>
+    {% endfor %}
+    </tbody></table>
+{% endblock %}

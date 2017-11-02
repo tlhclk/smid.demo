@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import StudentLeaveModel,AttendanceInfoModel,StudentInfoModel
+from .models import StudentLeaveModel,AttendanceInfoModel,StudentInfoModel,PersonalInfoModel,VacationInfoModel
 from django.core.validators import validate_email
 from django.core import mail
 from user_panel.models import CompanyInfoModel
@@ -37,6 +37,7 @@ class StudentLeaveForm(forms.ModelForm):
                         self.add_error('start','Girdiğiniz Tarih Aralığında Öğrenci İzinli Gözüküyor')
                     if startd<=row.end<=endd:
                         self.add_error('end','GirdiğinizTarih Aralığında Öğrenci İzinli Gözüküyor')
+
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
@@ -103,15 +104,47 @@ class MailSendForm(forms.Form):
         selected_people = self.cleaned_data['people_selection']
         written_people = self.cleaned_data['people_manual'].split(', ')
         print (subject,message)
-        print (selected_people,written_people)
+        print (selected_people.email,written_people)
         if selected_people and not written_people:
             to_ma=selected_people
         elif written_people and not selected_people:
             to_ma=written_people
         else:
-            to_ma = selected_people + written_people
-        mail.send_mail(subject, message, self.user.email, to_ma)
+            to_ma = [selected_people.email] + written_people
+        mail.send_mail(subject, message,'tlhclk1312@windowslive.com',['tlhclk1312@gmail.com'])
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
+class VacationInfoForm(forms.ModelForm):
+    def __init__(self, user,POST=None,*args, **kwargs):
+        # user is a required parameter for this form.
+        super(VacationInfoForm, self).__init__(POST,*args, **kwargs)
+        self.user=user
+        self.fields['person'].queryset =PersonalInfoModel.objects.filter(company_id=user.company_id)
+
+    start_day=forms.DateField(label='İzin Başlangıç Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
+    end_day=forms.DateField(label='İzin Bitiş Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
+    person=forms.ModelChoiceField(PersonalInfoModel.objects.all(),label='Personel Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    reason=forms.CharField(max_length=50,label='İzin Sebebi')
+    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
+    class Meta:
+        model=VacationInfoModel
+        fields=['person','start_day','end_day','reason','company_id']
+
+    def clean(self):
+        startd = self.cleaned_data.get('start_day')
+        endd = self.cleaned_data.get('end_day')
+        if startd and endd:
+            if endd < startd:
+                self.add_error('end', 'Lütfen Geçerli Bir Tarih Giriniz')
+            for row in StudentLeaveModel.objects.all():
+                if row.start and row.end:
+                    if startd <= row.start <= endd:
+                        self.add_error('start', 'Girdiğiniz Tarih Aralığında Öğrenci İzinli Gözüküyor')
+                    if startd <= row.end <= endd:
+                        self.add_error('end', 'GirdiğinizTarih Aralığında Öğrenci İzinli Gözüküyor')
+
+    def clean_company_id(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

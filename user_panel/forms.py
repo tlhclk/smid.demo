@@ -3,26 +3,13 @@ from django import forms
 from django.contrib.auth.models import User,Group,Permission,ContentType
 from django.contrib.auth import (authenticate, get_user_model, password_validation)
 from .models import CompanyInfoModel,UserCompanyModel
+import datetime
 
 UserModel=get_user_model()
 
-class UserLoginForm(forms.Form):
-    email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    def clean(self, *args, **kwargs):
-        email = self.cleaned_data.get("email")
-        password = self.cleaned_data.get("password")
-        if email and password:
-            user = authenticate(email=email, password=password)
-            if not user:
-                raise forms.ValidationError("Boyle bir kullanici yok")
-            if not user.check_password(password):
-                raise forms.ValidationError("Sifre yanlis veya eksik")
-            return super(UserLoginForm, self).clean()
 
 class UserRegistrationForm(forms.ModelForm):
-    email = forms.EmailField(label='Email Adresi')
+    email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
     password = forms.CharField(widget=forms.PasswordInput, label='Password',strip=False)
     password2 = forms.CharField(widget=forms.PasswordInput, label='Password Confirmation',strip=False)
 
@@ -36,17 +23,47 @@ class UserRegistrationForm(forms.ModelForm):
             'password2',
             'phone',
             'profile_image',
+            'company_id'
         ]
 
-    def clean_password2(self):
+    def clean(self):
         password = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password and password2 and password != password2:
-            raise forms.ValidationError("The two password fields didn't match.",code='password_mismatch',)
+            self.add_error('password2',"The two password fields didn't match.")
         self.instance.email = self.cleaned_data.get('email')
         password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
         return password2
 
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self, *args, **kwargs):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        if email and password:
+            user = authenticate(email=email, password=password)
+            if not user:
+                self.add_error('email',"Boyle bir kullanici yok ya da şifre hatalı")
+                self.add_error('password','Boyle bir kullanici yok ya da şifre hatalı')
+            return super(UserLoginForm, self).clean()
+        date_ex=UserRegistrationForm.objects.filter(email=email)
+        if date_ex:
+            if datetime.datetime.today()<date_ex:
+                self.add_error('email','Kullandığınız Mail Adresinin Kullanım Süresi Dolmuştur. Lütfen Üyeliğinizi Güncelleyiniz.')
+
+class ForgotPass(forms.Form):
+    email=forms.EmailField(label='E-Posta',widget=forms.EmailInput())
+    class Meta:
+        fields=['email']
+
+    def clean(self):
+        email=self.cleaned_data.get('email')
+        if email in User.objects.all():
+            pass
+        else:
+            self.add_error('Yanlış E-Posta Adresi Girdiniz')
 
 class PermissionForm(forms.ModelForm):
     content_list = []

@@ -7,7 +7,7 @@ from account_panel.models import AccountInfoModel,PersonAssetInfoModel,Transacti
 from user_panel.models import CompanyInfoModel,UserCompanyModel
 from .forms import FilterAccountForm
 import json
-import datetime,re
+import datetime,re,pytz
 
 
 def student_attendance(request,room_id,student_id):
@@ -122,7 +122,7 @@ def account_graphs(request,account_no):
                 at_dit[account.name].append(at_dit[account.name][-1]+month)
         account_info=json.dumps(list(at_dit.items()))
         ##monthly_flow
-        return render(request,'report_panel/account_graph.html',{'title':'Muhasebe Grafikleri','account_info':account_info,'monthly_sum':monthly_sum},)
+        return render(request,'report_panel/account_graph.html',{'title':'Muhasebe','account_info':account_info,'monthly_sum':monthly_sum},)
     else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def monthly_flow(request,month):
@@ -191,3 +191,19 @@ def filter_form(request):#TODO: sonuç gösterilmiyor tekrar düzenlenecek
     # deposito miktarı
     #transaction_sum3=sum([float(transaction.transaction_amount) for transaction in TransactionInfoModel.objects.filter(transaction_time__month=month,)])
 
+def salary_table(request):
+    all_personal=PersonalInfoModel.objects.filter(company_id=request.user.company_id_id)
+    all_transactions=TransactionInfoModel.objects.filter(company_id=request.user.company_id_id)
+    yearly_salary_dict={}
+    for person in all_personal:
+        yearly_salary_dict.setdefault(person,['' for a in range(12)])
+        transaction_list=all_transactions.filter(desc__contains=person.id,type='8')
+        now=datetime.datetime.now()
+        for index,tra in enumerate(transaction_list):
+            now=now.replace(tzinfo=pytz.UTC)
+            dif=now-tra.time
+            if dif<datetime.timedelta(days=365.0,):
+                yearly_salary_dict[person][-dif.days//30]=tra.amount
+            else:
+                break
+    return render(request,'report_panel/salary_table.html',{'title':'Maaş Tablosu','yearly_salary_dict':yearly_salary_dict})

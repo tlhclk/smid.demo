@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1d^alrv3cj4)zu#f=t-zezpl#65x)al)bc0ca2=p$&6@pdx1fc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['207.154.214.85','www.dormoni.com','127.0.0.1']
+ALLOWED_HOSTS = ['46.101.120.8','dormoni.com','127.0.0.1','www.dormoni.com']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_mailbox',
     'localflavor',
     'phonenumber_field',
+    'psycopg2',
 ]
 
 
@@ -87,8 +88,15 @@ WSGI_APPLICATION = 'smidBeta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE':'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        # 'ENGINE':'django.db.backends.postgresql_psycopg2',
+        # 'NAME':'smiddb',
+        # 'USER':'smiddbuser',
+        # 'PASSWORD':'123qweasd',
+        # 'HOST':'localhost',
+        # 'PORT':'',
     }
 }
 
@@ -118,13 +126,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tlhclk1312'
 EMAIL_HOST_PASSWORD = 'Tlhclk.12'
-DEFAULT_FROM_EMAIL = 'tlhclk1312@gmail.com'
+DEFAULT_FROM_EMAIL = 'tlhclk1312@windowslive.com'
 EMAIL_USE_TLS = True
 
 # Internationalization

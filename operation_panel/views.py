@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render,redirect
 from django.core.files import File
-from .models import StudentLeaveModel,AttendanceInfoModel
-from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm
+from .models import StudentLeaveModel,AttendanceInfoModel,VacationInfoModel
+from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm,VacationInfoForm
 from person_panel.models import StudentInfoModel
 import datetime
 import imaplib
@@ -126,3 +126,41 @@ def create_egm_xml(request): # TODO: Eminiyet için xml dosyası oluşturulacak
         return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list})
     else:
         return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def vacation_permission(request):
+    pass
+
+def add_vacation(request):
+    if request.user.has_perm('operation_panel.add_vacationinfomodel'):
+        formvacation = VacationInfoForm(user=request.user)
+        if request.method == "POST":
+            formvacation = VacationInfoForm(user=request.user,POST=request.POST)
+            if formvacation.is_valid():
+                formvacation.save()
+                return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
+        return render(request, 'operation_panel/add_vacation.html', {'form': formvacation,'title':'Yeni Personel Kaydı'})
+    else:
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def table_vacation(request):
+    if request.user.has_perm('operation_panel.add_vacationinfomodel'):
+        vacation_list=VacationInfoModel.objects.filter(company_id=request.user.company_id_id)
+        return render(request, 'operation_panel/table_vacation.html', {'vacation_list':vacation_list, 'title':'Personel'})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def edit_vacation(request,vacation_id):
+    if request.user.has_perm('operation_panel.change_vacationinfomodel') and VacationInfoModel.objects.get(pk=vacation_id).company_id_id==request.user.company_id_id:
+        if request.method == "POST":
+            formvacation =VacationInfoForm(user=request.user,POST=request.POST,instance=VacationInfoModel.objects.get(pk=vacation_id))
+            if formvacation.is_valid():
+                formvacation.save()
+                return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
+        formvacation = VacationInfoForm(user=request.user,instance=VacationInfoModel.objects.get(pk=vacation_id))
+        return render(request, 'operation_panel/add_vacation.html', {'form': formvacation,'title':'Yeni Personel Kaydı'})
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+
+def delete_vacation(request,vacation_id):
+    if request.user.has_perm('operation_panel.delete_vacationinfomodel') and VacationInfoModel.objects.get(pk=vacation_id).company_id_id == request.user.company_id_id:
+        VacationInfoModel.objects.get(pk=vacation_id).delete()
+        return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
