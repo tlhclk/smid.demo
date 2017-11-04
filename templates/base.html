@@ -20,11 +20,8 @@
     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'main_theme/js/app.min.js' %}"></script>
-
     {% block script %}{% endblock %}
 </head>
-
-
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -56,7 +53,6 @@
                 <img src="http://127.0.0.1:8000/media/{{ request.user.profile_image }}" class="img-circle" alt="User Image">
                 <p>
                   {{ request.user.name }} {{ request.user.last_name }}
-                    {{ request.user.groups.all.0.id }}
                 </p>
               </li>
               <!-- Menu Body -->
@@ -106,13 +102,13 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/account_panel/account_table/"><i class="fa fa-circle-o"></i>Kasa</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/account_table/"><i class= "fa fa-circle-o"></i>Kasa</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Borçlar</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/bill_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/money_flow/"><i class="fa fa-circle-o"></i>Muhasebe Grafik</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/monthly_flow/"><i class="fa fa-circle-o"></i>Aylık Para Akışı</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Hesap Miktarı</a></li>
+              <li><a href="http://127.0.0.1:8000/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Grafikler </a></li>
+
+
 
           </ul>
         </li>
@@ -140,8 +136,6 @@
               <li><a href="http://127.0.0.1:8000/operation_panel/mail_send/"><i class="fa fa-circle-o"></i>Toplu Mail / SMS </a></li>
               <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml/"><i class="fa fa-circle-o"></i>EGM Dosyası Oluşturma</a></li>
               <li><a href="http://127.0.0.1:8000/person_panel/parent_table/"><i class="fa fa-circle-o"></i>Öğrenci Veli Listesi</a></li>
-
-
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-laptop"></i> <span>Personel</span>
@@ -151,8 +145,8 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="http://127.0.0.1:8000/person_panel/personal_table/"><i class="fa fa-circle-o"></i>Personel Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/???"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
-              <li><a href="http://127.0.0.1:8000/????"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
+              <li><a href="http://127.0.0.1:8000/operation_panel/vacation_table"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
+              <li><a href="http://127.0.0.1:8000/report_panel/salary_table"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
 
 
           </ul>

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'localflavor',
     'phonenumber_field',
     'psycopg2',
+    'django_cloudflare_push'
 ]
 
 
