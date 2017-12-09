@@ -4,8 +4,8 @@ import datetime
 from user_panel.models import CompanyInfoModel
 
 class RoomInfoModel(models.Model):
-    room_people_list=[('1','Tek Kişilik'),('2','İki Kişilik'),('3','Üç Kişilik'),('4','Dört Kişilik'),('5','Beş Kişilik')]
-    room_type_list=[('1','Duşakabin'),('2','Ranzalı'),('3','Normal'),('4','Mutfaklı')]
+    room_people_list=[('1','Tek Kişilik'),('2','İki Kişilik'),('3','Üç Kişilik'),('4','Dört Kişilik'),('5','Beş Kişilik'),('6',' Altı Kişilik')]
+    room_type_list=[('1','Koridor'),('2','Çalışma Odası'),('3','Konaklama'),('4','Mutfak'),('5','Diğer')]
     id=models.CharField(max_length=10,primary_key=True)
     no=models.CharField(max_length=4,default='')
     floor=models.CharField(max_length=2,null=True,blank=True)
@@ -29,10 +29,12 @@ class RoomInfoModel(models.Model):
     def type_name(self):
         return self.room_type_list[int(self.type)-1][1]
 
-
     def people_list(self):
         from person_panel.models import StudentInfoModel
-        return [person for person in StudentInfoModel.objects.filter(room_id=self.id)]
+        return [person for person in StudentInfoModel.objects.filter(room_id_id=self.id,company_id=self.company_id_id)]
+
+    def fixture_list(self):
+        return [fixture for fixture in FixtureInfoModel.objects.filter(room_id=self.id,company_id=self.company_id_id)]
 
     def situation(self):
         if int(self.people)==0:

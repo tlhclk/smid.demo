@@ -46,10 +46,11 @@ class FixtureInfoForm(forms.ModelForm):
 
 
 class RoomInfoForm(forms.ModelForm):
-    def __init__(self, user, POST=None,FILE=None,*args, **kwargs):
+    def __init__(self, user, POST=None,*args, **kwargs):
         # user is a required parameter for this form.
-        super(RoomInfoForm, self).__init__(POST,FILE,*args, **kwargs)
+        super(RoomInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
+    id=forms.CharField(widget=forms.HiddenInput(),required=False)
     no=forms.CharField(max_length=4,label='Oda Numarası')
     floor=forms.CharField(max_length=2,label='Oda Katı',required=False)
     people=forms.ChoiceField(RoomInfoModel.room_people_list,label='Kişi Sayısı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
@@ -58,13 +59,25 @@ class RoomInfoForm(forms.ModelForm):
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=RoomInfoModel
-        fields=('no',
+        fields=('id',
+                'no',
                 'floor',
                 'people',
                 'type',
                 'desc',
                 'company_id',
                 )
+
+    def clean_id(self):
+        if self.cleaned_data.get('id'):
+            return self.cleaned_data.get('id')
+        else:
+            room_list=RoomInfoModel.objects.all()
+            if len(room_list)!=0:
+                return str(int(RoomInfoModel.objects.last().id)+1)
+            else:
+                return '1'
+
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

@@ -20,12 +20,8 @@
         </div>
         <div class="col-md-4">
           <ul class="chart-legend clearfix">
-              {% if room_no %}
-            <li><a href="http://127.0.0.1:8000/stock_panel/room/{{ room_no }}"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
-              {% else %}
-                  <li><a href="http://127.0.0.1:8000/person_panel/student_table/"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
-              {% endif %}
-            <li><a href="http://127.0.0.1:8000/report_panel/room_plan/{{ room_no }}"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ quota_number }}</a></li>
+                  <li><a href="https://dormoni.com/person_panel/student_table/"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ registred }}</a></li>
+            <li><a href="https://dormoni.com/report_panel/room_plan/"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ empty }}</a></li>
           </ul>
         </div>
             </div></div></div>
@@ -116,13 +112,13 @@
     var pieChart       = new Chart(pieChartCanvas);
     var PieData        = [
       {
-        value    : 2000,
+        value    : {{ registred }},
         color    : '#161426 ',
         highlight: '#161426 ',
         label    : 'Kayıtlı Öğrenci'
       },
       {
-        value    : 1500,
+        value    : {{ empty }},
         color    : '#F2C335   ',
         highlight: '#F2C335   ',
         label    : 'Boş Kontenjan'

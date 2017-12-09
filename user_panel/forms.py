@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth.models import User,Group,Permission,ContentType
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import Group,Permission,ContentType
 from django.contrib.auth import (authenticate, get_user_model, password_validation)
-from .models import CompanyInfoModel,UserCompanyModel
+from .models import CompanyInfoModel,UserCompanyModel,User
+from phonenumber_field.formfields import PhoneNumberField
 import datetime
 
 UserModel=get_user_model()
@@ -10,8 +12,8 @@ UserModel=get_user_model()
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
-    password = forms.CharField(widget=forms.PasswordInput, label='Password',strip=False)
-    password2 = forms.CharField(widget=forms.PasswordInput, label='Password Confirmation',strip=False)
+    password = forms.CharField(widget=forms.PasswordInput, label='Şifre',strip=False)
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Şifre Tekrar',strip=False)
 
     class Meta:
         model = UserModel
@@ -33,27 +35,77 @@ class UserRegistrationForm(forms.ModelForm):
             self.add_error('password2',"The two password fields didn't match.")
         self.instance.email = self.cleaned_data.get('email')
         password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
-        return password2
+
+
+class FreeRegisterForm(forms.Form):
+    email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
+    name = forms.CharField(label='Ad')
+    last_name= forms.CharField(label='Soyad')
+    password = forms.CharField(widget=forms.PasswordInput(), label='Şifre',strip=False)
+    password2 = forms.CharField(widget=forms.PasswordInput(), label='Şifre Tekrar',strip=False)
+    termofuse= forms.BooleanField(widget=forms.CheckboxInput(),label='<a href="https://dormoni.com/termofuse/" >Kullanım Koşullarını</a> Kabul Ediyorum')
+
+    class Meta:
+
+        fields = [
+            'email',
+            'name',
+            'last_name',
+            'password',
+            'password2',
+            'phone',
+            'termofuse',
+        ]
+
+    def clean(self):
+        password = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password and password2 and password != password2:
+            self.add_error('password2',"Şifre Uyuşmuyor")
+        self.instance.email = self.cleaned_data.get('email')
+        password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
+
+    def company_id(self):
+        id=str(int(CompanyInfoModel.objects.last().company_id)+1)
+        new_temp_comp=CompanyInfoModel(company_id=id,company_name='new_temp_%s'%id,company_vno='0')
+        new_temp_comp.save()
+        return new_temp_comp
+
+    def date_expired(self):
+        return datetime.date.today()+datetime.timedelta(days=15)
+
+    def save(self):
+        new_user=User(email=self.cleaned_data.get('email'),name=self.cleaned_data.get('name'),last_name=self.cleaned_data.get('last_name'),phone=self.cleaned_data.get('phone'),date_expired=self.date_expired(),company_id=self.compony_id())
+        new_user.set_password(self.cleaned_data.get('password'))
+        new_user.groups.add(3)
+        new_user.save()
+
+
 
 class UserLoginForm(forms.Form):
     email = forms.EmailField(label='Email Adresi',widget=forms.EmailInput())
     password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean(self, *args, **kwargs):
+    def clean(self):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
+        usr=User.objects.get(email=email)
+        if usr:
+            if datetime.datetime.today().date()>usr.date_expired:
+                if datetime.datetime.today().date()-usr.date_expired> datetime.timedelta(days=7):
+                    comp=CompanyInfoModel.objects.get(company_id=usr.company_id_id)
+                    usr.delete()
+                    comp.delete()
+
+                self.add_error('email','Kullandığınız Mail Adresinin Kullanım Süresi Dolmuştur. Lütfen Üyeliğinizi Güncelleyiniz.')
         if email and password:
             user = authenticate(email=email, password=password)
             if not user:
                 self.add_error('email',"Boyle bir kullanici yok ya da şifre hatalı")
                 self.add_error('password','Boyle bir kullanici yok ya da şifre hatalı')
             return super(UserLoginForm, self).clean()
-        date_ex=UserRegistrationForm.objects.filter(email=email)
-        if date_ex:
-            if datetime.datetime.today()<date_ex:
-                self.add_error('email','Kullandığınız Mail Adresinin Kullanım Süresi Dolmuştur. Lütfen Üyeliğinizi Güncelleyiniz.')
 
-class ForgotPass(forms.Form):
+class ChangePasswordForm(forms.Form):
     email=forms.EmailField(label='E-Posta',widget=forms.EmailInput())
     class Meta:
         fields=['email']
@@ -130,3 +182,4 @@ class UserCompanyForm(forms.ModelForm):
         model=UserCompanyModel
         fields=['user',
                 'company']
+

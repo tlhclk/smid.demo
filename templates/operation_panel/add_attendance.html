@@ -31,16 +31,34 @@ $(document).ready(function() {
     $('input[type="radio"].minimal').iCheck({
       radioClass: 'iradio_minimal-blue'
     });
-
-
-} );
+    });
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
+}
 </script>
 {% endblock %}
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/operation_panel/attendance_table/"><i class="fa fa-table"></i> Yoklama Tablosu</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="https://dormoni.com/operation_panel/attendance_table/"><i class="fa fa-table"></i> Yoklama Tablosu</a></li>
           <li class="active">Yeni Yoklama Kaydı</li>
       </ol>
 

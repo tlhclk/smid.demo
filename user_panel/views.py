@@ -6,13 +6,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import(authenticate,login,logout)
 from django.contrib.auth.models import Group,Permission,ContentType
-from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup,CompanyInfoForm
+from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup,CompanyInfoForm,FreeRegisterForm
 from .models import CompanyInfoModel,User
 from django.contrib.auth import views as auth_views
 
 
-def option_menu(request):
-    return render(request,'user_panel/option_menu.html')
 
 def log_in(request):
     if str(request.user) == 'AnonymousUser':
@@ -29,19 +27,37 @@ def log_in(request):
                     request.session.set_expiry(604800)#bir haftalık
                 else:
                     request.session.set_expiry(0)
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('https://dormoni.com/home/')
 
         return render(request,'user_panel/login.html',{'form':formuser})
     else:
-        return redirect('http://127.0.0.1:8000/home/')
+        return redirect('https://dormoni.com/home/')
 
 def log_out(request):
     if str(request.user) != 'AnonymousUser':
         logout(request)
-    return redirect('../../')
+    return redirect('https://dormoni.com/')
 
-def add_user(request):#register
-    if request.user.has_perm('auth.add_user'):
+def register(request):
+    if not request.user.id:
+        formuser = FreeRegisterForm()
+        if request.method == 'POST':
+            formuser = FreeRegisterForm(request.POST)
+            print(formuser)
+            if formuser.is_valid():
+                formuser.save()
+                user = formuser.save(commit=False)
+                password = formuser.cleaned_data.get('password')
+                user.set_password(password)
+                user.groups.add(3)
+                user.save()
+                return redirect('https://dormoni.com/home/')
+        return render(request, "user_panel/register.html", {'form': formuser,'title':'Dormoni Ücretsiz Kayıt'})
+    else:
+        return redirect('https://dormoni.com/home/')
+
+def add_user(request):
+    if request.user.has_perm('user_panel.add_user'):
         formuser = UserRegistrationForm()
         if request.method=='POST':
             formuser = UserRegistrationForm(request.POST)
@@ -52,10 +68,10 @@ def add_user(request):#register
                 user.save()
         return render(request, "user_panel/default_form.html",{'form':formuser})
     else:
-        return HttpResponse('You has no autharization to add user')
+        return redirect('home')
 
 def detail_user(request,user_id):
-    if request.user.has_perm('auth.add_user'):
+    if request.user.has_perm('user_panel.add_user'):
         if str(request.user) != 'AnonymousUser':
             user=User.objects.get(pk=user_id)
             return render(request,'user_panel/detail_user.html',{'user':user})
@@ -63,7 +79,7 @@ def detail_user(request,user_id):
     else: return HttpResponse('You has no authorization to view user detail')
 
 def edit_user(request, user_id):
-    if 1==1:#request.user.has_perm('auth.change_user'):
+    if 1==1:#request.user.has_perm('user_panel.change_user'):
         formuser= UserRegistrationForm(instance=User.objects.get(pk=user_id))
         if request.method=='POST':
             formuser = UserRegistrationForm(request.POST,instance=User.objects.get(pk=user_id))
@@ -75,13 +91,13 @@ def edit_user(request, user_id):
         return HttpResponse('You has no authorization to edit a user profile')
 
 def table_user(request):
-    if request.user.has_perm('auth.add_user'):
+    if request.user.has_perm('user_panel.add_user'):
         user_list=User.objects.all()
         return render(request,'user_panel/table_user.html',{'user_list':user_list})
     else: return HttpResponse('You has no authorization to view user table')
 
 def delete_user(request,user_id):
-    if request.user.has_perm('auth.delete_user'):
+    if request.user.has_perm('user_panel.delete_user'):
         User.objects.get(pk=user_id).delete()
         return redirect('../')
     else: return HttpResponse('You has no authorization to delete user')
@@ -156,22 +172,22 @@ def add_company(request):
             formcompany = CompanyInfoForm(request.POST)
             if formcompany.is_valid():
                 formcompany.save()
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('https://dormoni.com/home/')
         formcompany=CompanyInfoForm()
         return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('https://dormoni.com/user_panel/login/')
 
 def detail_company(request,company_id):
     if request.user.has_perm('user_panel.add_companyinfomodel'):
         company=CompanyInfoModel.objects.get(pk=company_id)
         return render(request,'user_panel/detail_company.html',{'title':'Yurt Detayları','company':company})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('https://dormoni.com/user_panel/login/')
 
 def table_company(request):
     if request.user.has_perm('user_panel.add_companyinfomodel'):
         company_list=CompanyInfoModel.objects.all()
         return render(request, 'user_panel/table_company.html', {'title': 'Yurtlar Tablosu', 'company_list': company_list})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('https://dormoni.com/user_panel/login/')
 
 def edit_company(request,company_id):
     if request.user.has_perm('user_panel.change_companyinfomodel'):
@@ -179,12 +195,12 @@ def edit_company(request,company_id):
             formcompany = CompanyInfoForm(request.POST,CompanyInfoModel.objects.get(pk=company_id))
             if formcompany.is_valid():
                 formcompany.save()
-                return redirect('http://127.0.0.1:8000/home/')
+                return redirect('https://dormoni.com/home/')
         formcompany=CompanyInfoForm(CompanyInfoModel.objects.get(pk=company_id))
         return render(request,'user_panel/add_company.html',{'formcompany':formcompany,'title':'Yeni Yurt Kaydı'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('https://dormoni.com/user_panel/login/')
 
 def delete_company(request,company_id):
     if request.user.has_perm('user_panel.delete_companyinfomodel'):
         CompanyInfoModel.objects.get(pk=company_id).delete()
-    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
+    else: return redirect('https://dormoni.com/user_panel/login/')

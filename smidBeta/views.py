@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from stock_panel.models import RoomInfoModel
+from person_panel.models import StudentInfoModel
 
 def home_page(request):
-    return render(request,'home_page.html',{'title':'Ana Sayfa'})
+    if str(request.user)!='AnonymousUser':
+        total=sum([int(room.people) for room in RoomInfoModel.objects.filter(company_id=request.user.company_id_id)])
+        registred = len(StudentInfoModel.objects.filter(company_id=request.user.company_id_id))
+        return render(request,'home_page.html',{'title':'Ana Sayfa','empty':total - registred,'registred':registred})
+    else: return redirect('https://dormoni.com/user_panel/login/')
 
 def main_page(request):
     return render(request,'main_page.html',{'title':'Ana Sayfa'})
@@ -13,6 +19,9 @@ def contract(request):
 
 def rules(request):
     return render(request, 'rules.html', {'title': 'Kurallar'})
+
+def termofuse(request):
+    return render(request, 'termofuse.html', {'title': 'Kullanım Koşulları'})
 
 def page_not404_found(request):
     response= render(request,'404.html',{'title':'404 Not Found'})

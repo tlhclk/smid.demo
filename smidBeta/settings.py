@@ -23,9 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1d^alrv3cj4)zu#f=t-zezpl#65x)al)bc0ca2=p$&6@pdx1fc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['46.101.120.8','dormoni.com','127.0.0.1','www.dormoni.com']
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+ALLOWED_HOSTS = ['46.101.120.8','dormoni.com','127.0.0.1','www.dormoni.com','mail.dormoni.com']
 
 
 # Application definition
@@ -49,11 +51,11 @@ INSTALLED_APPS = [
     'localflavor',
     'phonenumber_field',
     'psycopg2',
-    'django_cloudflare_push'
+    'django_cloudflare_push',
+    'django_smtp_ssl',
 ]
 
-
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = ('django_cloudflare_push.middleware.push_middleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,9 +63,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
+)
 ROOT_URLCONF = 'smidBeta.urls'
+
 
 TEMPLATES = [
     {
@@ -89,15 +91,15 @@ WSGI_APPLICATION = 'smidBeta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE':'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
-        # 'ENGINE':'django.db.backends.postgresql_psycopg2',
-        # 'NAME':'smiddb',
-        # 'USER':'smiddbuser',
-        # 'PASSWORD':'123qweasd',
-        # 'HOST':'localhost',
-        # 'PORT':'',
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':'smiddb',
+        'USER':'smiddbuser',
+        'PASSWORD':'123qweasd',
+        'HOST':'localhost',
+        'PORT':'',
     }
 }
 
@@ -127,12 +129,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tlhclk1312'
+EMAIL_HOST_USER = 'tlhclk1312@gmail.com'
 EMAIL_HOST_PASSWORD = 'Tlhclk.12'
-DEFAULT_FROM_EMAIL = 'tlhclk1312@windowslive.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 
 # Internationalization

@@ -80,7 +80,8 @@ class MailSendForm(forms.Form):
         super(MailSendForm, self).__init__(POST,*args, **kwargs)
         self.fields['people_selection'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
 
-    people_selection=forms.ModelChoiceField(StudentInfoModel.objects.all(),required=False,widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    #people_selection=forms.ModelChoiceField(StudentInfoModel.objects.all(),required=False,widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    people_selection = forms.ModelMultipleChoiceField(StudentInfoModel.objects.all(), required=False,widget=forms.CheckboxSelectMultiple())
     people_manual=forms.CharField(max_length=200,required=False)
     subject=forms.CharField(max_length=100)
     message=forms.CharField(max_length=500,widget=forms.Textarea())
@@ -103,8 +104,6 @@ class MailSendForm(forms.Form):
         message = self.cleaned_data['message']
         selected_people = self.cleaned_data['people_selection']
         written_people = self.cleaned_data['people_manual'].split(', ')
-        print (subject,message)
-        print (selected_people.email,written_people)
         if selected_people and not written_people:
             to_ma=selected_people
         elif written_people and not selected_people:

@@ -64,8 +64,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = PhoneNumberField(max_length=13, blank=False)
     date_joined=models.DateField(default=get_date,max_length=10)
     date_expired=models.DateField(max_length=10,null=True,blank=True)
-    profile_image=models.ImageField(max_length=200,default='profile_pic/1701001.jpg')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    profile_image=models.ImageField(max_length=200,null=True,blank=True)
+    company_id=models.ForeignKey(CompanyInfoModel,default='179910101')
 
 
     is_staff = models.BooleanField(

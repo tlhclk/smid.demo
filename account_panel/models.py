@@ -17,8 +17,8 @@ class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki default 
     asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
     id=models.CharField(max_length=10,primary_key=True)
     person=models.ForeignKey(StudentInfoModel)
-    amount=models.CharField(max_length=5,default='0')
-    debt=models.CharField(max_length=5,default='')
+    #amount=models.CharField(max_length=6,default='0')
+    debt=models.CharField(max_length=6,default='')#kalkıcak
     desc=models.CharField(max_length=50,null=True, blank=True)
     period=models.CharField(max_length=2,default='')
     type=models.CharField(max_length=10,choices=asset_type_list)
@@ -64,7 +64,7 @@ class BillInfoModel(models.Model):
     amount=models.CharField(max_length=10,default='')
     desc=models.CharField(max_length=100,null=True,blank=True)
     address=models.CharField(max_length=200,null=True, blank=True)
-    period=models.CharField(max_length=10,default='')
+    payed=models.NullBooleanField()
     last_day=models.DateField(default=get_date,max_length=10)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
@@ -72,7 +72,7 @@ class BillInfoModel(models.Model):
         db_table='bill_info'
 
     def __str__(self):
-        return (self.type_name()+' - '+self.period)
+        return (self.type_name()+' - '+self.code)
 
     def type_name(self):
         return self.bill_type_list[int(self.type)-1][1]
@@ -97,4 +97,50 @@ class TransactionInfoModel(models.Model):
 
     def account_name(self):
         return self.account_no.name
+
+class PeriodicPaymentModel(models.Model):
+    person_asset=models.OneToOneField(PersonAssetInfoModel)
+    deposito=models.CharField(max_length=6,null=True,blank=True)
+    month1=models.CharField(max_length=6,null=True,blank=True)
+    month2=models.CharField(max_length=6,null=True,blank=True)
+    month3=models.CharField(max_length=6,null=True,blank=True)
+    month4=models.CharField(max_length=6,null=True,blank=True)
+    month5=models.CharField(max_length=6,null=True,blank=True)
+    month6=models.CharField(max_length=6,null=True,blank=True)
+    month7=models.CharField(max_length=6,null=True,blank=True)
+    month8=models.CharField(max_length=6,null=True,blank=True)
+    month9=models.CharField(max_length=6,null=True,blank=True)
+    month10=models.CharField(max_length=6,null=True,blank=True)
+    month11=models.CharField(max_length=6,null=True,blank=True)
+    month12=models.CharField(max_length=6,null=True,blank=True)
+    desc=models.CharField(max_length=200,null=True,blank=True)
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
+
+    class Meta:
+        db_table='periodic_payment'
+
+    def __str__(self):
+        return str(self.person_asset_id)+' - '+str(self.person_asset.person.full_name())
+
+    def paid(self):
+        paid=0.0
+        for key,item in self.month_list():
+            if item:
+                paid+=float(item)
+        return str(paid)
+
+    def rest(self):
+        return int(float(self.person_asset.debt)-float(self.paid()))
+
+    def month_list(self):
+        return [('9',self.month1),('10',self.month2),('11',self.month3),('12',self.month4),('1',self.month5),('2',self.month6),('3',self.month7),('4',self.month8),('5',self.month9),('6',self.month10),('7',self.month11),('8',self.month12)]
+
+    def is_late(self):
+        start_day=self.person_asset.person.start_day
+        paid=float(self.paid())
+        should=float(start_day.month-get_date().month)*(float(self.person_asset.debt)/float(self.person_asset.period))
+        if paid<should:
+            return True
+        else:
+            return False
 

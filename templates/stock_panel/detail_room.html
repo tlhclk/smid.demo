@@ -3,9 +3,9 @@
 {% block content %}
 <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Oda Tablosu</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
       </ol>
 
     </section>
@@ -18,13 +18,22 @@
     <div class="row">
             <div class="col-lg-12">
             <div class="box box-primary">
-                <div class="box-body" style="column-count: 2">
+                <div class="box-body">
+                    <div class="col-lg-6">
                     <h3><b>Oda No: </b>{{ room.no }}</h3>
                     <h3><b>Oda Türü: </b>{{ room.type_name }}</h3>
                     <h3><b>Oda Kişi Sayısı: </b>{{ room.people_name }}</h3>
+                    <h3><b>Odada Kalan Öğrenciler:  </b></h3>
+                    <ul>{% for stu in room.people_list %}
+                    <li>{{ stu.full_name }}</li>
+                    {% endfor %}</ul></div>
+                <div class="col-lg-6">
                     <h3><b>Oda Katı: </b>{{ room.floor }}</h3>
                     <h3><b>Oda Açıklaması: </b>{{ room.desc }}</h3>
-                    <h3><b>Oda Resmi: </b>{{ room.image_field.name }}</h3>
+                    <h3><b>Odadaki Eşyalar: </b></h3>
+                    <ul>{% for fix in room.fixture_list %}
+                    <li>{{ fix.no }}</li>
+                    {% endfor %}</ul></div>
                 </div>
             </div></div>
     </div>

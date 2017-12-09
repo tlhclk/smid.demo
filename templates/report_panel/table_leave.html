@@ -34,7 +34,8 @@
     text-align: center;
 }
 .breadcrumb{
-    background: #ffb733;
+    background: #cddc39;
+
 }
 .myTable_paginate{
 margin-left: 0;
@@ -44,43 +45,39 @@ margin-left: 0;
 
 }
     </style>
-
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-html5-1.4.2/b-print-1.4.2/r-2.2.0/datatables.min.js"></script>
-
-
-<script type="text/javascript">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
+    <script type="text/javascript">
 $(document).ready(function() {
-      var table = $('#myTable').DataTable(
+    var table = $('#myTable').DataTable(
+
       {
-       "oLanguage": { "sSearch": "" } ,
-        "language":{
-                    "url": "{% static 'dataTables/js/Turkish.json' %}"
-                  },
-          responsive: true,
+          "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
+        "order": [[ 0, "order" ]],
+        responsive: true,
+		dom: "<'row'<'col-sm-6 col-lg-3'B><'col-sm-1 col-lg-9'f>>" +
+		"<'row'<'col-lg-12'tr>>" +
+		"<'row'<'col-sm-2 col-lg-2'l><'col-sm-4 col-lg-4'i><'col-sm-6 col-lg-6'p>>",
+        buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5']
 
-    dom: "fB+t+l+p",
-    buttons: ['copyHtml5', 'excelHtml5', 'pdfHtml5']
-
-    } );
-    $('div.dataTables_filter input').attr('placeholder', 'Ara');
-        $( "dt-buttons btn-group" ).insertAfter( $( ".dataTables_filter" ) );
+      }
+    );
 
 } );
-
-
-
 </script>
-
 {% endblock %}
-
 {% block content %}
 
     <li>

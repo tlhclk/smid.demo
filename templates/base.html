@@ -20,14 +20,33 @@
     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'main_theme/js/app.min.js' %}"></script>
+
+
     {% block script %}{% endblock %}
+    <script>
+        $(document).ready(function () {
+            var cur_href=window.location.href;
+            var menu_li=document.querySelectorAll('li.treeview>ul.treeview-menu>li');
+            for (no in menu_li){
+                var href_a=menu_li[no];
+                var href_url=href_a.getElementsByTagName('a')[0].getAttribute('href');
+                if (href_url === cur_href){
+                    var parent_element=href_a.parentElement.parentElement;
+                    var attr = document.createAttribute('class');
+                    attr.value='active';
+                    href_a.setAttributeNode(attr);
+                    parent_element.setAttribute('class','active')
+                }
+            }
+        })
+    </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
 
-    <a href="http://127.0.0.1:8000/home" class="logo">
+    <a href="https://dormoni.com/home" class="logo">
       <span class="logo-mini"><b>SM</b>iD</span>
       <span class="logo-lg"><b>Smart</b>Dorms</span>
     </a>
@@ -36,7 +55,7 @@
       <ul class="nav navbar-header"><li>
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
           <li class="center-block"><span><font size="6" color="white">
-              <i> <b> {{ title }}</b> </i></font></span>
+              <i><b>{{ title }}</b> </i></font></span>
         <span class="icon-bar"></span></li><li>
       <li>
       <div class="nav navbar-custom-menu">
@@ -45,12 +64,12 @@
             {% if request.user.email %}
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="http://127.0.0.1:8000/media/{{ request.user.profile_image }}" class="user-image" alt="User Image">
+              <img src="https://dormoni.com/media/{{ request.user.profile_image }}" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ request.user.name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
-                <img src="http://127.0.0.1:8000/media/{{ request.user.profile_image }}" class="img-circle" alt="User Image">
+                <img src="https://dormoni.com/media/{{ request.user.profile_image }}" class="img-circle" alt="User Image">
                 <p>
                   {{ request.user.name }} {{ request.user.last_name }}
                 </p>
@@ -62,17 +81,17 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="http://127.0.0.1:8000/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
+                  <a href="https://dormoni.com/person_panel/{{ request.user.id }}" class="btn btn-default btn-flat">Profil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="http://127.0.0.1:8000/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
+                  <a href="https://dormoni.com/user_panel/logout" class="btn btn-default btn-flat">Çıkış Yap</a>
                 </div>
               </li>
             </ul>
           </li>
 
                 {% else %}
-                <li class="button"><a href="http://127.0.0.1:8000/user_panel/login/">Giriş Yap</a></li>
+                <li class="button"><a href="https://dormoni.com/user_panel/login/">Giriş Yap</a></li>
             {% endif %}
           <!-- Control Sidebar Toggle Button -->
         </ul>
@@ -102,14 +121,12 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/account_panel/account_table/"><i class= "fa fa-circle-o"></i>Kasa</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Borçlar</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/bill_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Grafikler </a></li>
-
-
-
+            <li><a href="https://dormoni.com/account_panel/account_table/"><i class= "fa fa-circle-o"></i>Kasa</a></li>
+            <li><a href="https://dormoni.com/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Ödeme Planları</a></li>
+            <li><a href="https://dormoni.com/account_panel/bill_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
+            <li><a href="https://dormoni.com/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
+              <li><a href="https://dormoni.com/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Grafikler </a></li>
+              <li><a href="https://dormoni.com/account_panel/periodic_payment/"><i class="fa fa-circle-o"></i>Ödeme Tablosu </a></li>
           </ul>
         </li>
           <li class="treeview">
@@ -119,8 +136,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Yapılacaklar</a></li>
-              <li><a href="http://127.0.0.1:8000/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Anımsatıcı</a></li>
+            <li><a href="https://dormoni.com/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Doğum Günü Takvimi</a></li>
 
           </ul>
         </li><li class="treeview">
@@ -130,12 +146,12 @@
             </span>
           </a>
           <ul class="treeview-menu">
-              <li><a href="http://127.0.0.1:8000/person_panel/student_table/"><i class="fa fa-circle-o"></i>Öğrenci Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/attendance_table/"><i class="fa fa-circle-o"></i>Yoklama Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/leave_table/"><i class="fa fa-circle-o"></i>İzinli Öğrenci Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/mail_send/"><i class="fa fa-circle-o"></i>Toplu Mail / SMS </a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/create_egm_xml/"><i class="fa fa-circle-o"></i>EGM Dosyası Oluşturma</a></li>
-              <li><a href="http://127.0.0.1:8000/person_panel/parent_table/"><i class="fa fa-circle-o"></i>Öğrenci Veli Listesi</a></li>
+              <li><a href="https://dormoni.com/person_panel/student_table/"><i class="fa fa-circle-o"></i>Öğrenci Listesi</a></li>
+              <li><a href="https://dormoni.com/operation_panel/attendance_table/"><i class="fa fa-circle-o"></i>Yoklama Listesi</a></li>
+              <li><a href="https://dormoni.com/operation_panel/leave_table/"><i class="fa fa-circle-o"></i>İzinli Öğrenci Listesi</a></li>
+              <li><a href="https://dormoni.com/operation_panel/mail_send/"><i class="fa fa-circle-o"></i>Toplu Mail / SMS </a></li>
+              <li><a href="https://dormoni.com/operation_panel/create_egm_xml/"><i class="fa fa-circle-o"></i>EGM Dosyası Oluşturma</a></li>
+              <li><a href="https://dormoni.com/person_panel/parent_table/"><i class="fa fa-circle-o"></i>Öğrenci Veli Listesi</a></li>
           </ul>
         </li><li class="treeview">
           <a href="#"><i class="fa fa-laptop"></i> <span>Personel</span>
@@ -144,9 +160,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-              <li><a href="http://127.0.0.1:8000/person_panel/personal_table/"><i class="fa fa-circle-o"></i>Personel Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/vacation_table"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/salary_table"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
+              <li><a href="https://dormoni.com/person_panel/personal_table/"><i class="fa fa-circle-o"></i>Personel Listesi</a></li>
+              <li><a href="https://dormoni.com/operation_panel/vacation_table/"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
+              <li><a href="https://dormoni.com/report_panel/salary_table/"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
 
 
           </ul>
@@ -157,8 +173,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-              <li><a href="http://127.0.0.1:8000/report_panel/capacity/"><i class="fa fa-circle-o"></i>Kontenjan Grafiği</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/room_plan/"><i class="fa fa-circle-o"></i>Odalar</a></li>
+              <li><a href="https://dormoni.com/report_panel/capacity/"><i class="fa fa-circle-o"></i>Kontenjan Grafiği</a></li>
+              <li><a href="https://dormoni.com/report_panel/room_plan/"><i class="fa fa-circle-o"></i>Odalar</a></li>
 
 
 
@@ -171,8 +187,8 @@
             </span>
           </a>
           <ul class="treeview-menu" >
-            <li><a href="http://127.0.0.1:8000/stock_panel/room_table/"><i class="fa fa-circle-o"></i>Zimmet</a> </li>
-            <li><a href="http://127.0.0.1:8000/document_panel/liability_table/"><i class="fa fa-circle-o"></i>Emanet</a></li>
+            <li><a href="https://dormoni.com/stock_panel/room_table/"><i class="fa fa-circle-o"></i>Zimmet</a> </li>
+            <li><a href="https://dormoni.com/document_panel/liability_table/"><i class="fa fa-circle-o"></i>Emanet</a></li>
           </ul>
         </li>
 
@@ -183,7 +199,7 @@
       <ul class="sidebar-menu">
         <li class="header">Öğrenci İşlemleri</li>
         <li class="treeview">
-          <a href="http://127.0.0.1:8000/person_panel/student/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Profil</span>
+          <a href="https://dormoni.com/person_panel/student/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Profil</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -191,21 +207,21 @@
         </li>
 
         <li class="treeview">
-          <a href="http://127.0.0.1:8000/account_panel/asset/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Ödeme Planı</span>
+          <a href="https://dormoni.com/account_panel/asset/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Ödeme Planı</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
         </li>
         <li class="treeview">
-          <a href="http://127.0.0.1:8000/stock_panel/room/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Oda Bilgileri</span>
+          <a href="https://dormoni.com/stock_panel/room/{{ request.user.id }}"><i class="fa fa-link"></i> <span>Oda Bilgileri</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
         </li>
         <li class="treeview">
-          <a href="http://127.0.0.1:8000/operation_panel/mail_send/info@kampuscity.com"><i class="fa fa-link"></i> <span>Yöneticiye Mail</span>
+          <a href="https://dormoni.com/operation_panel/mail_send/info@kampuscity.com"><i class="fa fa-link"></i> <span>Yöneticiye Mail</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

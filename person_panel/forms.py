@@ -5,7 +5,6 @@ from user_panel.models import CompanyInfoModel
 from stock_panel.models import RoomInfoModel
 import datetime
 from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberFormat
 from localflavor.tr.tr_provinces import PROVINCE_CHOICES
 from PIL import Image
 
@@ -20,7 +19,7 @@ class ParentInfoForm(forms.ModelForm):
     name=forms.CharField(max_length=20,label='Ad')
     last_name=forms.CharField(max_length=20,label='Soyad')
     tcn=forms.CharField(max_length=11,label='Kimlik Numarası',required=False)
-    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
+    phone=PhoneNumberField(label='Telefon Numarası')
     email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
     relative_degree=forms.CharField(max_length=20,label='Yakınlık Derecesi')
     job=forms.CharField(max_length=20,label='İşi',required=False)
@@ -42,13 +41,17 @@ class ParentInfoForm(forms.ModelForm):
     def clean(self):
         tc_no=self.cleaned_data.get('tcn')
         if tc_no:
-            list_tc =[int(x) for x in tc_no]
-            tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
-            tc11 = (sum(list_tc[0:9]) + tc10) % 10
-            if list_tc[9] == tc10 and list_tc[10] == tc11:
-                pass
-            else:
-                self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+            try:
+                list_tc =[int(x) for x in tc_no]
+                tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
+                tc11 = (sum(list_tc[0:9]) + tc10) % 10
+
+                if list_tc[9] == tc10 and list_tc[10] == tc11:
+                    pass
+                else:
+                    self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+            except ValueError:
+                self.add_error('tcn', 'Lütfen Doğru Kimlik Numarasını Giriniz!')
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
@@ -62,7 +65,7 @@ class PersonalInfoForm(forms.ModelForm):
         self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
     id=forms.CharField(max_length=10,label='Personel IDsi',)#initial=str(int(PersonalInfoModel.objects.all().last().id)+1))
     tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
+    phone=PhoneNumberField(label='Telefon Numarası')
     email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
     salary=forms.CharField(label='Maaş')
     start_day=forms.DateField(label='İşe Başlama Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
@@ -101,7 +104,6 @@ class PersonalInfoForm(forms.ModelForm):
         else:
             self.add_error('salary','Yanlış Miktar')
         image = self.cleaned_data.get('image')
-        print (image)
         if image:
             img = Image.open(image)
 
@@ -115,6 +117,12 @@ class PersonalInfoForm(forms.ModelForm):
                 self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
         else:
             self.add_error('image','Yüklenen dosya okunamadı')
+        person=self.cleaned_data.get('tcn')
+        if person:
+            if person in PersonalInfoModel.objects.all():
+                self.add_error('tcn','Seçtiğiniz Kimlik Kaydı Başka Bir Kişiye Atanmıştır. Lütfen Tekrar Seçiniz.')
+            elif person in StudentInfoModel.objects.all():
+                self.add_error('tcn', 'Seçtiğiniz Kimlik Kaydı Başka Bir Kişiye Atanmıştır. Lütfen Tekrar Seçiniz.')
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
@@ -135,13 +143,13 @@ class PersonIDInfoForm(forms.ModelForm):
     father=forms.CharField(max_length=20,label='Baba Adı')
     mother=forms.CharField(max_length=20,label='Anne Adı')
     birth_day=forms.DateField(label='Doğum Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
-    birth_place=forms.ChoiceField(PROVINCE_CHOICES,label='Doğum Yeri',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    register_vilage=forms.ChoiceField(PROVINCE_CHOICES,label='Kayıtlı Olduğu İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    register_town=forms.CharField(max_length=20,label='Kayıtlı Olduğu İlçe')
-    register_distinct=forms.CharField(max_length=20,label='Kayıtlı Olduğu Mahalle')
-    nufus_cilt=forms.CharField(max_length=4,label='Cilt No')
-    nufus_ailesira=forms.CharField(max_length=5,label='Aile Sıra No')
-    nufus_sirano=forms.CharField(max_length=4,label='Sıra No')
+    birth_place=forms.ChoiceField(PROVINCE_CHOICES,label='Doğum Yeri',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}),required=False)
+    register_vilage=forms.ChoiceField(PROVINCE_CHOICES,label='Kayıtlı Olduğu İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}),required=False)
+    register_town=forms.CharField(max_length=20,label='Kayıtlı Olduğu İlçe',required=False)
+    register_distinct=forms.CharField(max_length=20,label='Kayıtlı Olduğu Mahalle',required=False)
+    nufus_cilt=forms.CharField(max_length=4,label='Cilt No',required=False)
+    nufus_ailesira=forms.CharField(max_length=5,label='Aile Sıra No',required=False)
+    nufus_sirano=forms.CharField(max_length=4,label='Sıra No',required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
 
     class Meta:
@@ -168,13 +176,17 @@ class PersonIDInfoForm(forms.ModelForm):
     def clean(self):
         tc_no=self.cleaned_data.get('tcn')
         if tc_no:
-            list_tc =[int(x) for x in tc_no]
-            tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
-            tc11 = (sum(list_tc[0:9]) + tc10) % 10
-            if list_tc[9] == tc10 and list_tc[10] == tc11:
-                pass
-            else:
-                self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+            try:
+                list_tc =[int(x) for x in tc_no]
+                tc10 = (sum(list_tc[0:10:2]) * 7 - sum(list_tc[1:9:2])) % 10
+                tc11 = (sum(list_tc[0:9]) + tc10) % 10
+
+                if list_tc[9] == tc10 and list_tc[10] == tc11:
+                    pass
+                else:
+                    self.add_error('tcn','Lütfen Doğru Kimlik Numarasını Giriniz!')
+            except ValueError:
+                self.add_error('tcn', 'Lütfen Doğru Kimlik Numarasını Giriniz!')
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
@@ -187,11 +199,11 @@ class StudentInfoForm(forms.ModelForm):
         self.user=user
         self.fields['tcn'].queryset = PersonIDInfoModel.objects.filter(company_id=user.company_id)
         self.fields['room_id'].queryset = RoomInfoModel.objects.filter(company_id=user.company_id)
-    id=forms.CharField(max_length=7,label='Öğrenci IDsi',)#initial=str(int(StudentInfoModel.objects.all().last().id)+1))
-    position=forms.BooleanField(widget=forms.NullBooleanSelect(),label='Öğrencinin Pozisyonu')
+    id=forms.CharField(max_length=7,label='Sözleşme No',)#initial=str(int(StudentInfoModel.objects.all().last().id)+1))
+    position=forms.BooleanField(widget=forms.HiddenInput(),label='Öğrencinin Pozisyonu',required=False)
     tcn=forms.ModelChoiceField(PersonIDInfoModel.objects.all(),label='Kimlik Kaydı',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    phone=PhoneNumberField(label='Telefon Numarası',widget=PhoneNumberFormat())
-    email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput())
+    phone=PhoneNumberField(label='Telefon Numarası')
+    email=forms.EmailField(label='Mail Adresi',widget=forms.EmailInput(),required=False)
     start_day=forms.DateField(label='Kayıt Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}),initial=datetime.datetime.today())
     leave_day = forms.DateField(label='Ayrılış Tarihi', widget=forms.DateInput(attrs={'class': 'date-picker'}),required=False)
     city=forms.ChoiceField(PROVINCE_CHOICES,label='İl',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
@@ -204,7 +216,7 @@ class StudentInfoForm(forms.ModelForm):
     blood_type=forms.ChoiceField(StudentInfoModel.blood_type_list,label='Kan Grubu',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     health_notes=forms.CharField(max_length=200,label='Sağlık Notları',widget=forms.Textarea(),required=False)
     special_notes=forms.CharField(max_length=200,label='Özel Notlar',widget=forms.Textarea(),required=False)
-    image_field=forms.ImageField(label='Profile Resmi',widget=forms.FileInput())
+    image_field=forms.ImageField(label='Profile Resmi',widget=forms.FileInput(),required=False)
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
 
     class Meta:
@@ -231,32 +243,38 @@ class StudentInfoForm(forms.ModelForm):
                 'company_id',
                 )
     def clean(self):#kontrol edilmedi
-        image = self.cleaned_data.get('image')
+        image = self.cleaned_data.get('image_field')
         room=self.cleaned_data.get('room_id')
-        print (room)
+        person=self.cleaned_data.get('tcn')
         if image:
             img = Image.open(image)
 
             # validate content type
             main, sub = image.content_type.split('/')
-            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
-                self.add_error('image','JPEG veya PNG dosyası yükleyiniz')
-
+            if main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']:
+                pass
+            else:
+                self.add_error('image_field','JPEG veya PNG dosyası yükleyiniz')
             # validate file size
             if len(image) > (1 * 1024 * 1024):
-                self.add_error('image','10 MB den düşük dosyalar yükleyiniz ')
+                self.add_error('image_field','10 MB den düşük dosyalar yükleyiniz ')
+
         if room:
-            roomid=RoomInfoModel.objects.get('room')
+            roomid=RoomInfoModel.objects.filter(company_id=self.user.company_id).filter(no=room)[0]
             qouta=0
-            for row in StudentInfoModel.objects.all():
-                if row.room_id_id==roomid.no:
+            for row in StudentInfoModel.objects.filter(company_id=self.user.company_id):
+                if row.room_id.id == roomid.id:
                     qouta+=1
-            if qouta<roomid.people:
+            if qouta<int(roomid.people):
                 pass
             else:
                 self.add_error('room_id','Seçilen Odada Kontenjan Doludur!')
-        if not image:
-            self.add_error('image','Yüklenen dosya okunamadı')
+        if person:
+            if person in PersonalInfoModel.objects.all():
+                self.add_error('tcn','Seçtiğiniz Kimlik Kaydı Başka Bir Kişiye Atanmıştır. Lütfen Tekrar Seçiniz.')
+            elif person in StudentInfoModel.objects.all():
+                self.add_error('tcn', 'Seçtiğiniz Kimlik Kaydı Başka Bir Kişiye Atanmıştır. Lütfen Tekrar Seçiniz.')
+
 
     def clean_company_id(self):
         return CompanyInfoModel.objects.get(pk=self.user.company_id_id)

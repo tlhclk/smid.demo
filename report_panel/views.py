@@ -16,11 +16,11 @@ def student_attendance(request,room_id,student_id):
             student_list=StudentInfoModel.objects.filter(position=True,room_id=room_id,company_id=request.user.company_id_id)
             return render(request,'person_panel/table_student.html',{'student_list':student_list,'title':"%s No'lu Oda Yoklama Tablosu"% room_id}) #TODO: table_student.html dosyasında bi sorun var
         elif student_id and not room_id:
-            return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
+            return redirect('https://dormoni.com/person_panel/student/%s'%student_id)
         else:
             student_list=StudentInfoModel.objects.filter(position=True,company_id=request.user.company_id_id)
             return render(request,'person_panel/table_student.html',{'student_list':student_list,'title':'Yoklama Tablosu'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def dorm_capacity(request,room_id):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
@@ -35,13 +35,13 @@ def dorm_capacity(request,room_id):
             student_number=len(StudentInfoModel.objects.filter(company_id=request.user.company_id_id))
             quota_number=sum([int(room.people) for room in all_rooms])-student_number
             return render(request,'report_panel/graph_capacity.html',{'student_number':student_number,'quota_number':quota_number,'title':'Yurt Bilgileri'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def room_plan(request):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
         room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('no')
         return render(request, 'report_panel/room_plan.html', {'room_list': room_list,'title':'Yurt Bilgileri'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def contact_table(request):
     if request.user.has_perm('person_panel.add_personalinfomodel'):
@@ -49,7 +49,7 @@ def contact_table(request):
         personal_list=PersonalInfoModel.objects.filter(company_id=request.user.company_id_id)
         parent_list=ParentInfoModel.objects.filter(company_id=request.user.company_id_id)
         return render(request, 'report_panel/table_contact.html', {'title':'Rehber Tablosu','student_list':student_list, 'parent_list':parent_list, 'personal_list':personal_list})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def unpaid_rate(request):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
@@ -63,16 +63,17 @@ def unpaid_rate(request):
                 period=int(asset.period)
             paid_asset_rate.setdefault(asset.id, ['' for n in range (period)])
         for transaction in all_transactions:
-            id = re.search('1701\w{3}', transaction.desc).group()
-            asset = PersonAssetInfoModel.objects.filter(person=id)[0]
-            rate = (transaction.time.month - asset.person.start_day.month)
-            if paid_asset_rate[asset.id][rate]=='':
-                paid_asset_rate[asset.id][rate]=transaction.amount
-            else:
-                for r in range(len(paid_asset_rate[asset.id])):
-                    if paid_asset_rate[asset.id][r]=='':
-                        paid_asset_rate[asset.id][r]=transaction.amount
-                        break
+            id = re.search('[0-9]+', transaction.desc).group()
+            if StudentInfoModel.objects.get(pk=id):
+                asset = PersonAssetInfoModel.objects.filter(person=id)[0]
+                rate = (transaction.time.month - asset.person.start_day.month)
+                if paid_asset_rate[asset.id][rate]=='':
+                    paid_asset_rate[asset.id][rate]=transaction.amount
+                else:
+                    for r in range(len(paid_asset_rate[asset.id])):
+                        if paid_asset_rate[asset.id][r]=='':
+                            paid_asset_rate[asset.id][r]=transaction.amount
+                            break
         if 1==1:
             payer_list=[]
             for id,rate in paid_asset_rate.items():
@@ -80,7 +81,7 @@ def unpaid_rate(request):
                     payer_list.append(PersonAssetInfoModel.objects.get(pk=id).person.id)
 
         return render(request,'report_panel/payment_info.html',{'paid_dict':paid_asset_rate,'title':'Ödeme Bilgileri'})
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def get_sum(transaction_list):
     transaction_list = [transaction_list.filter(time__month=str(i)) for i in range(1, 13)]
@@ -123,7 +124,7 @@ def account_graphs(request,account_no):
         account_info=json.dumps(list(at_dit.items()))
         ##monthly_flow
         return render(request,'report_panel/account_graph.html',{'title':'Muhasebe','account_info':account_info,'monthly_sum':monthly_sum},)
-    else: return redirect('http://127.0.0.1:8000/user_panel/login')
+    else: return redirect('https://dormoni.com/user_panel/login')
 
 def monthly_flow(request,month):
     if request.user.has_perm('account_panel.add_accountinfomodel'):
@@ -136,7 +137,7 @@ def monthly_flow(request,month):
         transaction_json=json.dumps(transaction_json)
         return render(request,'report_panel/monthly_flow.html',{'title':'Aylık Akış','transaction_json':transaction_json})
     else:
-        return redirect('http://127.0.0.1:8000/user_panel/login/')
+        return redirect('https://dormoni.com/user_panel/login/')
 
 
 def filter_form(request):#TODO: sonuç gösterilmiyor tekrar düzenlenecek

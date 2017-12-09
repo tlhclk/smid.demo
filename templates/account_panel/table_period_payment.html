@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-html5-1.4.2/b-print-1.4.2/r-2.2.0/datatables.min.css"/>
+
+
+<style type="text/css">
+
+.panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #cddc39;
+
+}
+	table.tableizer-table {
+		font-size: 12px;
+        width: 100%;
+        border-collapse: collapse;
+		border: 1px solid #CCC;
+	}
+	.tableizer-table td {
+		border: 1px solid #CCC;
+	}
+	.tableizer-table th {
+		background-color: #CD0000;
+		color: #FFF;
+		font-weight: bold;
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+	}
+    .tableizer-table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+    input {
+        width: 90%;
+    }
+    select {
+        width: 150px;
+    }
+</style>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap4.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'dataTables/css/jquery.dataTable.min.css' %}">
+    <script>
+    $(document).ready(function () {
+        var pre_button=document.getElementById('pre');
+        var next_button=document.getElementById('next');
+        var cur_href=window.location.href.split("/")[5];
+        var pre_no=Number(cur_href)-1;
+        if (pre_no === -1){
+            pre_no=11
+        }
+        var next_no=Number(cur_href)+1;
+        if (next_no === 12){
+            next_no=0
+        }
+        pre_button.setAttribute('href','https://dormoni.com/account_panel/periodic_payment/'+String(pre_no));
+        next_button.setAttribute('href','https://dormoni.com/account_panel/periodic_payment/'+String(next_no))
+    })
+    </script>
+{% endblock %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Ödeme Tablosu</li>
+          <li class="pull-right"><a id="next" class="btn btn-primary" tabindex="0" aria-control="myTable" href="">Sonraki</a></li>
+          <li class="pull-right"><a id="pre" class="btn btn-primary" tabindex="0" aria-control="myTable" href="">Önceki</a></li>
+      </ol>
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    <table class="tableizer-table">
+        <thead>
+            <th>Sözleşme No</th><th>Telefon</th><th>Veli Adı</th><th>Veli Telefon</th><th>{{ month }}</th><th id="desc" style="width: 35%">Açıklama</th><th>Kalan</th><th>Toplam</th><th></th>
+        </thead>
+        <tbody>
+        {% for stu,form in all_forms %}<tr>
+            <form id="{{ stu.0.id }}" method="POST" class="post-formpp" enctype="multipart/form-data">{% csrf_token %}
+                <td>{{ stu.0.person_asset }}</td><td>{{ stu.0.person_asset.person.phone }}</td><td>{{ stu.0.person_asset.person.parent.full_name }}</td><td>{{ stu.0.person_asset.person.parent.phone }}</td>
+                <td>{{ stu.1 }}</td><td>{{ form.desc }}</td><td>{{ stu.0.rest }}</td><td>{{ stu.0.person_asset.debt }}</td><td>{% bootstrap_button 'Düzenle' %}</td>
+{#                {% for asd in form %}#}
+{#                {% if asd.label == 'company_id' %}<td>{{ stu.rest }}</td><td>{{ stu.person_asset.debt }}</td><td>{% bootstrap_button 'Düzenle' %}{{ asd }}</td>{% else %}<td>{{ asd }}</td>{% endif %}#}
+{#                {% endfor %}#}
+            </form></tr>{% endfor %}
+
+        </tbody>
+    </table>
+      <!-- Your Page Content Here -->
+
+    </section>
+{% endblock %}

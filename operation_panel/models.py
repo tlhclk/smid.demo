@@ -57,6 +57,19 @@ class VacationInfoModel(models.Model):
     def __str__(self):
         return self.person.full_name()+self.reason
 
+class NotificationInfoModel(models.Model):
+    title=models.CharField(max_length=50,default='')
+    to_a=models.CharField(max_length=50,default='')
+    from_a=models.CharField(max_length=50,null=True,blank=True)
+    text=models.CharField(max_length=50,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='')
+
+    class Meta:
+        db_table='notification_info'
+
+    def __str__(self):
+        return self.id
+
 
 class CityInfoModel(models.Model):
     city_name = models.CharField(max_length=50, blank=False)

@@ -15,7 +15,7 @@ def get_date():
 
 
 class PersonIDInfoModel(models.Model):
-    idcard_type_list = [('1', 'Nüfus Cüzdanı'), ('2', 'TC Kimliği'), ('3', 'Ehliyet'), ('4', 'Pasaport'),('5', 'Diğer')]
+    idcard_type_list = [('1', 'Eski Kimlik'), ('2', 'Yeni Kimlik'), ('3', 'Ehliyet'), ('4', 'Pasaport'),('5', 'Diğer')]
     nation_list = [('1', 'Türkiye')]# TODO: milletler eklenecek
     gender_list = [('1', 'Kadın'), ('2', 'Erkek')]
     medeni_hal_list = [('1', 'Bekar'), ('2', 'Evli'), ('3', 'Dul'), ('4', 'Diğer')]
@@ -24,19 +24,19 @@ class PersonIDInfoModel(models.Model):
     name = models.CharField(max_length=20, default='',)
     last_name = models.CharField(max_length=20, default='',)
     birth_day = models.DateField(default='1990-12-31',max_length=10)
-    birth_place = models.CharField( max_length=20, choices=PROVINCE_CHOICES,default='1')
+    birth_place = models.CharField(max_length=20, choices=PROVINCE_CHOICES,blank=True,null=True)
     father = models.CharField(max_length=20,default='')
     mother = models.CharField(max_length=20,default='')
     nation = models.CharField(max_length=30,choices=nation_list,default='1')
     idcard_type = models.CharField(max_length=50,choices=idcard_type_list,default='1')
-    register_vilage = models.CharField(max_length=50,choices=PROVINCE_CHOICES,default='1')
-    register_town = models.CharField(max_length=50,default='')
-    register_distinct = models.CharField(max_length=50,default='')
+    register_vilage = models.CharField(max_length=50,choices=PROVINCE_CHOICES,blank=True,null=True)
+    register_town = models.CharField(max_length=50,blank=True,null=True)
+    register_distinct = models.CharField(max_length=50,blank=True,null=True)
     gender = models.CharField(max_length=5,default='1', choices=gender_list)
-    nufus_cilt = models.CharField(max_length=4,default='')
-    nufus_ailesira = models.CharField(max_length=5,default='')
-    nufus_sirano = models.CharField(max_length=4,default='')
-    medeni_hali = models.CharField(max_length=10,default='1', choices=medeni_hal_list)
+    nufus_cilt = models.CharField(max_length=4,blank=True,null=True)
+    nufus_ailesira = models.CharField(max_length=5,blank=True,null=True)
+    nufus_sirano = models.CharField(max_length=4,blank=True,null=True)
+    medeni_hali = models.CharField(max_length=10,choices=medeni_hal_list,blank=True,null=True)
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
     class Meta:
@@ -120,7 +120,7 @@ class StudentInfoModel(models.Model):
     id = models.CharField(max_length=7,primary_key=True,default='1701001')
     tcn=models.OneToOneField(PersonIDInfoModel,unique=True)
     phone = PhoneNumberField(default='+905553332211',max_length=13)
-    email = models.EmailField(default='',unique=True)
+    email = models.EmailField(null=True,blank=True)
     start_day = models.DateField(default=get_date,max_length=10)
     leave_day = models.DateField(max_length=10,null=True,blank=True)
     city = models.CharField(max_length=20,choices=PROVINCE_CHOICES,default='1')
@@ -133,7 +133,7 @@ class StudentInfoModel(models.Model):
     blood_type = models.CharField(max_length=20, choices=blood_type_list, default='1')
     health_notes = models.CharField(max_length=200,null=True,blank=True)
     special_notes = models.CharField(max_length=200,null=True,blank=True)
-    image_field = models.ImageField(upload_to='profile_pic/',default='')
+    image_field = models.ImageField(upload_to='profile_pic/',null=True,blank=True)
     position= models.BooleanField(default='1')
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
@@ -142,7 +142,7 @@ class StudentInfoModel(models.Model):
         db_table= 'student_info'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id+' - '+self.full_name())
 
     def __unicode__(self):
         return str(self.id)
@@ -165,6 +165,12 @@ class StudentInfoModel(models.Model):
     def payment_info(self):
         from account_panel.models import PersonAssetInfoModel
         return PersonAssetInfoModel.objects.filter(person_id=self.id)
+
+    def parent(self):
+        if len(ParentInfoModel.objects.filter(person=self.id))!=0:
+            return ParentInfoModel.objects.filter(person=self.id)[0]
+        else:
+            return None
 
     def group(self):
         return 'Öğrenci'

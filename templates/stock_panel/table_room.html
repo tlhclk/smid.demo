@@ -1,22 +1,52 @@
 {% extends "base.html" %}
 {% load static %}
 {% block css %}
- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-                  <style type="text/css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.4.2/b-html5-1.4.2/b-print-1.4.2/r-2.2.0/datatables.min.css"/>
 
-  .panel-heading{
+
+<style type="text/css">
+.dataTables_filter {
+        float: right;
+        text-align: right;
+      }
+      div.dt-buttons {
+      margin-left: 0;
+      float: right;
+      text-align: right;
+      margin-left: 10px;
+
+  }
+
+
+      .btn1{
+        background-color: #E16519;
+        color:white;
+      }
+      .btn2{
+        background-color: #CA0300;
+        color:white;
+      }
+
+.panel-heading{
     font-family: 'Poppins', sans-serif;
     text-align: center;
 }
 .breadcrumb{
-    background: #e3c300;
-}
-  </style>
+    background: #ffb733;
 
+}
+.myTable_paginate{
+margin-left: 0;
+      float: right;
+      text-align: right;
+      margin-right: 30px;
+
+}
+    </style>
 
 {% endblock %}
+
 {% block script %}
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js"></script>
@@ -37,7 +67,6 @@ $(document).ready(function() {
           "language":{"url": "{% static 'dataTables/js/Turkish.json' %}"},
         "order": [[ 0, "order" ]],
         responsive: true,
-{#	dom:'Bftrlip',#}
 		dom: "<'row'<'col-sm-6 col-lg-3'B><'col-sm-1 col-lg-9'f>>" +
 		"<'row'<'col-lg-12'tr>>" +
 		"<'row'<'col-sm-2 col-lg-2'l><'col-sm-4 col-lg-4'i><'col-sm-6 col-lg-6'p>>",
@@ -52,9 +81,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-          <li class="active">Zimmet</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Odalar</li>
+          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
       </ol>
 
     </section>
@@ -74,10 +103,13 @@ $(document).ready(function() {
     <tbody>
     {% for room in room_list %}
           <tr>
-              <td><a href="/stock_panel/room/{{ room.id }}/">{{ room.no }}</a></td>
+              <td><a href="/stock_panel/room/{{ room.id }}">{{ room.no }}</a></td>
               <td>{{ room.floor }}</td><td>{{ room.people_name }}</td><td>{{ room.type_name }} </td>
-          <td><a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_edit/{{ room.id }}">Düzenle</a>
-                          <a class="btn btn-primary buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_delete/{{ room.id }}">Sil</a></td></tr>
+
+          <td><a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/stock_panel/room_edit/{{ room.id }}">Düzenle</a>
+                          <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/stock_panel/room_delete/{{ room.id }}">Sil</a></td>
+
+                        </tr>
     {% endfor %}
 
     </tbody>

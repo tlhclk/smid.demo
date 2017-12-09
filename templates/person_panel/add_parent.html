@@ -1,4 +1,5 @@
 {% extends  "base.html" %}
+{% load bootstrap4 %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
@@ -15,6 +16,7 @@
 <script src="/static/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 <script src="{%  static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
     <script type="text/javascript">
 $(document).ready(function() {
     $(".select2").select2();
@@ -30,9 +32,32 @@ $(document).ready(function() {
     $('input[type="radio"].minimal').iCheck({
       radioClass: 'iradio_minimal-blue'
     });
-
-
-} );
+    var phone=document.getElementById("id_phone");
+    phone.setAttribute("class","form-control input-medium bfh-phone");
+    var att = document.createAttribute('data-format');
+    att.value="+905ddddddddd";
+    phone.setAttributeNode(att)
+    });
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
+}
 </script>
 {% endblock %}
 {% block content %}
@@ -40,8 +65,8 @@ $(document).ready(function() {
 
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="http://127.0.0.1:8000/person_panel/parent_table"><i class="fa fa-table"></i> Veli Tablosu</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="https://dormoni.com/person_panel/parent_table"><i class="fa fa-table"></i> Veli Tablosu</a></li>
           <li class="active">Yeni Veli Kaydı</li>
       </ol>
 
@@ -64,57 +89,19 @@ $(document).ready(function() {
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
-                <div class="form-group">
-                    <label for="id_id">Veli No: </label>
-                    <input type="text" class="form-control" placeholder="Veli No" name="id" required id="id_id" value="{{ form.id.value }}" maxlength="11">
-                </div>
-                <div class="form-group">
-                <label for="id_student_id">Öğrenci Adı: </label>
-                <select class="form-control select2" style="width: 100%;" name="student_id" id="id_student_id">
-                  <option value="{{ form.student_id.value }}"></option>
-                    {% for student in person_list %}
-                        <option value="{{ student }}">{{ student.full_name }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                    <label for="id_parent_name">Adı: </label>
-                    <input type="text" class="form-control" placeholder="Adı" name="parent_name" required id="id_parent_name" value="{{ form.parent_name.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_parent_lastname">Soyadı: </label>
-                    <input type="text" class="form-control" placeholder="Soyadı" name="parent_lastname" required id="id_parent_lastname" value="{{ form.parent_lastname.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_parent_TCN">Kimlik Numarası: </label>
-                    <input type="text" class="form-control" placeholder="Kimlik Numarası" name="parent_TCN" required id="id_parent_TCN" value="{{ form.parent_TCN.value }}" maxlength="11" data-inputmask='"mask": "99999999999"' data-mask>
-                </div>
-              <div class="form-group">
-                <label for="id_parent_phone">Telefon Numarası:</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Telefon Numarası(+90...)" name="parent_phone" required id="id_parent_phone" value="{{ form.parent_phone.value }}" maxlength="13" data-inputmask='"mask": "+999999999999"' data-mask>
-                </div>
-                <!-- /.input group -->
-              </div>
-                <div class="form-group">
-                    <label for="id_parent_email">E-mail Adresi: </label>
-                    <input type="email" class="form-control" placeholder="E-mail Adresi" name="parent_email" required id="id_parent_email" value="{{ form.parent_email.value }}" maxlength="50">
-                </div>
-                <div class="form-group">
-                    <label for="id_relative_degree">Yakınlık Derecesi: </label>
-                    <input type="text" class="form-control" placeholder="Yakınlık Derecesi" name="relative_degree" required id="id_relative_degree" value="{{ form.relative_degree.value }}" maxlength="20  ">
-                </div>
-                <div class="form-group">
-                    <label for="id_parent_job">Meslek: </label>
-                    <input type="text" class="form-control" placeholder="Meslek" name="parent_job" required id="id_parent_job" value="{{ form.parent_job.value }}" maxlength="20">
-                </div>
-
+                  <div class="row">
+                      <div class="col-xs-12">
+                          {% bootstrap_form form %}
+                      </div>
+                  </div>
+                      <div class="row">
+                        <!-- /.col -->
                         <div class="col-xs-12">
                             <div class="pull-right">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
-                            </div></div>
-
-
+                          <button type="submit" class="btn btn-primary btn-block btn-flat">Kaydet</button>
+                        </div></div>
+                        <!-- /.col -->
+                      </div>
                   </form></div></div></div></div>
 
     </section>
