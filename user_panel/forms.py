@@ -43,10 +43,10 @@ class FreeRegisterForm(forms.Form):
     last_name= forms.CharField(label='Soyad')
     password = forms.CharField(widget=forms.PasswordInput(), label='Şifre',strip=False)
     password2 = forms.CharField(widget=forms.PasswordInput(), label='Şifre Tekrar',strip=False)
+    phone = PhoneNumberField(label='Telefon Numarası')
     termofuse= forms.BooleanField(widget=forms.CheckboxInput(),label='<a href="https://dormoni.com/termofuse/" >Kullanım Koşullarını</a> Kabul Ediyorum')
 
     class Meta:
-
         fields = [
             'email',
             'name',
@@ -62,8 +62,7 @@ class FreeRegisterForm(forms.Form):
         password2 = self.cleaned_data.get("password2")
         if password and password2 and password != password2:
             self.add_error('password2',"Şifre Uyuşmuyor")
-        self.instance.email = self.cleaned_data.get('email')
-        password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
+        #password_validation.validate_password(self.cleaned_data.get('password2'), self.instance)
 
     def company_id(self):
         id=str(int(CompanyInfoModel.objects.last().company_id)+1)
@@ -75,8 +74,9 @@ class FreeRegisterForm(forms.Form):
         return datetime.date.today()+datetime.timedelta(days=15)
 
     def save(self):
-        new_user=User(email=self.cleaned_data.get('email'),name=self.cleaned_data.get('name'),last_name=self.cleaned_data.get('last_name'),phone=self.cleaned_data.get('phone'),date_expired=self.date_expired(),company_id=self.compony_id())
+        new_user=User(email=self.cleaned_data.get('email'),name=self.cleaned_data.get('name'),last_name=self.cleaned_data.get('last_name'),phone=self.cleaned_data.get('phone'),date_expired=self.date_expired(),company_id=self.company_id())
         new_user.set_password(self.cleaned_data.get('password'))
+        new_user.save()
         new_user.groups.add(3)
         new_user.save()
 

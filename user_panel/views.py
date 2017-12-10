@@ -46,11 +46,6 @@ def register(request):
             print(formuser)
             if formuser.is_valid():
                 formuser.save()
-                user = formuser.save(commit=False)
-                password = formuser.cleaned_data.get('password')
-                user.set_password(password)
-                user.groups.add(3)
-                user.save()
                 return redirect('https://dormoni.com/home/')
         return render(request, "user_panel/register.html", {'form': formuser,'title':'Dormoni Ücretsiz Kayıt'})
     else:
