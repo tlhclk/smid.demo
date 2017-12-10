@@ -18,13 +18,15 @@ urlpatterns = [
     url(r'^user_panel/',include('user_panel.urls',namespace='user_panel')),
     url(r'^contract/$', views.contract,name='contract'),
     url(r'^term_of_use/$', views.termofuse,name='termofuse'),
+    url(r'^media/(?P<path>.*)$', views.media_view, name='media_root'),
+    url(r'^static/(?P<path>.*)$', views.static_view, name='static_root'),
 
 ]
-if  not settings.DEBUG:
-    urlpatterns += [url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
-                    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}), ]
-else:
-    urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if  not settings.DEBUG:
+#     urlpatterns += [url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
+#                     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}), ]
+# else:
+#     urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 handler404='smidBeta.views.page_not404_found'

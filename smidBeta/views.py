@@ -3,6 +3,8 @@
 from django.shortcuts import render,redirect
 from stock_panel.models import RoomInfoModel
 from person_panel.models import StudentInfoModel
+from django.conf.urls.static import static,serve
+from django.conf import settings
 
 def home_page(request):
     if str(request.user)!='AnonymousUser':
@@ -42,3 +44,9 @@ def page_not500_found(request):
     response= render(request,'500.html',{'title':'500 Internal Server Error'})
     response.status_code=500
     return response
+
+def media_view(request,path):
+    return serve(request,path,settings.MEDIA_ROOT)
+
+def static_view(request,path):
+    return serve(request,path,settings.STATIC_ROOT)

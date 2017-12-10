@@ -16,6 +16,7 @@
 <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
 <script>
   $(function () {
     $('input').iCheck({
@@ -23,6 +24,11 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%'
     });
+    var phone=document.getElementById("id_phone");
+    phone.setAttribute("class","form-control input-medium bfh-phone");
+    var att = document.createAttribute('data-format');
+    att.value="+905ddddddddd";
+    phone.setAttributeNode(att)
   });
 </script>
 </head>
