@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render,redirect
 from django.core.files import File
-from .models import StudentLeaveModel,AttendanceInfoModel,VacationInfoModel
+from .models import StudentLeaveModel,AttendanceInfoModel,VacationInfoModel,NotificationInfoModel
 from .forms import StudentLeaveForm,AttendanceInfoForm,MailSendForm,VacationInfoForm
 from person_panel.models import StudentInfoModel
+from user_panel.models import CompanyInfoModel
 import datetime
 import imaplib
 
@@ -162,3 +163,25 @@ def delete_vacation(request,vacation_id):
         VacationInfoModel.objects.get(pk=vacation_id).delete()
         return redirect('https://dormoni.com/operation_panel/vacation_table/')
     else: return redirect('https://dormoni.com/user_panel/login/')
+
+def notification(request=None,company_id=None):
+    late_payment=('','')
+    stu_absence=('','')
+    end_of_month=('','')
+    event=('','')
+    last_day_bill=('','')
+    all_results=[late_payment,stu_absence,end_of_month,event,last_day_bill]
+    for item in all_results:
+        if request:
+            if item not in NotificationInfoModel.objects.values_list('title','text').filter(company_id=request.user.company_id):
+                new_notification=NotificationInfoModel(title=item[0],text=item[1],company_id=request.user.company_id,day=datetime.date.today())
+                new_notification.save()
+        elif company_id:
+            if item not in NotificationInfoModel.objects.values_list('title', 'text').filter(company_id=company_id):
+                new_notification=NotificationInfoModel(title=item[0],text=item[1],company_id=company_id,day=datetime.date.today())
+                new_notification.save()
+
+def all_buildings():# TODO: daily/weekly/monthly processes
+    all_company=CompanyInfoModel.objects.all()
+    for comp in all_company:
+        notification(company_id=comp)

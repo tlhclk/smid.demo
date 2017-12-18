@@ -31,7 +31,9 @@ class RoomInfoModel(models.Model):
 
     def people_list(self):
         from person_panel.models import StudentInfoModel
-        return [person for person in StudentInfoModel.objects.filter(room_id_id=self.id,company_id=self.company_id_id)]
+        a_list=[person for person in StudentInfoModel.objects.filter(room_id_id=self.id,company_id=self.company_id_id)]
+        asad=['']*(int(self.people)-len(a_list))
+        return a_list+asad
 
     def fixture_list(self):
         return [fixture for fixture in FixtureInfoModel.objects.filter(room_id=self.id,company_id=self.company_id_id)]

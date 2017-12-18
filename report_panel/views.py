@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
-from operation_panel.models import StudentLeaveModel,AttendanceInfoModel
-from stock_panel.models import FixtureInfoModel,RoomInfoModel
-from document_panel.models import LiabilityInfoModel,DocumentInfoModel
-from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel,PersonIDInfoModel
-from account_panel.models import AccountInfoModel,PersonAssetInfoModel,TransactionInfoModel,BillInfoModel
-from user_panel.models import CompanyInfoModel,UserCompanyModel
+from stock_panel.models import RoomInfoModel
+from person_panel.models import StudentInfoModel,ParentInfoModel,PersonalInfoModel
+from account_panel.models import AccountInfoModel,PersonAssetInfoModel,TransactionInfoModel
 from .forms import FilterAccountForm
 import json
 import datetime,re,pytz
@@ -40,7 +37,11 @@ def dorm_capacity(request,room_id):
 def room_plan(request):
     if request.user.has_perm('stock_panel.add_roominfomodel'):
         room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id).order_by('no')
-        return render(request, 'report_panel/room_plan.html', {'room_list': room_list,'title':'Yurt Bilgileri'})
+        room_floor_list=[('0','Kat Seçiniz')]
+        for room in room_list:
+            if (room.floor,room.floor) not in room_floor_list:
+                room_floor_list.append((room.floor,room.floor))
+        return render(request, 'report_panel/room_plan.html', {'room_list': room_list,'title':'Yurt Bilgileri','room_floor':room_floor_list})
     else: return redirect('https://dormoni.com/user_panel/login')
 
 def contact_table(request):

@@ -19,16 +19,9 @@
         <form name="selectform">
 
       <select id="floorfilter" name="floorfilter" onchange="SelectChanged();" class="dropdown-toggle" data-toggle="dropdown">
-      <option value="0">Kat Seçiniz</option>
-      <option value="B2">-2. Kat</option>
-      <option value="B1">-1. Kat</option>
-      <option value="Z">Zemin Kat</option>
-      <option value="1">1. Kat</option>
-      <option value="2">2. Kat</option>
-      <option value="3">3. Kat</option>
-      <option value="4">4. Kat</option>
-      <option value="5">5. Kat</option>
-      <option value="6">6. Kat</option>
+      {% for room_flo in room_floor %}
+            <option value={{ room_flo.0 }}>{{ room_flo.1 }}</option>
+          {% endfor %}
       </select>
         </form>
         <div> &nbsp; </div>

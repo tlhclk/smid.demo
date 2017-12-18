@@ -8,7 +8,7 @@ from django.contrib.auth import(authenticate,login,logout)
 from django.contrib.auth.models import Group,Permission,ContentType
 from .forms import UserLoginForm,UserRegistrationForm,PermissionForm,GroupPermissionForm,AddGroup,CompanyInfoForm,FreeRegisterForm
 from .models import CompanyInfoModel,User
-from django.contrib.auth import views as auth_views
+from operation_panel.views import notification
 
 
 
@@ -20,15 +20,10 @@ def log_in(request):
             if formuser.is_valid():
                 email = formuser.cleaned_data.get("email")
                 password = formuser.cleaned_data.get("password")
-                remember = formuser.cleaned_data.get("remember")
                 user = authenticate(email=email, password=password)
                 login(request, user)
-                if remember==True:
-                    request.session.set_expiry(604800)#bir haftalık
-                else:
-                    request.session.set_expiry(0)
+                #notification(request)
                 return redirect('https://dormoni.com/home/')
-
         return render(request,'user_panel/login.html',{'form':formuser})
     else:
         return redirect('https://dormoni.com/home/')

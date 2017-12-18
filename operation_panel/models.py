@@ -59,8 +59,8 @@ class VacationInfoModel(models.Model):
 
 class NotificationInfoModel(models.Model):
     title=models.CharField(max_length=50,default='')
-    to_a=models.CharField(max_length=50,default='')
-    from_a=models.CharField(max_length=50,null=True,blank=True)
+    to_a=models.CharField(max_length=50,null=True,blank=True)
+    day=models.DateField(blank=True,null=True)
     text=models.CharField(max_length=50,default='')
     company_id=models.ForeignKey(CompanyInfoModel,default='')
 
