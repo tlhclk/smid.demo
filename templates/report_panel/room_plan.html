@@ -38,31 +38,44 @@
 <div class="container">
     <br>
     <div class="panel-group">
+      {% for floor in room_floor %}
+          <div class="row">
+            <div class="col-lg-12">
+                {% for room in room_list %}
+                    {% if floor.1 == room.floor %}
+                        <div class="col-lg-2">
+                            {% if room.situation == 'dolu' %}
+                                <div class="panel panel-block" style="background: #CF4232" data-filter-tags="#CF4232" >
+                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                {% for student in room.people_list %}
+                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                {% endfor %}
+                                </div>
+                            {% elif room.situation == 'bos' %}
+                                <div class="panel panel-block" style="background: #FAC023" data-filter-tags="#FAC023" >
+                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                {% for student in room.people_list %}
+                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="panel panel-block" style="background: #068675" data-filter-tags="#068675" >
+                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                {% for student in room.people_list %}
+                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+          </div><br>
+      {% endfor %}
 
-    <div class="row">
-      <div class="col-lg-12">
-        {% for room in room_list %}
-      <div class="col-lg-2">
-      {% if room.situation == 'dolu' %}
-        <div class="panel panel-block" style="background: #CF4232" data-filter-tags="#CF4232" >
-          {% elif room.situation == 'bos' %}
-          <div class="panel panel-block" style="background: #FAC023" data-filter-tags="#FAC023" >
-          {% else %}
-        <div class="panel panel-block" style="background: #068675" data-filter-tags="#068675" >
-        {% endif %}
-                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
-            {% for student in room.people_list %}
-                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
-            {% endfor %}
-        </div>
-      </div>
-        {% endfor %}
-      </div>
-
-    </div><br>
     </div>
-        </div></div></div>
-          </section></div>
+</div>
+  </section></div>
 
 
 <br>  <br>

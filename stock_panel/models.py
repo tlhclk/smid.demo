@@ -41,7 +41,7 @@ class RoomInfoModel(models.Model):
     def situation(self):
         if int(self.people)==0:
             return 'pasif'
-        elif int(self.people)-len(self.people_list())==0:
+        elif '' not in self.people_list():
             return 'dolu'
         else:
             return 'bos'
