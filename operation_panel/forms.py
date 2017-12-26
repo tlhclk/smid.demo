@@ -99,21 +99,22 @@ class MailSendForm(forms.Form):
         manual=self.cleaned_data.get('people_manual')
         if selected==None and manual==None:
             self.add_error('people_selection','Lütfen Bir Kişi Seçiniz ya da E-Posta Adresi Yazınız.')
+
     def save (self):
         subject = self.cleaned_data['subject']
         message = self.cleaned_data['message']
         selected_people = self.cleaned_data['people_selection']
-        written_people = self.cleaned_data['people_manual'].split(', ')
+        written_people = self.cleaned_data['people_manual'].strip().split(', ')
         if selected_people and not written_people:
             to_ma=selected_people
         elif written_people and not selected_people:
             to_ma=written_people
         else:
             to_ma = [selected_people.email] + written_people
-        mail.send_mail(subject, message,'tlhclk1312@windowslive.com',['tlhclk1312@gmail.com'])
+        from_ma='admin@dormoni.com'
+        from_pass='Deneme1234'
+        mail.send_mail(subject, message,from_ma,to_ma,auth_user=from_ma,auth_password=from_pass)
 
-    def clean_company_id(self):
-        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
 class VacationInfoForm(forms.ModelForm):
     def __init__(self, user,POST=None,*args, **kwargs):

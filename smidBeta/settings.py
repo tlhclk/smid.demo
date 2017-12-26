@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1d^alrv3cj4)zu#f=t-zezpl#65x)al)bc0ca2=p$&6@pdx1fc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -65,7 +65,6 @@ MIDDLEWARE = ('django_cloudflare_push.middleware.push_middleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 ROOT_URLCONF = 'smidBeta.urls'
-
 
 TEMPLATES = [
     {
@@ -130,10 +129,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'tlhclk1312@gmail.com'
+EMAIL_HOST_USER = 'talha@dormoni.com'
 EMAIL_HOST_PASSWORD = 'Tlhclk.12'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
@@ -156,7 +155,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_ROOT= os.path.join(BASE_DIR,'static')
-STATIC_URL = '/static/'
+STATIC_URL = 'https://dormoni.com/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates/smidDemo/'),]
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',

@@ -52,7 +52,4 @@ def media_view(request,path):
         return page_not404_found(request)
 
 def static_view(request,path):
-    if request.user.id:
-        return serve(request,path,settings.STATIC_ROOT)
-    else:
-        return page_not404_found(request)
+    return serve(request,path,settings.STATIC_ROOT)
