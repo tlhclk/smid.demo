@@ -46,7 +46,7 @@
 <script src="{% static 'plugins/fullcalendar/fullcalendar.min.js' %}"></script>
 <script>
   $(function () {
-      var new_data=JSON.parse('{{ birthday_json }}'.replace(/&quot;/g,'"'));
+      var new_data=JSON.parse('{{ birthday_json }}'.replace(/&quot;/gi,'"'));
       var color_list=['rgba(255,0,0,0.6)','rgba(0,255,0,0.6)','rgba(0,0,255,0.6)','rgba(255,255,0,0.6)','rgba(255,0,255,0.6)', 'rgba(0,255,255,0.6)','rgba(192,192,192,0.6)','rgba(255,127,0.6)','rgba(255,0,127,0.6)','rgba(127,255,0,0.6)'];
       var new_dataset=[];
       for (i in new_data){

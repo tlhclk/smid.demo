@@ -47,12 +47,10 @@ INSTALLED_APPS = [
     'account_panel',
     'operation_panel',
     'calendar_panel',
-    'django_mailbox',
     'localflavor',
     'phonenumber_field',
     'psycopg2',
     'django_cloudflare_push',
-    'django_smtp_ssl',
 ]
 
 MIDDLEWARE = ('django_cloudflare_push.middleware.push_middleware',
@@ -78,6 +76,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'loaders':[
+                'django.template.loaders.cached.Loader'
+            ]
         },
     },
 ]

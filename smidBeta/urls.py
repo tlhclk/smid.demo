@@ -1,11 +1,10 @@
 from django.conf.urls import include, url
 from django.conf.urls import (handler400, handler403, handler404, handler500)
-from django.conf.urls.static import static,serve
-from django.conf import settings
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^home/$',views.home_page,name='home'),
     url(r'^$',views.main_page,name='Main Page'),
     url(r'^account_panel/',include('account_panel.urls',namespace='account_panel')),
@@ -22,12 +21,6 @@ urlpatterns = [
     url(r'^static/(?P<path>.*)$', views.static_view, name='static_root'),
 
 ]
-# if  not settings.DEBUG:
-#     urlpatterns += [url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
-#                     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}), ]
-# else:
-#     urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 handler404='smidBeta.views.page_not404_found'
 handler403='smidBeta.views.page_not403_found'

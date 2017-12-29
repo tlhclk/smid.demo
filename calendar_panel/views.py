@@ -22,10 +22,23 @@ def birthday_calendar(request):
                               '%d-%d-%d' %(datetime.datetime.today().year,student.birth_day.month,student.birth_day.day),True])
     return render(request,'calendar_panel/calendar.html',{'birthday_json':json.dumps(json_list),'title':'Takvim'})
 
-def graph(request):
-    return render(request,'calendar_panel/graphic.html')
+def agenda(request):
+    today=datetime.date.today()
+    person_list=[]
+    for person in PersonIDInfoModel.objects.filter(company_id=request.user.company_id_id):
+        if (person.birth_day.month-today.month)==1:
+            if person.birth_day.day<today.day:
+                person_list.append(person)
+        elif person.birth_day.month==today.month:
+            if person.birth_day.day>=today.day:
+                person_list.append(person)
+        elif today.month==12:
+            if person.birth_day.month==1:
+                if person.birth_day.day<today.day:
+                    person_list.append(person)
+    return render(request, 'calendar_panel/agenda.html',{'title':'Ajanda','event_list':person_list})
 
-def calendar(request):
+def event_calendar(request):
     all_events=EventInfoModel.objects.filter(company_id=request.user.company_id_id)
     json_list = []
     for event in all_events:
@@ -39,3 +52,15 @@ def calendar(request):
                               '%d-%d-%d' %(event.end_time.year,event.end_time.month,event.end_time.day+1),
                               event.type])
     return render(request, 'calendar_panel/asd.html', {'birthday_json': json.dumps(json_list), 'title': 'Takvim'})
+
+def event_add(request):
+    pass
+
+def event_detail(request):
+    pass
+
+def event_edit(request):
+    pass
+
+def event_delete(request):
+    pass

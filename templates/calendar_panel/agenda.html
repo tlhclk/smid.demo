@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/fullcalendar.print.css' %}" media="print">
+  <link rel="stylesheet" href="{% static 'main_theme/css/skins/_all-skins.min.css' %}">
+  <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/AdminLTE.min.css">
+      <style type="text/css">
+
+  .panel-heading{
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.breadcrumb{
+    background: #FFE495;
+}
+  </style>
+{% endblock %}
+{% block content %}
+    <section>
+      <ol class="breadcrumb">
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+          <li class="active">Yapılacaklar</li>
+      </ol>
+
+    </section>
+
+    <section class="content">
+      <div class="row">
+
+        <div class="col-md-2">
+          <div class="box box-primary">
+            <div class="box-body no-padding">
+                {% for event in event_list %}
+                 <p>{{ event.full_name }} - {{ event.birth_day }}</p>
+
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+{% block script %}
+<script src="{% static 'plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'plugins/fastclick/fastclick.js' %}"></script>
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/moment/moment.js"></script>
+<script src="{% static 'plugins/fullcalendar/fullcalendar.min.js' %}"></script>
+{% endblock %}
