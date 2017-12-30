@@ -37,7 +37,7 @@ class PersonIDInfoModel(models.Model):
     nufus_ailesira = models.CharField(max_length=5,blank=True,null=True)
     nufus_sirano = models.CharField(max_length=4,blank=True,null=True)
     medeni_hali = models.CharField(max_length=10,choices=medeni_hal_list,blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='personid_info'
@@ -71,7 +71,7 @@ class PersonalInfoModel(models.Model):
     blood_type_list=(('0','0 rh +'),('1','0 rh -'),('2','A rh +'),('3','A rh -'),('4','B rh +'),('5','B rh -'),('6','AB rh+'),('7','AB rh-'))
     personal_type_list=[('0','Accountant'),('1',''),('2','')]
     id = models.CharField(max_length=7,primary_key=True,default='')
-    tcn = models.OneToOneField(PersonIDInfoModel,unique=True)
+    tcn = models.OneToOneField(PersonIDInfoModel,unique=True,on_delete=models.CASCADE)
     phone = PhoneNumberField(default='+905553332211',max_length=13)
     email = models.EmailField(default='',unique=True)
     start_day = models.DateField(default=get_date,max_length=10)
@@ -84,7 +84,7 @@ class PersonalInfoModel(models.Model):
     special_notes = models.CharField(max_length=200, null=True,blank=True)
     image_field = models.ImageField(upload_to='profile_pic/',default='')
     salary=models.CharField(max_length=7,default='2000.0')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='personal_info'
@@ -118,7 +118,7 @@ class StudentInfoModel(models.Model):
     student_type_list=(('0','Normal'),('1','Geçici'),('2','Misafir'))
 
     id = models.CharField(max_length=7,primary_key=True,default='1701001')
-    tcn=models.OneToOneField(PersonIDInfoModel,unique=True)
+    tcn=models.OneToOneField(PersonIDInfoModel,unique=True,on_delete=models.CASCADE)
     phone = PhoneNumberField(default='+905553332211',max_length=13)
     email = models.EmailField(null=True,blank=True)
     start_day = models.DateField(default=get_date,max_length=10)
@@ -126,7 +126,7 @@ class StudentInfoModel(models.Model):
     city = models.CharField(max_length=20,choices=PROVINCE_CHOICES,default='1')
     town = models.CharField(max_length=20,null=True,blank=True)
     address = models.CharField(max_length=100,null=True,blank=True)
-    room_id = models.ForeignKey(RoomInfoModel,default='101')
+    room_id = models.ForeignKey(RoomInfoModel,default='101',on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=student_type_list, default='1')
     school_name = models.CharField(max_length=30,null=True,blank=True)
     education_year = models.CharField(max_length=20, choices=year_list, default='1')
@@ -135,7 +135,7 @@ class StudentInfoModel(models.Model):
     special_notes = models.CharField(max_length=200,null=True,blank=True)
     image_field = models.ImageField(upload_to='profile_pic/',null=True,blank=True)
     position= models.BooleanField(default='1')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
 
     class Meta:
@@ -178,7 +178,7 @@ class StudentInfoModel(models.Model):
 
 class ParentInfoModel(models.Model):
     id=models.CharField(max_length=8,primary_key=True,default='1704001')
-    person=models.ForeignKey(StudentInfoModel,unique=False)
+    person=models.ForeignKey(StudentInfoModel,unique=False,on_delete=models.CASCADE)
     name=models.CharField(max_length=20,default='')
     last_name=models.CharField(max_length=20,default='')
     tcn=models.CharField(max_length=11,null=True,blank=True)
@@ -186,7 +186,7 @@ class ParentInfoModel(models.Model):
     email=models.EmailField(default='')
     relative_degree=models.CharField(max_length=20,default='')
     job=models.CharField(max_length=20,null=True,blank=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='parent_info'

@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['46.101.120.8','dormoni.com','127.0.0.1','www.dormoni.com','mai
 
 INSTALLED_APPS = [
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -76,9 +77,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'loaders':[
-                'django.template.loaders.cached.Loader'
-            ]
         },
     },
 ]

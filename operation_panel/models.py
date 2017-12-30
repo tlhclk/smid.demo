@@ -13,11 +13,11 @@ def get_date():
     return datetime.date.today()
 
 class StudentLeaveModel(models.Model):
-    person=models.ForeignKey(StudentInfoModel)
+    person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     start=models.DateField()
     end=models.DateField(blank=True,null=True)
     reason=models.CharField(max_length=100,blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='student_leave'
@@ -27,10 +27,10 @@ class StudentLeaveModel(models.Model):
 
 
 class AttendanceInfoModel(models.Model):
-    person=models.ForeignKey(StudentInfoModel)
+    person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     time=models.DateTimeField(default=get_time)
     in_or_out=models.BooleanField(max_length=1)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class meta:
         db_table='attendance_info'
@@ -45,11 +45,11 @@ class AttendanceInfoModel(models.Model):
             return 'Dışarı Çıktı'
 
 class VacationInfoModel(models.Model):
-    person=models.ForeignKey(PersonalInfoModel)
+    person=models.ForeignKey(PersonalInfoModel,on_delete=models.CASCADE)
     start_day=models.DateField()
     end_day=models.DateField(null=True,blank=True)
     reason=models.CharField(max_length=100,blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='vacation_info'
@@ -62,7 +62,7 @@ class NotificationInfoModel(models.Model):
     to_a=models.CharField(max_length=50,null=True,blank=True)
     day=models.DateField(blank=True,null=True)
     text=models.CharField(max_length=50,default='')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='notification_info'
@@ -78,21 +78,21 @@ class CityInfoModel(models.Model):
         db_table='adres_city'
 
 class TownInfoModel(models.Model):
-    city = models.ForeignKey(CityInfoModel)
+    city = models.ForeignKey(CityInfoModel,on_delete=models.CASCADE)
     town_name = models.CharField(max_length=50, blank=False)
     town_slug = models.CharField(max_length=50, blank=False)
     class Meta:
         db_table='adres_town'
 
 class NeighborhoodInfoModel(models.Model):
-    town = models.ForeignKey(TownInfoModel)
+    town = models.ForeignKey(TownInfoModel,on_delete=models.CASCADE)
     neighborhood_name = models.CharField(max_length=100, blank=False)
     neighborhood_slug = models.CharField(max_length=100, blank=False)
     class Meta:
         db_table='adres_neigh'
 
 class PostalCodeInfoModel(models.Model):
-    neighborhood =models.ForeignKey(NeighborhoodInfoModel)
+    neighborhood =models.ForeignKey(NeighborhoodInfoModel,on_delete=models.CASCADE)
     pk_name = models.CharField(max_length=100, blank=False)
     pk_slug = models.CharField(max_length=100, blank=False)
     postal_code = models.CharField(max_length=30, blank=False)

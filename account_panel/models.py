@@ -16,13 +16,13 @@ def get_date():
 class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki default ifadeleri kaldırılacak null,black ifadeleri gereken yerlere yerleştirilecek
     asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
     id=models.CharField(max_length=10,primary_key=True)
-    person=models.ForeignKey(StudentInfoModel)
+    person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     #amount=models.CharField(max_length=6,default='0')
     debt=models.CharField(max_length=6,default='')#kalkıcak
     desc=models.CharField(max_length=50,null=True, blank=True)
     period=models.CharField(max_length=2,default='')
     type=models.CharField(max_length=10,choices=asset_type_list)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='personasset_info'
@@ -43,7 +43,7 @@ class AccountInfoModel(models.Model):
     amount=models.CharField(max_length=10,default='')
     desc=models.CharField(max_length=100,null=True, blank=True)
     bank_code=models.CharField(max_length=5,choices=bank_code_list)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='account_info'
@@ -66,7 +66,7 @@ class BillInfoModel(models.Model):
     address=models.CharField(max_length=200,null=True, blank=True)
     payed=models.NullBooleanField()
     last_day=models.DateField(default=get_date,max_length=10)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='bill_info'
@@ -79,12 +79,12 @@ class BillInfoModel(models.Model):
 
 class TransactionInfoModel(models.Model):
     transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi'),('8','Maaş')]
-    account_no=models.ForeignKey(AccountInfoModel)
+    account_no=models.ForeignKey(AccountInfoModel,on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=transaction_type_list, default='1')
     amount = models.CharField(max_length=10,default='')
     time = models.DateTimeField(default='')
     desc = models.CharField(max_length=100,null=True,blank=True,default='')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'transaction_info'
@@ -99,7 +99,7 @@ class TransactionInfoModel(models.Model):
         return self.account_no.name
 
 class PeriodicPaymentModel(models.Model):
-    person_asset=models.OneToOneField(PersonAssetInfoModel)
+    person_asset=models.OneToOneField(PersonAssetInfoModel,on_delete=models.CASCADE)
     deposito=models.CharField(max_length=6,null=True,blank=True)
     month1=models.CharField(max_length=6,null=True,blank=True)
     month2=models.CharField(max_length=6,null=True,blank=True)
@@ -114,7 +114,7 @@ class PeriodicPaymentModel(models.Model):
     month11=models.CharField(max_length=6,null=True,blank=True)
     month12=models.CharField(max_length=6,null=True,blank=True)
     desc=models.CharField(max_length=200,null=True,blank=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='periodic_payment'

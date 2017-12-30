@@ -15,7 +15,7 @@ class EventInfoModel(models.Model):
     place=models.CharField(max_length=100,null=True,blank=True)
     type=models.CharField(max_length=10,choices=type_list,null=True,blank=True)
     desc=models.CharField(max_length=200,null=True,blank=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='event_info'

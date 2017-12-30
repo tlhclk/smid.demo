@@ -12,7 +12,7 @@ class RoomInfoModel(models.Model):
     people=models.CharField(max_length=2,choices=room_people_list)
     type=models.CharField(max_length=20,choices=room_type_list)
     desc=models.CharField(max_length=100,blank=True,null=True)
-    company_id = models.ForeignKey(CompanyInfoModel,default='')
+    company_id = models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='room_info'
@@ -54,11 +54,11 @@ class FixtureInfoModel(models.Model):
                          ('6', 'Tül.jpg'), ('7', 'Perde.jpg'), ('8', 'Masa.jpg'), ('9', 'Sandalye.jpg'), ('10', 'Askılık.jpg'),
                          ('11', 'Kitaplık.jpg'), ('12', 'Lamba.jpg'), ('13', 'Klima.jpg'), ('14', 'Ayna.jpg')]
     no = models.CharField(max_length=10,primary_key=True)
-    room=models.ForeignKey(RoomInfoModel,unique=False,default='')
+    room=models.ForeignKey(RoomInfoModel,unique=False,default='',on_delete=models.CASCADE)
     type=models.CharField(max_length=20,choices=fixture_type_list)
     notes=models.CharField(max_length=100,blank=True,null=True)
     image_field = models.ImageField(upload_to='fixture_image/',blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company_id=models.ForeignKey(CompanyInfoModel,default='',on_delete=models.CASCADE)
 
     class Meta:
         db_table='fixture_info'
