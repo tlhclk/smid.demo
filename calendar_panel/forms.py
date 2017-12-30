@@ -14,7 +14,7 @@ class EventInfoForm(forms.ModelForm):
     end_time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='Bitiş Zamanı')
     all_day=forms.BooleanField(required=False,label='Tüm Gün')
     place=forms.CharField(max_length=100,label='Konum')
-    type=forms.ChoiceField(label='Etkinlik Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    type=forms.ChoiceField(choices=EventInfoModel.type_list,label='Etkinlik Türü',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
     desc=forms.CharField(max_length=200,label='Açıklama')
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:

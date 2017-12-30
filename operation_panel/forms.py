@@ -50,7 +50,7 @@ class AttendanceInfoForm(forms.ModelForm):# TODO: Turnike Sistemleriyle uyumlu h
         self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
 
     person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    in_list=[('1','İçeri Girdi'),('0','Dışarı Çıktı')]
+    in_list=(('1','İçeri Girdi'),('0','Dışarı Çıktı'))
     in_or_out= forms.TypedChoiceField(choices=in_list,widget=forms.RadioSelect,coerce=str)
     time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='İşlem Zamanı')
     company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)

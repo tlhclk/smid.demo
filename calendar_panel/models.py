@@ -7,7 +7,7 @@ from user_panel.models import CompanyInfoModel
 # Create your models here.
 
 class EventInfoModel(models.Model):
-    type_list=[('0','Doğum Günü'),('1','Toplantı'),('2','Diğer')]
+    type_list=(('0','Doğum Günü'),('1','Toplantı'),('2','Diğer'))
     name=models.CharField(max_length=30,default='')
     start_time=models.DateTimeField(default='')
     end_time=models.DateTimeField(default='')

@@ -4,8 +4,8 @@ import datetime
 from user_panel.models import CompanyInfoModel
 
 class RoomInfoModel(models.Model):
-    room_people_list=[('1','Tek Kişilik'),('2','İki Kişilik'),('3','Üç Kişilik'),('4','Dört Kişilik'),('5','Beş Kişilik'),('6',' Altı Kişilik')]
-    room_type_list=[('1','Koridor'),('2','Çalışma Odası'),('3','Konaklama'),('4','Mutfak'),('5','Diğer')]
+    room_people_list=(('1','Tek Kişilik'),('2','İki Kişilik'),('3','Üç Kişilik'),('4','Dört Kişilik'),('5','Beş Kişilik'),('6',' Altı Kişilik'))
+    room_type_list=(('1','Koridor'),('2','Çalışma Odası'),('3','Konaklama'),('4','Mutfak'),('5','Diğer'))
     id=models.CharField(max_length=10,primary_key=True)
     no=models.CharField(max_length=4,default='')
     floor=models.CharField(max_length=2,null=True,blank=True)
@@ -47,12 +47,12 @@ class RoomInfoModel(models.Model):
             return 'bos'
 
 class FixtureInfoModel(models.Model):
-    fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
+    fixture_type_list = (('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
                          ('6', 'Tül'), ('7', 'Perde'), ('8', 'Masa'), ('9', 'Sandalye'), ('10', 'Askılık'),
-                         ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna')]
-    fixture_image_list=[('1', 'Baza.jpg'), ('2', 'Yatak.jpg'), ('3', 'Dolap.jpg'), ('4', 'Halı.jpg'), ('5', 'Komodin.jpg'),
+                         ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna'))
+    fixture_image_list = (('1', 'Baza.jpg'), ('2', 'Yatak.jpg'), ('3', 'Dolap.jpg'), ('4', 'Halı.jpg'), ('5', 'Komodin.jpg'),
                          ('6', 'Tül.jpg'), ('7', 'Perde.jpg'), ('8', 'Masa.jpg'), ('9', 'Sandalye.jpg'), ('10', 'Askılık.jpg'),
-                         ('11', 'Kitaplık.jpg'), ('12', 'Lamba.jpg'), ('13', 'Klima.jpg'), ('14', 'Ayna.jpg')]
+                         ('11', 'Kitaplık.jpg'), ('12', 'Lamba.jpg'), ('13', 'Klima.jpg'), ('14', 'Ayna.jpg'))
     no = models.CharField(max_length=10,primary_key=True)
     room=models.ForeignKey(RoomInfoModel,unique=False,default='',on_delete=models.CASCADE)
     type=models.CharField(max_length=20,choices=fixture_type_list)

@@ -14,7 +14,7 @@ def get_date():
     return datetime.date.today()
 
 class CompanyInfoModel(models.Model):
-    company_type=[]
+    company_type=()
     company_id=models.CharField(max_length=10,primary_key=True)
     company_name=models.CharField(max_length=20,default='')
     company_vno=models.CharField(max_length=15,default='')

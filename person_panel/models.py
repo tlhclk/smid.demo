@@ -15,10 +15,10 @@ def get_date():
 
 
 class PersonIDInfoModel(models.Model):
-    idcard_type_list = [('1', 'Eski Kimlik'), ('2', 'Yeni Kimlik'), ('3', 'Ehliyet'), ('4', 'Pasaport'),('5', 'Diğer')]
-    nation_list = [('1', 'Türkiye')]# TODO: milletler eklenecek
-    gender_list = [('1', 'Kadın'), ('2', 'Erkek')]
-    medeni_hal_list = [('1', 'Bekar'), ('2', 'Evli'), ('3', 'Dul'), ('4', 'Diğer')]
+    idcard_type_list = (('1', 'Eski Kimlik'), ('2', 'Yeni Kimlik'), ('3', 'Ehliyet'), ('4', 'Pasaport'),('5', 'Diğer'))
+    nation_list = (('1', 'Türkiye'),('2','Yabancı'))# TODO: milletler eklenecek
+    gender_list = (('1', 'Kadın'), ('2', 'Erkek'))
+    medeni_hal_list = (('1', 'Bekar'), ('2', 'Evli'), ('3', 'Dul'), ('4', 'Diğer'))
     city_list=PROVINCE_CHOICES
     tcn = models.CharField(max_length=11, default='',primary_key=True)
     name = models.CharField(max_length=20, default='',)
@@ -69,7 +69,7 @@ class PersonIDInfoModel(models.Model):
 
 class PersonalInfoModel(models.Model):
     blood_type_list=(('0','0 rh +'),('1','0 rh -'),('2','A rh +'),('3','A rh -'),('4','B rh +'),('5','B rh -'),('6','AB rh+'),('7','AB rh-'))
-    personal_type_list=[('0','Accountant'),('1',''),('2','')]
+    personal_type_list=(('0','Accountant'),('1',''),('2',''))
     id = models.CharField(max_length=7,primary_key=True,default='')
     tcn = models.OneToOneField(PersonIDInfoModel,unique=True,on_delete=models.CASCADE)
     phone = PhoneNumberField(default='+905553332211',max_length=13)

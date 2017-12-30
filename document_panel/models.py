@@ -13,7 +13,7 @@ def get_date():
     return datetime.date.today()
 
 class DocumentInfoModel(models.Model):
-    document_type_list=[('1','Kimlik Kartı'),('2','Sigorta'),('3','Fatura'),('4','İzin Kağıdı'),('5','Öğrenci Sertifikası'),]
+    document_type_list=(('1','Kimlik Kartı'),('2','Sigorta'),('3','Fatura'),('4','İzin Kağıdı'),('5','Öğrenci Sertifikası'))
     id=models.CharField(max_length=10,primary_key=True,default='')
     person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     date=models.DateField(max_length=10)
@@ -39,9 +39,9 @@ class DocumentInfoModel(models.Model):
 
 
 class LiabilityInfoModel(models.Model):
-    fixture_type_list = [('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
+    fixture_type_list = (('1', 'Baza'), ('2', 'Yatak'), ('3', 'Dolap'), ('4', 'Halı'), ('5', 'Komodin'),
                          ('6', 'Tül'), ('7', 'Perde'), ('8', 'Masa'), ('9', 'Sandalye'), ('10', 'Askılık'),
-                         ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna')]# TODO: liste düzenlenecek
+                         ('11', 'Kitaplık'), ('12', 'Lamba'), ('13', 'Klima'), ('14', 'Ayna'))# TODO: liste düzenlenecek
     person=models.ForeignKey(StudentInfoModel,unique=False,on_delete=models.CASCADE)
     type=models.CharField(max_length=50,choices=fixture_type_list)
     desc=models.CharField(max_length=100,default='',blank=True)

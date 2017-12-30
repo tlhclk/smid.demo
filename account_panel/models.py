@@ -14,7 +14,7 @@ def get_date():
 
 
 class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki default ifadeleri kaldırılacak null,black ifadeleri gereken yerlere yerleştirilecek
-    asset_type_list=[('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme')]
+    asset_type_list=(('1','Nakit'),('2','Kredi Kartı'),('3','Para Transferi'),('4','Online Ödeme'))
     id=models.CharField(max_length=10,primary_key=True)
     person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     #amount=models.CharField(max_length=6,default='0')
@@ -34,8 +34,8 @@ class PersonAssetInfoModel(models.Model):# TODO: Bütün modelsllerdeki default 
         return dict(self.asset_type_list)[self.type]
 
 class AccountInfoModel(models.Model):
-    account_type_list=[('1','Vadesiz Banka Hesabı'),('2','Vadeli Banka Hesabı'),('3','Nakit'),('4','Senet'),('5','Çek'),('6','Kredi Kartı Hesabı')]
-    bank_code_list=[('149','HalkBank'),('150','Vakıfbank'),('151','Yapı Kredi'),('152','Ziraat'),('153','İş bankası'),('154','Akbank')]
+    account_type_list=(('1','Vadesiz Banka Hesabı'),('2','Vadeli Banka Hesabı'),('3','Nakit'),('4','Senet'),('5','Çek'),('6','Kredi Kartı Hesabı'))
+    bank_code_list=(('149','HalkBank'),('150','Vakıfbank'),('151','Yapı Kredi'),('152','Ziraat'),('153','İş bankası'),('154','Akbank'))
     # TODO: bankalar listelenicek
     no=models.CharField(max_length=10,primary_key=True)
     name=models.CharField(max_length=20,default='')
@@ -58,7 +58,7 @@ class AccountInfoModel(models.Model):
         return dict(self.bank_code_list)[self.bank_code]
 
 class BillInfoModel(models.Model):
-    bill_type_list=[('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('6','Vergi')]
+    bill_type_list=(('1','Su'),('2','Doğalgaz'),('3','Elektrik'),('4','Internet'),('5','Telefon'),('6','Vergi'))
     type=models.CharField(max_length=10,choices=bill_type_list,)
     code=models.CharField(max_length=10,default='')
     amount=models.CharField(max_length=10,default='')
@@ -78,7 +78,7 @@ class BillInfoModel(models.Model):
         return self.bill_type_list[int(self.type)-1][1]
 
 class TransactionInfoModel(models.Model):
-    transaction_type_list = [('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi'),('8','Maaş')]
+    transaction_type_list = (('1','Para Yatırma'),('2','Para Çekme'),('3','Havale'),('4','EFT'),('5','Kredi Kartı Borcu Ödeme'),('6','Fatura Ödeme'),('7','Öğrenci Ödemesi'),('8','Maaş'))
     account_no=models.ForeignKey(AccountInfoModel,on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=transaction_type_list, default='1')
     amount = models.CharField(max_length=10,default='')
