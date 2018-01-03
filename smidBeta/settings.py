@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'psycopg2',
     'django_cloudflare_push',
+    'log'
 ]
 
 MIDDLEWARE = ('django_cloudflare_push.middleware.push_middleware',
@@ -131,8 +132,8 @@ AUTH_PASSWORD_VALIDATORS = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'talha@dormoni.com'
-EMAIL_HOST_PASSWORD = 'Tlhclk.12'
+EMAIL_HOST_USER = 'admin@dormoni.com'
+EMAIL_HOST_PASSWORD = 'Deneme1234'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 
@@ -160,3 +161,50 @@ STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(client_address)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(client_address)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file','console','mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING['loggers']:
+        LOGGING['loggers'][logger]['handlers'] = ['console']
+
+LOGGING_CONFIG= None
+import logging.config
+logging.config.dictConfig(LOGGING)
+
