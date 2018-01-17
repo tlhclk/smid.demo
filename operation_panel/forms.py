@@ -81,7 +81,7 @@ class MailSendForm(forms.Form):
         super(MailSendForm, self).__init__(POST,*args, **kwargs)
         self.fields['people_selection'].queryset = StudentInfoModel.objects.filter(company=user.company)
 
-    people_selection = forms.ModelMultipleChoiceField(StudentInfoModel.objects.all(), required=False,widget=forms.CheckboxSelectMultiple(attrs={'class':'select2','multiple':'multiple'}))# TODO: html hazıtrlanırken select2 multiple özelliği kurukacak
+    people_selection = forms.ModelMultipleChoiceField(StudentInfoModel.objects.all(), required=False,widget=forms.Select(attrs={'class':'select2','multiple':'multiple'}))# TODO: html hazıtrlanırken select2 multiple özelliği kurukacak
     people_manual=forms.CharField(max_length=200,required=False)
     subject=forms.CharField(max_length=100)
     message=forms.CharField(max_length=500,widget=forms.Textarea())

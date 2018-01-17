@@ -7,7 +7,7 @@ from .forms import EventInfoForm
 from .models import EventInfoModel
 
 def birthday_calendar(request):
-    if request.user.has_perm('event_panel.change_eventinfomodel'):
+    if request.user.has_perm('calendar_panel.change_eventinfomodel'):
         student_list=PersonIDInfoModel.objects.filter(company=request.user.company_id).order_by('birth_day')
         json_list=[]
         birthday_list=[]
@@ -21,7 +21,7 @@ def birthday_calendar(request):
     else: return redirect('https://dormoni.com/user_panel/login')
 
 def agenda(request):
-    if request.user.has_perm('event_panel.change_eventinfomodel'):
+    if request.user.has_perm('calendar_panel.change_eventinfomodel'):
         today=datetime.date.today()
         person_list=[]
         for person in PersonIDInfoModel.objects.filter(company=request.user.company_id):
