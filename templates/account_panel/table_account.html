@@ -80,9 +80,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Kasa</li>
-          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/account_panel/account_add/">Yeni Hesap Aç</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/account_panel/account_add/">Yeni Hesap Aç</a></li>
       </ol>
 
     </section>
@@ -93,8 +93,8 @@ $(document).ready(function() {
             <th>Hesap No</th><th>Hesap Adı</th><th>Hesap Türü</th><th>Hesaptaki Para Miktarı</th><th>Hesap Açıklaması</th><th></th>
         </tr></thead><tbody>
             {% for account in account_list %}<tr>
-            <td><a href="http://127.0.0.1:8000/account_panel/account/{{ account.no }}">{{ account.no }}</a></td><td>{{ account.name }}</td><td>{{ account.type_name }}</td><td>{{ account.amount }}</td><td>{{ account.desc }}</td><td><small> <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_edit/{{ account.no }}">Düzenle</a>
-                <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/account_panel/account_delete/{{ account.no }}">Sil</a></small>
+            <td><a href="https://dormoni.com/account_panel/account/{{ account.no }}">{{ account.no }}</a></td><td>{{ account.name }}</td><td>{{ account.type_name }}</td><td>{{ account.amount }}</td><td>{{ account.desc }}</td><td><small> <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/account_panel/account_edit/{{ account.no }}">Düzenle</a>
+                <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/account_panel/account_delete/{{ account.no }}">Sil</a></small>
                 </td>
             </tr>
                 {% endfor %}

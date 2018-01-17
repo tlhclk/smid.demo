@@ -70,8 +70,8 @@
         if (next_no === 12){
             next_no=0
         }
-        pre_button.setAttribute('href','http://127.0.0.1:8000/account_panel/periodic_payment/'+String(pre_no));
-        next_button.setAttribute('href','http://127.0.0.1:8000/account_panel/periodic_payment/'+String(next_no))
+        pre_button.setAttribute('href','https://dormoni.com/account_panel/periodic_payment/'+String(pre_no));
+        next_button.setAttribute('href','https://dormoni.com/account_panel/periodic_payment/'+String(next_no))
     $('#myTable').DataTable(
 
       {
@@ -92,7 +92,7 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Ödeme Tablosu</li>
           <li class="pull-right"><a id="next" class="btn btn-primary" tabindex="0" aria-control="myTable" href="">Sonraki</a></li>
           <li class="pull-right"><a id="pre" class="btn btn-primary" tabindex="0" aria-control="myTable" href="">Önceki</a></li>

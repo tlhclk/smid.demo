@@ -143,7 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_ROOT= os.path.join(BASE_DIR,'static')
-STATIC_URL = 'http://127.0.0.1:8000/static/'
+STATIC_URL = 'https://dormoni.com/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'templates/static/'),]
 STATICFILES_FINDERS = (
 'django.contrib.staticfiles.finders.FileSystemFinder',

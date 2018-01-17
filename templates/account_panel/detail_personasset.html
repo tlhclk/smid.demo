@@ -3,9 +3,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           {% if request.user.groups.all.0.id != 1 %}
-        <li class="active"><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
+        <li class="active"><a href="https://dormoni.com/account_panel/asset_table/"><i class="fa fa-table"></i> Ödeme Planı Tablosu</a></li>
           {% endif %}
           <li class="active">Ödeme Planı Detayı: {{ asset.id }} - {{ asset.person.full_name }}</li>
       </ol>
@@ -25,7 +25,7 @@
             </div>
                 <div class="panel-body">
                     <h3><b>Ödeme Planı No:  </b>{{ asset.id }}</h3>
-                    <h3><b>Öğrenci No:  </b><a href="http://127.0.0.1:8000/account_panel/transaction_table/{{ asset.person_id }}">{{ asset.person.full_name }}</a></h3>
+                    <h3><b>Öğrenci No:  </b><a href="https://dormoni.com/account_panel/transaction_table/{{ asset.person_id }}">{{ asset.person.full_name }}</a></h3>
                     <h3><b>Ödenen Miktar:  </b>{{ asset.amount }}</h3>
                     <h3><b>Borç Miktar:  </b>{{ asset.rest }}</h3>
                     <h3><b>Toplam Miktar:  </b>{{ asset.debt }}</h3>
@@ -35,9 +35,9 @@
                     <hr>
                     <span class="pull-left">
                         {% if request.user.groups.all.0.id != 1 %}
-                        <a href="http://127.0.0.1:8000/account_panel/transaction_table/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-backward" aria-hidden="true"></i>İşlem Geçmişi </a>
+                        <a href="https://dormoni.com/account_panel/transaction_table/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-backward" aria-hidden="true"></i>İşlem Geçmişi </a>
                         {% endif %}
-                        <a href="http://127.0.0.1:8000/account_panel/transaction_add/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-plus" aria-hidden="true"></i>Taksit Ödeme</a>
+                        <a href="https://dormoni.com/account_panel/transaction_add/{{ asset.person_id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-plus" aria-hidden="true"></i>Taksit Ödeme</a>
 
                     </span>
                     <span class="pull-right">

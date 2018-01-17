@@ -2,9 +2,9 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           {% if request.user.groups.all.0.id != 1 %}
-        <li class="active"><a href="http://127.0.0.1:8000/person_panel/student_table"><i class="fa fa-table"></i> Öğrenci Tablosu</a></li>
+        <li class="active"><a href="https://dormoni.com/person_panel/student_table"><i class="fa fa-table"></i> Öğrenci Tablosu</a></li>
           {% endif %}
           <li class="active">Öğrenci Detayı: {{ student.id }}</li>
       </ol>
@@ -21,7 +21,7 @@
                 <div class="panel-body">
                     <div class="media">
                         <div align="center">
-                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ student.image_field }}" width="300px" height="300px">
+                            <img class="thumbnail img-responsive" src="https://dormoni.com/media/{{ student.image_field }}" width="300px" height="300px">
                         </div>
                     </div>
                     <div class="media-body">
@@ -29,11 +29,11 @@
                         <p>{{ student.phone }}</p>
                         <hr>
                         <h3><strong>E-mail Adresi</strong></h3>
-                        <p><a href="http://127.0.0.1:8000/operation_panel/mail_send/{{ student.email }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ student.email }}</p>
+                        <p><a href="https://dormoni.com/operation_panel/mail_send/{{ student.email }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>{{ student.email }}</p>
                         <hr>
-                        <a href="http://127.0.0.1:8000/person_panel/parent/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> Veli Bilgileri</a>
-                        <a href="http://127.0.0.1:8000/document_panel/document_table/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-file" aria-hidden="true"></i> Kayıtlı Döküman Bilgileri</a>
-                        <a href="http://127.0.0.1:8000/account_panel/asset/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-bank" aria-hidden="true"></i> Muhasebe Durumları</a>
+                        <a href="https://dormoni.com/person_panel/parent/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-heart" aria-hidden="true"></i> Veli Bilgileri</a>
+                        <a href="https://dormoni.com/document_panel/document_table/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-file" aria-hidden="true"></i> Kayıtlı Döküman Bilgileri</a>
+                        <a href="https://dormoni.com/account_panel/asset/{{ student.id }}" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-bank" aria-hidden="true"></i> Muhasebe Durumları</a>
 
                     <span class="pull-right">
                     </span>
