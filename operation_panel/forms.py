@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import StudentLeaveModel,AttendanceInfoModel,StudentInfoModel,PersonalInfoModel,VacationInfoModel
-from django.core.validators import validate_email
+from .models import StudentLeaveModel,AttendanceInfoModel,VacationInfoModel
+from person_panel.models import StudentInfoModel,PersonalInfoModel
 from django.core import mail
 from user_panel.models import CompanyInfoModel
 
@@ -10,20 +10,20 @@ class StudentLeaveForm(forms.ModelForm):
         # user is a required parameter for this form.
         super(StudentLeaveForm, self).__init__(POST,*args, **kwargs)
         self.user=user
-        self.fields['person'].queryset =StudentInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['person'].queryset =StudentInfoModel.objects.filter(company=user.company)
 
     start=forms.DateField(label='İzin Başlangıç Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
     end=forms.DateField(label='İzin Bitiş Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
-    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"class":"select2"}))
     reason=forms.CharField(max_length=50,label='İzin Sebebi')
-    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+    company=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
     class Meta:
         model=StudentLeaveModel
         fields=('start',
                 'end',
                 'person',
                 'reason',
-                'company_id',
+                'company',
                 )
     def clean(self):
         startd=self.cleaned_data.get('start')
@@ -38,8 +38,8 @@ class StudentLeaveForm(forms.ModelForm):
                     if startd<=row.end<=endd:
                         self.add_error('end','GirdiğinizTarih Aralığında Öğrenci İzinli Gözüküyor')
 
-    def clean_company_id(self):
-        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+    def clean_company(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id)
 
 
 class AttendanceInfoForm(forms.ModelForm):# TODO: Turnike Sistemleriyle uyumlu hale getirilecek
@@ -47,21 +47,22 @@ class AttendanceInfoForm(forms.ModelForm):# TODO: Turnike Sistemleriyle uyumlu h
         # user is a required parameter for this form.
         super(AttendanceInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
-        self.fields['person'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['person'].queryset = StudentInfoModel.objects.filter(company=user.company)
 
-    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
-    in_list=[('1','İçeri Girdi'),('0','Dışarı Çıktı')]
+    person=forms.ModelChoiceField(StudentInfoModel.objects.all(),label='Öğrenci Numarası',widget=forms.Select(attrs={"class":"select2"}))
+    in_list=(('1','İçeri Girdi'),('0','Dışarı Çıktı'))
     in_or_out= forms.TypedChoiceField(choices=in_list,widget=forms.RadioSelect,coerce=str)
-    time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"pickTime": False,"startDate": "2007","class":"datetime-picker","style":"height: 30px"}),label='İşlem Zamanı')
-    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+    time=forms.DateTimeField(widget=forms.DateTimeInput(attrs={"class":"datetime-picker"}),label='İşlem Zamanı')
+    company=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+
     class Meta:
         model=AttendanceInfoModel
         fields=['person',
                 'time',
                 'in_or_out',
-                'company_id']
+                'company']
+
     def clean(self):
-        #kontrol edilmedi
         pos=self.cleaned_data.get('in_or_out')
         per=self.cleaned_data.get('person')
         if pos and per:
@@ -70,17 +71,17 @@ class AttendanceInfoForm(forms.ModelForm):# TODO: Turnike Sistemleriyle uyumlu h
                 if pos==last:
                     self.add_error('in_or_out','Geçiş Reddedildi')
 
-    def clean_company_id(self):
-        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+    def clean_company(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id)
 
 
 class MailSendForm(forms.Form):
     def __init__(self, user, POST=None,*args, **kwargs):
         # user is a required parameter for this form.
         super(MailSendForm, self).__init__(POST,*args, **kwargs)
-        self.fields['people_selection'].queryset = StudentInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['people_selection'].queryset = StudentInfoModel.objects.filter(company=user.company)
 
-    people_selection=forms.ModelChoiceField(StudentInfoModel.objects.all(),required=False,widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    people_selection = forms.ModelMultipleChoiceField(StudentInfoModel.objects.all(), required=False,widget=forms.CheckboxSelectMultiple(attrs={'class':'select2','multiple':'multiple'}))# TODO: html hazıtrlanırken select2 multiple özelliği kurukacak
     people_manual=forms.CharField(max_length=200,required=False)
     subject=forms.CharField(max_length=100)
     message=forms.CharField(max_length=500,widget=forms.Textarea())
@@ -98,40 +99,39 @@ class MailSendForm(forms.Form):
         manual=self.cleaned_data.get('people_manual')
         if selected==None and manual==None:
             self.add_error('people_selection','Lütfen Bir Kişi Seçiniz ya da E-Posta Adresi Yazınız.')
+
     def save (self):
         subject = self.cleaned_data['subject']
         message = self.cleaned_data['message']
         selected_people = self.cleaned_data['people_selection']
-        written_people = self.cleaned_data['people_manual'].split(', ')
-        print (subject,message)
-        print (selected_people.email,written_people)
+        written_people = self.cleaned_data['people_manual'].strip().split(',')
         if selected_people and not written_people:
             to_ma=selected_people
         elif written_people and not selected_people:
             to_ma=written_people
         else:
             to_ma = [selected_people.email] + written_people
-        mail.send_mail(subject, message,'tlhclk1312@windowslive.com',['tlhclk1312@gmail.com'])
+        from_ma='admin@dormoni.com'
+        from_pass='Deneme1234'
+        mail.send_mail(subject, message,from_ma,to_ma,auth_user=from_ma,auth_password=from_pass)
 
-    def clean_company_id(self):
-        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
 
 class VacationInfoForm(forms.ModelForm):
     def __init__(self, user,POST=None,*args, **kwargs):
         # user is a required parameter for this form.
         super(VacationInfoForm, self).__init__(POST,*args, **kwargs)
         self.user=user
-        self.fields['person'].queryset =PersonalInfoModel.objects.filter(company_id=user.company_id)
+        self.fields['person'].queryset =PersonalInfoModel.objects.filter(company=user.company)
 
     start_day=forms.DateField(label='İzin Başlangıç Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
     end_day=forms.DateField(label='İzin Bitiş Tarihi',widget=forms.DateInput(attrs={'class':'date-picker'}))
-    person=forms.ModelChoiceField(PersonalInfoModel.objects.all(),label='Personel Numarası',widget=forms.Select(attrs={"style":"height: 50px","class":"select2"}))
+    person=forms.ModelChoiceField(PersonalInfoModel.objects.all(),label='Personel Numarası',widget=forms.Select(attrs={"class":"select2"}))
     reason=forms.CharField(max_length=50,label='İzin Sebebi')
-    company_id=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
+    company=forms.ModelChoiceField(CompanyInfoModel.objects.all(),widget=forms.HiddenInput(),required=False)
 
     class Meta:
         model=VacationInfoModel
-        fields=['person','start_day','end_day','reason','company_id']
+        fields=['person','start_day','end_day','reason','company']
 
     def clean(self):
         startd = self.cleaned_data.get('start_day')
@@ -146,5 +146,5 @@ class VacationInfoForm(forms.ModelForm):
                     if startd <= row.end <= endd:
                         self.add_error('end', 'GirdiğinizTarih Aralığında Öğrenci İzinli Gözüküyor')
 
-    def clean_company_id(self):
-        return CompanyInfoModel.objects.get(pk=self.user.company_id_id)
+    def clean_company(self):
+        return CompanyInfoModel.objects.get(pk=self.user.company_id)

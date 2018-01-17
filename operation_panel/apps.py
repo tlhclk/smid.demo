@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from django.apps import AppConfig
-from .models import CityInfoModel,TownInfoModel,NeighborhoodInfoModel,PostalCodeInfoModel
+#from .models import CityInfoModel,TownInfoModel,NeighborhoodInfoModel,PostalCodeInfoModel
 #from slugify import slugify
 #import xlrd,os
 
-
+#TODO: adres bilgileri düzenlenecek
 class OperationPanelConfig(AppConfig):
     name = 'operation_panel'
 

@@ -17,34 +17,36 @@ def add_fixture(request):
         return render(request,'stock_panel/add_fixture.html',{'formfixture':formfixture,'title':'Yeni Eşya Kaydı'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
-def table_fixture(request):
-    if request.user.has_perm('stock_panel.add_fixtureinfomodel'):
-        fixture_list=FixtureInfoModel.objects.filter(company_id=request.user.company_id_id)
+def table_fixture(request,room_id):
+    if request.user.has_perm('stock_panel.change_fixtureinfomodel'):
+        fixture_list=FixtureInfoModel.objects.filter(company=request.user.company_id)
+        if room_id: fixture_list=fixture_list.filter(room=room_id)
         return render(request,'stock_panel/table_fixture.html',{'fixture_list':fixture_list,'title':'Eşya Tablosu'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def fixture_detail(request,fixture_no):
-    if request.user.has_perm('stock_panel.add_fixtureinfomodel'):
+    if request.user.has_perm('stock_panel.change_fixtureinfomodel'):
         fixture=FixtureInfoModel.objects.get(pk=fixture_no)
-        if fixture.company_id_id==request.user.company_id_id:
+        if fixture.company_id==request.user.company_id:
             return render(request,'stock_panel/detail_fixture.html',{'fixture':fixture,'title':'Eşya Detayı'})
         else: return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_fixture(request,fixture_no):
-    if request.user.has_perm('stock_panel.change_fixtureinfomodel') and FixtureInfoModel.objects.get(pk=fixture_no).company_id_id == request.user.company_id_id:
+    if request.user.has_perm('stock_panel.add_fixtureinfomodel'):
+        fixture=FixtureInfoModel.objects.get(pk=fixture_no,company=request.user.company_id)
         if request.method == "POST":
-            formfixture=FixtureInfoForm(user=request.user,POST=request.POST,FILES=request.FILES,instance=FixtureInfoModel.objects.get(pk=fixture_no))
+            formfixture=FixtureInfoForm(user=request.user,POST=request.POST,FILES=request.FILES,instance=fixture)
             if formfixture.is_valid():
                 formfixture.save()
             return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
-        formfixture = FixtureInfoForm(instance=FixtureInfoModel.objects.get(pk=fixture_no),user=request.user,initial={'image_field':FixtureInfoModel.objects.get(pk=fixture_no).image_field})
+        formfixture = FixtureInfoForm(instance=fixture,user=request.user,initial={'image_field':fixture.image_field})
         return render(request,'stock_panel/add_fixture.html',{'formfixture':formfixture,'title':'Eşya Düzenleme'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_fixture(request,fixture_no):
-    if request.user.has_perm('stock_panel.delete_fixtureinfomodel')  and FixtureInfoModel.objects.get(pk=fixture_no).company_id_id == request.user.company_id_id:
-        FixtureInfoModel.objects.get(fixture_no=fixture_no).delete()
+    if request.user.has_perm('stock_panel.add_fixtureinfomodel'):
+        FixtureInfoModel.objects.get(fixture_no=fixture_no,company=request.user.company_id).delete()
         return redirect('http://127.0.0.1:8000/stock_panel/fixture_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
@@ -56,41 +58,39 @@ def add_room(request):
             formroom=RoomInfoForm(user=request.user,POST=request.POST)
             if formroom.is_valid():
                 formroom.save()
-            return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
-        return render(request,'stock_panel/add_room.html',{'formroom':formroom,'title':'Yeni Oda Kaydı'})
+                return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
+        return render(request,'stock_panel/add_room.html',{'formroom':formroom,'title':'Yurt Bilgileri'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_room(request):
-    if request.user.has_perm('stock_panel.add_roominfomodel'):
-        room_list=RoomInfoModel.objects.filter(company_id=request.user.company_id_id)
-        return render(request,'stock_panel/table_room.html',{'room_list':room_list,'title':'Eşya Bilgileri'})
+    if request.user.has_perm('stock_panel.change_roominfomodel'):
+        room_list=RoomInfoModel.objects.filter(company=request.user.company_id)
+        return render(request,'stock_panel/table_room.html',{'room_list':room_list,'title':'Yurt Bilgileri'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def room_detail(request,room_id):
-    if request.user.has_perm('stock_panel.add_roominfomodel'):
+    if request.user.has_perm('stock_panel.change_roominfomodel'):
         room=RoomInfoModel.objects.get(pk=room_id)
-        student_list=StudentInfoModel.objects.filter(room_id=room.id)
-        bos_adet=int(room.people)-len(student_list)
-        bos_list=['1' for i in range(bos_adet)]
-        if room.company_id_id==request.user.company_id_id:
-            return render(request,'stock_panel/detail_room.html',{'room':room,'student_list':student_list,'bos_list':bos_list,'title':'Oda Detayı'})
+        if room.company_id==request.user.company_id:
+            return render(request,'stock_panel/detail_room.html',{'room':room,'title':'Yurt Bilgileri'})
         else: return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_room(request,room_id):
-    if request.user.has_perm('stock_panel.change_roominfomodel') and RoomInfoModel.objects.get(pk=room_id).company_id_id == request.user.company_id:
-        formroom=RoomInfoForm(instance=RoomInfoModel.objects.get(pk=room_id),user=request.user)
+    if request.user.has_perm('stock_panel.add_roominfomodel'):
+        room=RoomInfoModel.objects.get(pk=room_id,company=request.user.company_id)
         if request.method == "POST":
-            formroom = RoomInfoForm(user=request.user,POST=request.POST,instance=RoomInfoModel.objects.get(pk=room_id))
+            formroom = RoomInfoForm(user=request.user,POST=request.POST,instance=room)
             if formroom.is_valid():
                 formroom.save()
                 return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
-        return render(request,'stock_panel/add_room.html',{'formroom':formroom,'title':'Oda Düzenleme'})
+        formroom=RoomInfoForm(instance=room,user=request.user)
+        return render(request,'stock_panel/add_room.html',{'formroom':formroom,'title':'Yurt Bilgileri'})
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_room(request,room_id):
-    if request.user.has_perm('stock_panel.delete_roominfomodel') and RoomInfoModel.objects.get(pk=room_id).company_id_id == request.user.company_id_id:
-        RoomInfoModel.objects.get(pk=room_id).delete()
+    if request.user.has_perm('stock_panel.add_roominfomodel'):
+        RoomInfoModel.objects.get(pk=room_id,company=request.user.company_id).delete()
         return redirect('http://127.0.0.1:8000/stock_panel/room_table/')
     else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 

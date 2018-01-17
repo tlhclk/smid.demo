@@ -1,4 +1,5 @@
 {% extends  "base.html" %}
+{% load bootstrap4 %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
@@ -15,6 +16,7 @@
 <script src="/static/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 <script src="{%  static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
     <script type="text/javascript">
 $(document).ready(function() {
     $(".select2").select2();
@@ -31,8 +33,33 @@ $(document).ready(function() {
       radioClass: 'iradio_minimal-blue'
     });
 
+    var phone=document.getElementById("id_phone");
+    phone.setAttribute("class","form-control input-medium bfh-phone");
+    var att = document.createAttribute('data-format');
+    att.value="+905ddddddddd";
+    phone.setAttributeNode(att)
+    });
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
 
-} );
+}
 </script>
 {% endblock %}
 {% block content %}
@@ -61,111 +88,7 @@ $(document).ready(function() {
           <div class="row">
               <div class="col-md-6">
                   <form method="POST" class="post-form" enctype="multipart/form-data">
-                    {% csrf_token %}
-                <div class="form-group">
-                    <label for="id_id">Öğrenci No: </label>
-                    <input type="text" class="form-control" placeholder="Öğrenci No" name="id" required id="id_id" value="{{ form.id.value }}" maxlength="11">
-                </div>
-                <div class="form-group">
-                    <label for="id_student_position">Öğrenci Konumu : </label>
-{#                    <input type="text" class="form-control" placeholder="Öğrenci" name="student_position" required id="id_student_position" value="{{ form.student_position.value }}" maxlength="100">#}
-                    <label for=""><input type="radio" class="minimal" name="student_position" required id="id_student_position_0" value="1"> İçerde</label>
-                    <label for=""><input type="radio" class="minimal" name="student_position" required id="id_student_position_1" value="2"> Dışarda</label>
-
-                </div>
-                <div class="form-group">
-                <label for="id_student_tcn">Öğrenci Kimlik Numarası: </label>
-                <select class="form-control select2" style="width: 100%;" name="student_tcn" id="id_student_tcn">
-                  <option value="{{ form.student_tcn.value }}"></option>
-                    {% for personal in tcn_list %}
-                        <option value="{{ personal }}">{{ personal.s_tcn }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="id_student_phone">Telefon Numarası:</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Telefon Numarası(+90...)" name="student_phone" required id="id_student_phone" value="{{ form.student_phone.value }}" maxlength="13" data-inputmask='"mask": "+999999999999"' data-mask>
-                </div>
-                <!-- /.input group -->
-              </div>
-                <div class="form-group">
-                    <label for="id_e_mail">E-mail Adresi: </label>
-                    <input type="email" class="form-control" placeholder="E-mail Adresi" name="e_mail" required id="id_e_mail" value="{{ form.e_mail.value }}" maxlength="50">
-                </div>
-                <div class="form-group">
-                    <label for="id_student_regday">Kayıt Tarihi: </label>
-                    <input type="text" class="form-control date-picker" placeholder="Kayıt Tarihi" name="student_regday" required id="id_student_regday" value="{{ form.student_regday.value.year }}-{{ form.student_regday.value.month }}-{{ form.student_regday.value.day }}" maxlength="10">
-                </div>
-                <div class="form-group">
-                    <label for="id_student_city">Yaşadığı Şehir: </label>
-                    <select class="form-control select2" style="width: 100%;" name="student_city" id="id_student_city">
-                  <option value="{{ form.student_city.value }}"></option>
-                    {% for city in city_list %}
-                        <option value="{{ city.0 }}">{{ city.1 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_student_town">Yaşadığı İlçe: </label>
-                    <input type="text" class="form-control" placeholder="Yaşadığı İlçe" name="student_town" required id="id_student_town" value="{{ form.student_town.value }}" maxlength="20  ">
-                </div>
-                <div class="form-group">
-                    <label for="id_student_adress">Yaşadığı Adres: </label>
-                    <input type="text" class="form-control" placeholder="Yaşadığı Adres" name="student_adress" required id="id_student_adress" value="{{ form.student_adress.value }}" maxlength="100">
-                </div>
-                <div class="form-group">
-                    <label for="id_room_id">Oda Numarası: </label>
-                    <select class="form-control select2" style="width: 100%;" name="room_id" id="id_room_id">
-                  <option value="{{ form.room_id.value }}"></option>
-                    {% for room in room_list %}
-                        <option value="{{ room.id }}">{{ room.room_no }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_student_type">Öğrenci Tipi: </label>
-                    <select class="form-control select2" style="width: 100%;" name="student_type" id="id_student_type">
-                  <option value="{{ form.student_type.value }}"></option>
-                    {% for student_ty in student_type_list %}
-                        <option value="{{ student_ty.0 }}">{{ student_ty.1 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_school_name">Okulu: </label>
-                    <input type="text" class="form-control" placeholder="Okulu" name="school_name" required id="id_school_name" value="{{ form.school_name.value }}" maxlength="100">
-                </div>
-                <div class="form-group">
-                    <label for="id_education_year">Eğitim Yılı: </label>
-                    <select class="form-control select2" style="width: 100%;" name="education_year" id="id_education_year">
-                  <option value="{{ form.education_year.value }}"></option>
-                    {% for year in year_list %}
-                        <option value="{{ year.0 }}">{{ year.1 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_blood_type">Kan Grubu: </label>
-                    <select class="form-control select2" style="width: 100%;" name="blood_type" id="id_blood_type">
-                  <option value="{{ form.blood_type.value }}"></option>
-                    {% for blood in blood_type_list %}
-                        <option value="{{ blood.0 }}">{{ blood.1 }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                    <label for="id_health_notes">Sağlık Notları: </label>
-                    <input type="text" class="form-control" placeholder="Sağlık Notları" name="health_notes" required id="id_health_notes" value="{{ form.health_notes.value }}" maxlength="100">
-                </div>
-                <div class="form-group">
-                    <label for="id_special_notes">Özel Notlar: </label>
-                    <input type="text" class="form-control" placeholder="Özel Notlar" name="special_notes" required id="id_special_notes" value="{{ form.special_notes.value }}" maxlength="100">
-                </div>
-                <div class="form-group">
-                    <label for="id_image_field">Profil Resmi: </label>
-                    <input type="file" class="form-control" placeholder="Profil Resmi" name="image_field" id="id_image_field" value="{{ form.image_field.value }}" maxlength="50">
-                </div>
+                    {% csrf_token %}{% bootstrap_form form %}
 
                         <div class="col-xs-12">
                             <div class="pull-right">

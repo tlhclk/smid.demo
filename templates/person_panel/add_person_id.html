@@ -1,4 +1,5 @@
 {% extends  "base.html" %}
+{% load bootstrap4 %}
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
@@ -30,9 +31,27 @@ $(document).ready(function() {
     $('input[type="radio"].minimal').iCheck({
       radioClass: 'iradio_minimal-blue'
     });
-
-
-} );
+    });
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
+}
 </script>
 {% endblock %}
 {% block content %}
@@ -50,107 +69,7 @@ $(document).ready(function() {
       <!-- Your Page Content Here -->
 
                 <form method="POST" class="post-form" enctype="multipart/form-data">
-                    {% csrf_token %}
-              <div class="form-group">
-                <label for="id_s_nation">Uyruk: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_nation" id="id_s_nation">
-                  <option value="{{ form.s_nation.value }}"></option>
-                    {% for nation in nation_list %}
-                        <option value="{{ nation.0 }}">{{ nation.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="id_s_idcard_type">Kimlik Kartı Türü: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_idcard_type" id="id_s_idcard_type">
-                  <option value="{{ form.s_idcard_type.value }}"></option>
-                    {% for id_card in id_card_list %}
-                        <option value="{{ id_card.0 }}">{{ id_card.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="id_s_gender">Cinsiyet: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_gender" id="id_s_gender">
-                  <option value="{{ form.s_gender.value }}"></option>
-                    {% for gender in gender_list %}
-                        <option value="{{ gender.0 }}">{{ gender.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="id_s_medeni_hali">Medeni Hali: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_medeni_hali" id="id_s_medeni_hali">
-                  <option value="{{ form.s_medeni_hali.value }}"></option>
-                    {% for medeni_hal in medeni_hal_list %}
-                        <option value="{{ medeni_hal.0 }}">{{ medeni_hal.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                    <label for="id_s_tcn">Kimlik Numarası: </label>
-                    <input type="text" class="form-control" placeholder="Kimlik Numarası" name="s_tcn" required id="id_s_tcn" value="{{ form.s_tcn.value }}" maxlength="11" data-inputmask='"mask": "9999999999"' data-mask>
-                </div>
-                <div class="form-group">
-                    <label for="id_s_name">Adı: </label>
-                    <input type="text" class="form-control" placeholder="Adı" name="s_name" required id="id_s_name" value="{{ form.s_name.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_s_lastname">Soyadı: </label>
-                    <input type="text" class="form-control" placeholder="Soyadı" name="s_lastname" required id="id_s_lastname" value="{{ form.s_lastname.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_s_father">Baba Adı: </label>
-                    <input type="text" class="form-control" placeholder="Baba Adı" name="s_father" required id="id_s_father" value="{{ form.s_father.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_s_mother">Ana Adı: </label>
-                    <input type="text" class="form-control" placeholder="Ana Adı" name="s_mother" required id="id_s_mother" value="{{ form.s_mother.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                <label for="id_s_birthday">Doğum Tarihi:</label>
-                  <input type="text" class="form-control pull-right date-picker" name="s_birthday" id="id_s_birthday" value="{{ form.s_birthday.value.year }}-{{ form.s_birthday.value.month }}-{{ form.s_birthday.value.day }}" maxlength="10">
-
-                <!-- /.input group -->
-              </div>
-                <div class="form-group">
-                <label for="id_s_birth_place">Doğum Yeri: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_birth_place" id="id_s_birth_place">
-                  <option value="{{ form.s_birth_place.value }}"></option>
-                    {% for city in city_list %}
-                        <option value="{{ city.0 }}">{{ city.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="id_s_register_vilage">Nüfusa Kayıtlı Olduğu İl: </label>
-                <select class="form-control select2" style="width: 100%;" name="s_register_vilage" id="id_s_register_vilage">
-                  <option value="{{ form.s_register_vilage.value }}"></option>
-                    {% for city in city_list %}
-                        <option value="{{ city.0 }}">{{ city.1 }}</option>
-                    {% endfor %}
-                </select>
-              </div>
-                <div class="form-group">
-                    <label for="id_s_register_town">Nufusa Bağlı Olduğu İlçe: </label>
-                    <input type="text" class="form-control" placeholder="Nufusa Bağlı Olduğu İlçe" name="s_register_town" required id="id_s_register_town" value="{{ form.s_register_town.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_s_register_distinct">Nufusa Bağlı Olduğu Mahalle: </label>
-                    <input type="text" class="form-control" placeholder="Nufusa Bağlı Olduğu Mahalle" name="s_register_distinct" required id="id_s_register_distinct" value="{{ form.s_register_distinct.value }}" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label for="id_s_nufus_cilt">Cilt No: </label>
-                    <input type="text" class="form-control" placeholder="Cilt No" name="s_nufus_cilt" required id="id_s_nufus_cilt" value="{{ form.s_nufus_cilt.value }}" maxlength="4" data-inputmask='"mask": "9999"' data-mask>
-                </div>
-                <div class="form-group">
-                    <label for="id_s_nufus_ailesira">Aile Sıra No: </label>
-                    <input type="text" class="form-control" placeholder="Aile Sıra No" name="s_nufus_ailesira" required id="id_s_nufus_ailesira" value="{{ form.s_nufus_ailesira.value }}" maxlength="5" data-inputmask='"mask": "99999"' data-mask>
-                </div>
-                <div class="form-group">
-                    <label for="id_s_nufus_sirano">Sıra No: </label>
-                    <input type="text" class="form-control" placeholder="Sıra No" name="s_nufus_sirano" required id="id_s_nufus_sirano" value="{{ form.s_nufus_sirano.value }}" maxlength="4" data-inputmask='"mask": "9999"' data-mask>
-                </div>
+                    {% csrf_token %}{% bootstrap_form form %}
 
                         <div class="col-xs-12">
                             <div class="pull-right">

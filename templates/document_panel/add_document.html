@@ -22,7 +22,8 @@ $(document).ready(function() {
 
     $("[data-mask]").inputmask();
 
-    $('.date-picker').datepicker({"autoclose": true,"format": 'yyyy-mm-dd',"startDate":'2015-01-01'
+    $('.date-picker').datepicker({timePicker:true,
+        autoclose: true, format: 'yyyy-mm-dd'
     });
 
 
@@ -31,9 +32,27 @@ $(document).ready(function() {
     $('input[type="radio"].minimal').iCheck({
       radioClass: 'iradio_minimal-blue'
     });
-
-
-} );
+    });
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
+}
 </script>
 {% endblock %}
 {% block content %}

@@ -7,27 +7,40 @@ from django.utils.translation import ugettext_lazy as _
 import datetime
 from django.contrib.auth import get_user_model
 
-# Create your models here.
+
 def get_time():
     return datetime.datetime.now()
 def get_date():
     return datetime.date.today()
 
+class ChainCompanyInfoModel(models.Model):
+    name=models.CharField(max_length=100,default='İsimsiz')
+    person=models.CharField(max_length=100,default='Ad-Soyad')
+    phone = PhoneNumberField(max_length=13,default='+905553332211')
+    email =models.EmailField(unique=True,default='idle@dormoni.com')
+
+    class Meta:
+        db_table='chain_company'
+
+    def __str__(self):
+        return self.name
+
+
 class CompanyInfoModel(models.Model):
-    company_type=[]
-    company_id=models.CharField(max_length=10,primary_key=True)
-    company_name=models.CharField(max_length=20,default='')
-    company_vno=models.CharField(max_length=15,default='')
-    company_adress=models.CharField(max_length=100,null=True,blank=True)
-    company_account_no=models.CharField(max_length=15,null=True,blank=True)
-    company_payment_detail=models.CharField(max_length=50,null=True,blank=True)
-    company_desc=models.CharField(max_length=100,null=True,blank=True)
+    company_type=()
+    name=models.CharField(max_length=20,default='İsimsiz')
+    vno=models.CharField(max_length=15,null=True,blank=True)
+    address=models.CharField(max_length=100,null=True,blank=True)
+    account=models.CharField(max_length=15,null=True,blank=True)
+    payment_detail=models.CharField(max_length=50,null=True,blank=True)
+    chain_company=models.ForeignKey(ChainCompanyInfoModel,on_delete=models.CASCADE,null=True,blank=True)
+    desc=models.CharField(max_length=100,null=True,blank=True)
 
     class Meta:
         db_table='company_info'
 
     def __str__(self):
-        return str(self.company_id)
+        return str(self.name)
 
     def company_type_name(self):
         return None
@@ -64,8 +77,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = PhoneNumberField(max_length=13, blank=False)
     date_joined=models.DateField(default=get_date,max_length=10)
     date_expired=models.DateField(max_length=10,null=True,blank=True)
-    profile_image=models.ImageField(max_length=200,default='profile_pic/1701001.jpg')
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    profile_image=models.ImageField(max_length=200,null=True,blank=True)
+    company=models.ForeignKey(CompanyInfoModel,on_delete=models.CASCADE,null=True,blank=True)
 
 
     is_staff = models.BooleanField(
@@ -96,16 +109,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+        db_table='auth_user'
 
-
-class UserCompanyModel(models.Model):
-    #user=models.OneToOneField(User,primary_key=True)
-    user=models.CharField(max_length=10,primary_key=True)
-    #company=models.ForeignKey(CompanyInfoModel)
-    company=models.CharField(max_length=10)
-
-    class Meta:
-        db_table='user_company'
-
-    def __str__(self):
-        return str(self.id)

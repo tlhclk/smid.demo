@@ -27,7 +27,8 @@
                     <h3><b>Ödeme Planı No:  </b>{{ asset.id }}</h3>
                     <h3><b>Öğrenci No:  </b><a href="http://127.0.0.1:8000/account_panel/transaction_table/{{ asset.person_id }}">{{ asset.person.full_name }}</a></h3>
                     <h3><b>Ödenen Miktar:  </b>{{ asset.amount }}</h3>
-                    <h3><b>Borç Miktar:  </b>{{ asset.debt }}</h3>
+                    <h3><b>Borç Miktar:  </b>{{ asset.rest }}</h3>
+                    <h3><b>Toplam Miktar:  </b>{{ asset.debt }}</h3>
                     <h3><b>Taksit Miktarı</b>{{ asset.period }}</h3>
                     <h3><b>Ödeme Türü:  </b>{{ asset.type_name }}</h3>
                     <h3><b>Ödeme Planı Açıklaması:  </b>{{ asset.desc }}</h3>

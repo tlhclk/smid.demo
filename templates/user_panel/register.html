@@ -1,55 +1,56 @@
-<!DOCTYPE html>
-<html>
+{% load static %}
+{% load bootstrap4 %}
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Smart Dorms | Giriş Sayfası</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dormoni Ücretsiz Kayıt</title>
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'maxcdn.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="../../main_theme/css/SmartDorms.min.css">
-  <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+  <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/square/blue.css' %}">
 
 
+<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%'
+    });
+    var phone=document.getElementById("id_phone");
+    phone.setAttribute("class","form-control input-medium bfh-phone");
+    var att = document.createAttribute('data-format');
+    att.value="+905ddddddddd";
+    phone.setAttributeNode(att)
+  });
+</script>
 </head>
-<body class="hold-transition register-page">
+<body>
+
+
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Smart Manager</b>   
-     in Dorms</a>
+    <a href="http://127.0.0.1:8000/"><b>Dormoni</b></a>
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Üye ol</p>
+    <p class="login-box-msg">15 Günlük Ücretsiz Deneyin</p>
 
-    <form action="../../index.html" method="post">
-      <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="İsim-Soyisim veya Şirket İsmi">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Mail adresi">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Şifre">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Tekrar">
-        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-      </div>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> <a href="#sartname.html">Kullanım Koşullarını</a> kabul ediyorum.
-            </label>
-          </div>
-        </div>
         <div class="col-xs-4">
+            <div class="center-block">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Üye ol</button>
+            </div>
         </div>
       </div>
     </form>
@@ -57,21 +58,8 @@
     <div class="social-auth-links text-center">
       <p>- veya -</p>
 
-    <a href="login.html" class="text-center">Üye girişi için</a>
+    <a href="http://127.0.0.1:8000/user_panel/login/" class="text-center">Üye girişi için</a>
   </div>
 </div>
-
-<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
-<script src="../../plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' 
-    });
-  });
-</script>
+</div>
 </body>
-</html>

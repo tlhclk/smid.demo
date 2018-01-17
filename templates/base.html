@@ -10,17 +10,35 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.css' %}">
   <link rel="stylesheet" href="{% static 'main_theme/css/SmartDorms.min.css' %}">
 
-  <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main_theme/css/skins/skin-blue.css' %}">
 {% block css %}
 {% endblock %}
 {# java script imports #}
     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'main_theme/js/app.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'main_theme/js/app.js' %}"></script>
+
+
     {% block script %}{% endblock %}
+    <script>
+        $(document).ready(function () {
+            var cur_href=window.location.href;
+            var menu_li=document.querySelectorAll('li.treeview>ul.treeview-menu>li');
+            for (no in menu_li){
+                var href_a=menu_li[no];
+                var href_url=href_a.getElementsByTagName('a')[0].getAttribute('href');
+                if (href_url === cur_href){
+                    var parent_element=href_a.parentElement.parentElement;
+                    var attr = document.createAttribute('class');
+                    attr.value='active';
+                    href_a.setAttributeNode(attr);
+                    parent_element.setAttribute('class','active')
+                }
+            }
+        })
+    </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -36,7 +54,7 @@
       <ul class="nav navbar-header"><li>
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a></li>
           <li class="center-block"><span><font size="6" color="white">
-              <i> <b> {{ title }}</b> </i></font></span>
+              <i><b>{{ title }}</b> </i></font></span>
         <span class="icon-bar"></span></li><li>
       <li>
       <div class="nav navbar-custom-menu">
@@ -90,7 +108,7 @@
 
       <!-- /.search form -->
 
-        {% if request.user.groups.all.0.id == 3 %}
+        {% if request.user.groups.all.0.id == 2 %}
             <br>
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
@@ -103,13 +121,11 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="http://127.0.0.1:8000/account_panel/account_table/"><i class= "fa fa-circle-o"></i>Kasa</a></li>
-            <li><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Borçlar</a></li>
+            <li><a href="http://127.0.0.1:8000/account_panel/asset_table/"><i class="fa fa-circle-o"></i>Ödeme Planları</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/bill_table/"><i class="fa fa-circle-o"></i>Fatura</a></li>
             <li><a href="http://127.0.0.1:8000/account_panel/transaction_table/"><i class="fa fa-circle-o"></i>İşlemler</a></li>
               <li><a href="http://127.0.0.1:8000/report_panel/account_amount/"><i class="fa fa-circle-o"></i>Grafikler </a></li>
-
-
-
+              <li><a href="http://127.0.0.1:8000/account_panel/periodic_payment/"><i class="fa fa-circle-o"></i>Ödeme Tablosu </a></li>
           </ul>
         </li>
           <li class="treeview">
@@ -119,8 +135,11 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="http://127.0.0.1:8000/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Yapılacaklar</a></li>
-              <li><a href="http://127.0.0.1:8000/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Anımsatıcı</a></li>
+            <li><a href="http://127.0.0.1:8000/calendar_panel/birthday_calendar/"><i class="fa fa-circle-o"></i>Doğum Günü Takvimi</a></li>
+
+          </ul>
+          <ul class="treeview-menu">
+            <li><a href="http://127.0.0.1:8000/calendar_panel/agenda/"><i class="fa fa-circle-o"></i>Ajanda</a></li>
 
           </ul>
         </li><li class="treeview">
@@ -145,8 +164,8 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="http://127.0.0.1:8000/person_panel/personal_table/"><i class="fa fa-circle-o"></i>Personel Listesi</a></li>
-              <li><a href="http://127.0.0.1:8000/operation_panel/vacation_table"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
-              <li><a href="http://127.0.0.1:8000/report_panel/salary_table"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
+              <li><a href="http://127.0.0.1:8000/operation_panel/vacation_table/"><i class="fa fa-circle-o"></i>İzinler / Tatiller</a></li>
+              <li><a href="http://127.0.0.1:8000/report_panel/salary_table/"><i class="fa fa-circle-o"></i>Maaşlar</a></li>
 
 
           </ul>

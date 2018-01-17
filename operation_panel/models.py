@@ -13,30 +13,30 @@ def get_date():
     return datetime.date.today()
 
 class StudentLeaveModel(models.Model):
-    person=models.ForeignKey(StudentInfoModel)
-    start=models.DateField()
+    person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
+    start=models.DateField(default=get_date)
     end=models.DateField(blank=True,null=True)
     reason=models.CharField(max_length=100,blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company=models.ForeignKey(CompanyInfoModel,on_delete=models.CASCADE,blank=True,null=True)
 
     class Meta:
-        db_table='student_leave'
+        db_table='sleave_info'
 
     def __str__(self):
         return  str(self.person.full_name())+' - '+ str(self.reason)
 
 
 class AttendanceInfoModel(models.Model):
-    person=models.ForeignKey(StudentInfoModel)
+    person=models.ForeignKey(StudentInfoModel,on_delete=models.CASCADE)
     time=models.DateTimeField(default=get_time)
     in_or_out=models.BooleanField(max_length=1)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company=models.ForeignKey(CompanyInfoModel,on_delete=models.CASCADE,blank=True,null=True)
 
     class meta:
         db_table='attendance_info'
 
     def __str__(self):
-        return str(self.person)+' - '+ str(self.time)+ ' - '+ str(self.in_or_out)
+        return str(self.person.full_name())
 
     def in_or_out_name(self):
         if self.in_or_out==True:
@@ -44,12 +44,13 @@ class AttendanceInfoModel(models.Model):
         else:
             return 'Dışarı Çıktı'
 
+
 class VacationInfoModel(models.Model):
-    person=models.ForeignKey(PersonalInfoModel)
-    start_day=models.DateField()
+    person=models.ForeignKey(PersonalInfoModel,on_delete=models.CASCADE)
+    start_day=models.DateField(default=get_date)
     end_day=models.DateField(null=True,blank=True)
     reason=models.CharField(max_length=100,blank=True,null=True)
-    company_id=models.ForeignKey(CompanyInfoModel,default='')
+    company=models.ForeignKey(CompanyInfoModel,on_delete=models.CASCADE,blank=True,null=True)
 
     class Meta:
         db_table='vacation_info'
@@ -58,30 +59,45 @@ class VacationInfoModel(models.Model):
         return self.person.full_name()+self.reason
 
 
-class CityInfoModel(models.Model):
-    city_name = models.CharField(max_length=50, blank=False)
-    city_slug = models.CharField(max_length=50, blank=False)
-    class Meta:
-        db_table='adres_city'
+class NotificationInfoModel(models.Model):
+    title=models.CharField(max_length=50,default='Başlıksız')
+    to_a=models.CharField(max_length=50,null=True,blank=True)
+    day=models.DateField(default=get_date)
+    text=models.CharField(max_length=50,default='İçerik Yok')
+    company=models.ForeignKey(CompanyInfoModel,on_delete=models.CASCADE,blank=True,null=True)
 
-class TownInfoModel(models.Model):
-    city = models.ForeignKey(CityInfoModel)
-    town_name = models.CharField(max_length=50, blank=False)
-    town_slug = models.CharField(max_length=50, blank=False)
     class Meta:
-        db_table='adres_town'
+        db_table='notification_info'
 
-class NeighborhoodInfoModel(models.Model):
-    town = models.ForeignKey(TownInfoModel)
-    neighborhood_name = models.CharField(max_length=100, blank=False)
-    neighborhood_slug = models.CharField(max_length=100, blank=False)
-    class Meta:
-        db_table='adres_neigh'
+    def __str__(self):
+        return str(self.id)+' - '+self.title
 
-class PostalCodeInfoModel(models.Model):
-    neighborhood =models.ForeignKey(NeighborhoodInfoModel)
-    pk_name = models.CharField(max_length=100, blank=False)
-    pk_slug = models.CharField(max_length=100, blank=False)
-    postal_code = models.CharField(max_length=30, blank=False)
-    class Meta:
-        db_table='adres_postal'
+
+
+# class CityInfoModel(models.Model):
+#     city_name = models.CharField(max_length=50, blank=False)
+#     city_slug = models.CharField(max_length=50, blank=False)
+#     class Meta:
+#         db_table='adres_city'
+#
+# class TownInfoModel(models.Model):
+#     city = models.ForeignKey(CityInfoModel,on_delete=models.CASCADE)
+#     town_name = models.CharField(max_length=50, blank=False)
+#     town_slug = models.CharField(max_length=50, blank=False)
+#     class Meta:
+#         db_table='adres_town'
+#
+# class NeighborhoodInfoModel(models.Model):
+#     town = models.ForeignKey(TownInfoModel,on_delete=models.CASCADE)
+#     neighborhood_name = models.CharField(max_length=100, blank=False)
+#     neighborhood_slug = models.CharField(max_length=100, blank=False)
+#     class Meta:
+#         db_table='adres_neigh'
+#
+# class PostalCodeInfoModel(models.Model):
+#     neighborhood =models.ForeignKey(NeighborhoodInfoModel,on_delete=models.CASCADE)
+#     pk_name = models.CharField(max_length=100, blank=False)
+#     pk_slug = models.CharField(max_length=100, blank=False)
+#     postal_code = models.CharField(max_length=30, blank=False)
+#     class Meta:
+#         db_table='adres_postal'

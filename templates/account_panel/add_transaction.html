@@ -30,13 +30,27 @@ $(document).ready(function() {
 
     $('.datetime-picker').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'
     });
-    $('input[type="radio"].minimal').iCheck({
-      radioClass: 'iradio_minimal-blue'
     });
-    $("select").click(function() {
-});
-
-} );
+window.onload=function () {
+    var all_fields = document.getElementsByClassName('date-picker');
+    for (no in all_fields) {
+        field = all_fields[no];
+        if ('INPUT' === field.tagName) {
+            var value = field.getAttribute('value');
+            if (value.includes('/')) {
+                var date = value.split('/');
+                var year = String(date[2]);
+                var month = String(date[1]);
+                var day = String(date[0]);
+                var newDate = year + '-' + month + '-' + day;
+                field.setAttribute('value', newDate)
+            }
+            ;
+        }
+        ;
+    }
+    ;
+}
 </script>
 {% endblock %}
 {% block content %}
