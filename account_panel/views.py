@@ -24,13 +24,13 @@ def add_transaction(request,filter_no):
     else: return redirect('https://dormoni.com/user_panel/login/')
 
 def table_transaction(request):
-    if request.user.has_perm('account_panel.change_transaction'):
+    if request.user.has_perm('account_panel.change_transactioninfomodel'):
         transaction_list=TransactionInfoModel.objects.filter(company=request.user.company_id)
         return render(request,'account_panel/table_transaction.html',{'transaction_list':transaction_list,'title':'Muhasebe'})
     else: return redirect('https://dormoni.com/user_panel/login/')
 
 def edit_transaction(request,transaction_no):
-    if request.user.has_perm('account_panel.add_transaction'):
+    if request.user.has_perm('account_panel.add_transactioninfomodel'):
         formtransaction=TransactionInfoForm(user=request.user,instance=TransactionInfoModel.objects.get(pk=transaction_no,company=request.user.company_id)[0])
         if request.method=='POST':
             formtransaction=TransactionInfoForm(user=request.user,POST=request.POST,instance=TransactionInfoModel.objects.get(pk=transaction_no))
@@ -41,7 +41,7 @@ def edit_transaction(request,transaction_no):
     else: return redirect('https://dormoni.com/user_panel/login/')
 
 def delete_transaction(request,transaction_no):
-    if request.user.has_perm('account_panel.add_transaction'):
+    if request.user.has_perm('account_panel.add_transactioninfomodel'):
         tra=TransactionInfoModel.objects.get(pk=transaction_no,company=request.user.company_id)[0]
         TransactionInfoForm(user=request.user).remove(transaction_no)
         tra.delete()

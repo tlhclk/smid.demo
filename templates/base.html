@@ -25,6 +25,9 @@
     <script>
         $(document).ready(function () {
             var cur_href=window.location.href;
+            if (Number(cur_href.split('/')[5]) || Number(cur_href.split('/')[5])===0)
+            {var temp_list=cur_href.split('/').slice(0,5);
+            cur_href=temp_list.join('/')+'/';}
             var menu_li=document.querySelectorAll('li.treeview>ul.treeview-menu>li');
             for (no in menu_li){
                 var href_a=menu_li[no];
@@ -35,7 +38,8 @@
                     attr.value='active';
                     href_a.setAttributeNode(attr);
                     parent_element.setAttribute('class','active')
-                }
+                    }
+
             }
         })
     </script>
@@ -178,21 +182,12 @@
           <ul class="treeview-menu">
               <li><a href="https://dormoni.com/report_panel/capacity/"><i class="fa fa-circle-o"></i>Kontenjan Grafiği</a></li>
               <li><a href="https://dormoni.com/report_panel/room_plan/"><i class="fa fa-circle-o"></i>Odalar</a></li>
-
-
-
-          </ul>
-
-        </li><li class="treeview">
-          <a href="#"><i class="fa fa-th"></i> <span>Eşya Bilgileri</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu" >
-            <li><a href="https://dormoni.com/stock_panel/room_table/"><i class="fa fa-circle-o"></i>Zimmet</a> </li>
             <li><a href="https://dormoni.com/document_panel/liability_table/"><i class="fa fa-circle-o"></i>Emanet</a></li>
+
+
+
           </ul>
+
         </li>
 
 

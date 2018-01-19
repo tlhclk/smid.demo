@@ -111,7 +111,7 @@ def account_graphs(request,account_no):
         aa_dict={}
         for account in account_list:
             aa_dict.setdefault(account,[0.0 for n in range(12)])
-            for trans in transaction_list.filter(account_no=account.no).order_by('-time'):
+            for trans in transaction_list.filter(account=account.no).order_by('-time'):
                 if trans.type=='1' or trans.type=='7':
                     if aa_dict[account][trans.time.month]==0.0:
                         aa_dict[account][trans.time.month]=float(trans.amount)
