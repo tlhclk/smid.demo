@@ -3,7 +3,7 @@
 {% block content %}
     <section>
     <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Grafikler</li>
       </ol>
     </section>
@@ -22,11 +22,11 @@
         <div class="col-md-2">
           <ul class="chart-legend clearfix">
               {% if room_no %}
-            <li><a href="https://dormoni.com/stock_panel/room/{{ room.id }}"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
+            <li><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
               {% else %}
-                  <li><a href="https://dormoni.com/person_panel/student_table/"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
+                  <li><a href="http://127.0.0.1:8000/person_panel/student_table/"><i class="fa fa-circle-o text-light-blue"></i> Kayıtlı Öğrenci: {{ student_number }}</a></li>
               {% endif %}
-            <li><a href="https://dormoni.com/report_panel/room_plan/"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ quota_number }}</a></li>
+            <li><a href="http://127.0.0.1:8000/report_panel/room_plan/"><i class="fa fa-circle-o text-gray"></i> Boş Kontenjan: {{ quota_number }}</a></li>
           </ul>
         </div>
     </div></div></div></section>

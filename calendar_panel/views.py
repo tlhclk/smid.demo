@@ -18,7 +18,7 @@ def birthday_calendar(request):
                                   '%d-%d-%d' %(datetime.datetime.today().year,student.birth_day.month,student.birth_day.day),
                                   '%d-%d-%d' %(datetime.datetime.today().year,student.birth_day.month,student.birth_day.day),True])
         return render(request,'calendar_panel/calendar.html',{'birthday_json':json.dumps(json_list),'title':'Takvim'})
-    else: return redirect('https://dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def agenda(request):
     if request.user.has_perm('calendar_panel.change_eventinfomodel'):
@@ -36,7 +36,7 @@ def agenda(request):
                     if person.birth_day.day<today.day:
                         person_list.append(person)
         return render(request, 'calendar_panel/agenda.html',{'title':'Ajanda','event_list':person_list})
-    else: return redirect('https://dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def event_calendar(request):
     if request.user.has_perm('event_panel.change_eventinfomodel'):
@@ -52,7 +52,7 @@ def event_calendar(request):
                                   '%d-%d-%d' %(event.start_time.year,event.start_time.month,event.start_time.day),
                                   '%d-%d-%d' %(event.end_time.year,event.end_time.month,event.end_time.day+1),event.all_day])
         return render(request, 'calendar_panel/asd.html', {'birthday_json': json.dumps(json_list), 'title': 'Takvim'})
-    else: return redirect('https://dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def event_add(request,person=None):
     if request.user.has_perm('event_panel.add_eventinfomodel'):
@@ -61,7 +61,7 @@ def event_add(request,person=None):
             new_event.save()
         else:
             pass
-    else: return redirect('https://dormoni.com/user_panel/login')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login')
 
 def event_detail(request):
     pass

@@ -2,8 +2,8 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li class="active"><a href="https://dormoni.com/person_panel/person_id_table"><i class="fa fa-table"></i> Kimlik Tablosu</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li class="active"><a href="http://127.0.0.1:8000/person_panel/person_id_table"><i class="fa fa-table"></i> Kimlik Tablosu</a></li>
           <li class="active">Kimlik Detayı: {{ person.s_tcn }}</li>
       </ol>
 
@@ -22,10 +22,10 @@
                 <div class="box-body" style="column-count: 2">
                     <div class="media">
                         <div align="center">
-                            <img class="thumbnail img-responsive" src="https://dormoni.com/media/{{ person_info.image_field }}" width="300px">
+                            <img class="thumbnail img-responsive" src="http://127.0.0.1:8000/media/{{ person_info.image_field }}" width="300px">
                         </div>
                     </div>
-                    <h3><b>Tc Kimlik Numarası:  </b><a href="https://dormoni.com/person_panel/{{ person.s_tcn }}">{{ person.s_tcn }}</a></h3>
+                    <h3><b>Tc Kimlik Numarası:  </b><a href="http://127.0.0.1:8000/person_panel/{{ person.s_tcn }}">{{ person.s_tcn }}</a></h3>
                     <h3><b>Adı :  </b>{{ person.s_name }}</h3>
                     <h3><b>Soyadı :  </b>{{ person.s_lastname }}</h3>
                     <h3><b>Baba Adı : </b>{{ person.s_father }}</h3>

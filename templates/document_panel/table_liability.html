@@ -80,9 +80,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Emanet</li>
-          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/document_panel/liability_add/">Yeni Emanet Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/document_panel/liability_add/">Yeni Emanet Kaydı</a></li>
       </ol>
 
     </section>
@@ -106,11 +106,11 @@ $(document).ready(function() {
     <tbody>
     {% for liability in liability_list %}
           <tr>
-              <td><a href="https://dormoni.com/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
+              <td><a href="http://127.0.0.1:8000/document_panel/liability/{{ liability.id }}/">{{ liability.id }}</a></td>
               <td>{{ liability.person.full_name }}</td><td>{{ liability.type_name }}</td><td>{{ liability.desc }}</td><td>{{ liability.give_day }}</td><td>{{ liability.last_day }}</td><td>{{ liability.take_day }}</td><td>{{ liability.penalty }}</td>
           <td>
-              <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
-              <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/document_panel/liability_delete/{{ liability.id }}">Sil</a>
+              <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_edit/{{ liability.id }}">Düzenle</a>
+              <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/document_panel/liability_delete/{{ liability.id }}">Sil</a>
                           </td></tr>
     {% endfor %}
 

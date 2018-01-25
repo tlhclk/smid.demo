@@ -81,9 +81,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Odalar</li>
-          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/stock_panel/room_add/">Yeni Oda Kaydı</a></li>
       </ol>
 
     </section>
@@ -106,8 +106,8 @@ $(document).ready(function() {
               <td><a href="/stock_panel/room/{{ room.id }}">{{ room.no }}</a></td>
               <td>{{ room.floor }}</td><td>{{ room.people_name }}</td><td>{{ room.type_name }} </td>
 
-          <td><a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/stock_panel/room_edit/{{ room.id }}">Düzenle</a>
-                          <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/stock_panel/room_delete/{{ room.id }}">Sil</a></td>
+          <td><a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_edit/{{ room.id }}">Düzenle</a>
+                          <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/stock_panel/room_delete/{{ room.id }}">Sil</a></td>
 
                         </tr>
     {% endfor %}

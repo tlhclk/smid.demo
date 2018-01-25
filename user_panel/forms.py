@@ -41,7 +41,7 @@ class FreeRegisterForm(forms.Form):
     name = forms.CharField(label='Ad',max_length=50)
     last_name= forms.CharField(label='Soyad',max_length=50)
     phone = PhoneNumberField(label='Telefon Numarası')
-    termofuse= forms.BooleanField(widget=forms.CheckboxInput(),label='<a href="https://dormoni.com/termofuse/" >Kullanım Koşullarını</a> Kabul Ediyorum')
+    termofuse= forms.BooleanField(widget=forms.CheckboxInput(),label='<a href="http://127.0.0.1:8000/termofuse/" >Kullanım Koşullarını</a> Kabul Ediyorum')
 
     class Meta:
         fields = [

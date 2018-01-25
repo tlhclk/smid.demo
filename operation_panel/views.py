@@ -17,10 +17,10 @@ def add_student_leave(request):
             leave_form = StudentLeaveForm(POST=request.POST,user=request.user)
             if leave_form.is_valid():
                 leave_form.save()
-                return redirect('https://dormoni.com/operation_panel/leave_table/')
+                return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
         return render(request,'operation_panel/add_leave.html',{'form':leave_form,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_student_leave(request,student_id):
     if request.user.has_perm('operation_panel.change_studentleavemodel'):
@@ -28,7 +28,7 @@ def table_student_leave(request,student_id):
         if student_id: leave_list=leave_list.filter(person=student_id)
         return render(request,'operation_panel/table_leave.html',{'leave_list':leave_list,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_student_leave(request,sleave_id):
     if request.user.has_perm('sleave_info.add_studentleavemodel'):
@@ -37,16 +37,16 @@ def edit_student_leave(request,sleave_id):
             formleave=StudentLeaveForm(POST=request.POST,user=request.user,instance=sleave)
             if formleave.is_valid():
                 formleave.save()
-                return redirect('https://dormoni.com/operation_panel/leave_table/')
+                return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
         formleave=StudentLeaveForm(POST=request.POST,user=request.user,instance=sleave)
         return render(request, 'operation_panel/add_leave.html', {'form': formleave,'title':'Öğrenci'})
-    else: return redirect('https://dormoni.com/user_panel/login/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_student_leave(request,sleave_id):
     if request.user.has_perm('operation_panel.add_studentleavemodel'):
         StudentLeaveModel.objects.get(pk=sleave_id,company=request.user.company_id).delete()
-        return redirect('https://dormoni.com/operation_panel/leave_table/')
-    else: return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/operation_panel/leave_table/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 
 def add_vacation(request):
@@ -56,17 +56,17 @@ def add_vacation(request):
             formvacation = VacationInfoForm(user=request.user,POST=request.POST)
             if formvacation.is_valid():
                 formvacation.save()
-                return redirect('https://dormoni.com/operation_panel/vacation_table/')
+                return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
         return render(request, 'operation_panel/add_vacation.html', {'form': formvacation,'title':'Personel'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_vacation(request,personal_id):
     if request.user.has_perm('operation_panel.change_vacationinfomodel'):
         vacation_list=VacationInfoModel.objects.filter(company=request.user.company_id)
         if personal_id: vacation_list=vacation_list.filter(person=personal_id)
         return render(request, 'operation_panel/table_vacation.html', {'vacation_list':vacation_list, 'title':'Personel'})
-    else: return redirect('https://dormoni.com/user_panel/login/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def edit_vacation(request,vacation_id):
     if request.user.has_perm('operation_panel.add_vacationinfomodel'):
@@ -75,16 +75,16 @@ def edit_vacation(request,vacation_id):
             formvacation =VacationInfoForm(user=request.user,POST=request.POST,instance=vacation)
             if formvacation.is_valid():
                 formvacation.save()
-                return redirect('https://dormoni.com/operation_panel/vacation_table/')
+                return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
         formvacation = VacationInfoForm(user=request.user,instance=vacation)
         return render(request, 'operation_panel/add_vacation.html', {'form': formvacation,'title':'Personel'})
-    else: return redirect('https://dormoni.com/user_panel/login/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def delete_vacation(request,vacation_id):
     if request.user.has_perm('operation_panel.add_vacationinfomodel'):
         VacationInfoModel.objects.get(pk=vacation_id,company=request.user.company_id).delete()
-        return redirect('https://dormoni.com/operation_panel/vacation_table/')
-    else: return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/operation_panel/vacation_table/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 
 def add_attendance(request):
@@ -94,17 +94,17 @@ def add_attendance(request):
             formattendance=AttendanceInfoForm(POST=request.POST,user=request.user)
             if formattendance.is_valid():
                 formattendance.save()
-                return redirect('https://dormoni.com/operation_panel/attendance_table/')
+                return redirect('http://127.0.0.1:8000/operation_panel/attendance_table/')
         return render(request,'operation_panel/add_attendance.html',{'form':formattendance,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def table_attendance(request):
     if request.user.has_perm('person_panel.change_studentinfomodel'):
         record_list=AttendanceInfoModel.objects.filter(company=request.user.company)
         return render(request, 'operation_panel/table_attendance.html', {'record_list':record_list,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 
 def send_a_mail(request,person_mail):
@@ -113,14 +113,14 @@ def send_a_mail(request,person_mail):
             formmail=MailSendForm(user=request.user,POST=request.POST)
             if formmail.is_valid():
                 formmail.save()
-                return redirect('https://dormoni.com/operation_panel/mail_send/')
+                return redirect('http://127.0.0.1:8000/operation_panel/mail_send/')
         if person_mail:
             formmail=MailSendForm(initial={'people_manual':person_mail},user=request.user)
         else:
             formmail=MailSendForm(user=request.user)
         return render(request,'operation_panel/send_mail.html',{'form':formmail,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def mail_inbox(request):# TODO: mail sistemi kurulacak
     if request.user.has_perm('person_panel.add_personidinfomodel'):
@@ -145,7 +145,7 @@ def mail_inbox(request):# TODO: mail sistemi kurulacak
             #         print ('From : ' + email_from + '\n')
             #         print ('Subject : ' + email_subject + '\n')
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def change_student_position(request,student_id):# TODO: Turnike sistemleriyle entegreler öğrenilecek
     if request.user.has_perm('person_panel.add_studentinfomodel') and StudentInfoModel.objects.get(pk=student_id).company_id==request.user.company_id:
@@ -155,9 +155,9 @@ def change_student_position(request,student_id):# TODO: Turnike sistemleriyle en
         else:
             student.student_position=True
         student.save()
-        return redirect('https://dormoni.com/person_panel/student/%s'%student_id)
+        return redirect('http://127.0.0.1:8000/person_panel/student/%s'%student_id)
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def create_egm_xml(request): # TODO: Eminiyet için xml dosyası oluşturulacak
     if request.user.has_perm('person_panel.add_studentinfomodel'):
@@ -165,25 +165,25 @@ def create_egm_xml(request): # TODO: Eminiyet için xml dosyası oluşturulacak
             sstudent_list=request.POST.getlist('sstudent_list')
             if len(sstudent_list)==0:
                 sstudent_list=StudentInfoModel.objects.filter(company=request.user.company_id)
-
+            print(sstudent_list)
             file2 = open('egm.xml', 'w+')
             file=File(file2)
             file.write('<?xml version="1.0" encoding="utf-8"?><?hash DB1BE508AA9F2D9233C6E9BB06CDFD46?>')
             file.write('<Konaklama TesisKodu="123" Tarih="' + str(datetime.datetime.now()) + '" GonderenProgram="Dormoni.com" >')
-            for student in sstudent_list:
-                print (student)
-                file.write('<Kisi SiraNo="'+student.id+'" TCKimlikNo="'+student.tcn+'" Adi="'+student.name+'" Soyadi="'+student.last_name+'" BabaAdi="'+student.father+'" '
-                                                        'AnaAdi="'+student.mother+'" DoğumYeri="'+student.birth_city_name+'" DoğumTarihi="'+student.birth_day+'" Uyrugu="'+student.nation_name+'" KimlikBelgesiTuru="'+student.idcard_type_name+'" '
-                                                        'NufasaKayitliOlduğuIl="'+student.register_vilage+'" NufusaKAyitliOlduguIlce="'+student.register_town+'" '
-                                                        'NufusaKayitliOlduğuMahalle="'+student.register_distinct+'" Cinsiyet="'+student.gender_name+'" VerilenOdaNo="'+student.room_id_id+'" '
-                                                        'NufusCilt="'+student.nufus_cilt+'" NufusAileSira="'+student.nufus_ailesira+'" NufusSiraNo="'+student.nufus_sirano+'" MedeniHali="'+student.medeni_hali_name+'" />')
+            for student_id in sstudent_list:
+                student=StudentInfoModel.objects.get(pk=student_id)
+                file.write('<Kisi SiraNo="'+student.id+'" TCKimlikNo="'+student.tcn_id+'" Adi="'+student.tcn.name+'" Soyadi="'+student.tcn.last_name+'" BabaAdi="'+student.tcn.father+'" '
+                                                        #'AnaAdi="'+str(student.tcn.mother)+'" DoğumYeri="'+str(student.tcn.birth_city_name)+'" DoğumTarihi="'+str(student.tcn.birth_day)+'" Uyrugu="'+str(student.tcn.nation_name)+'" KimlikBelgesiTuru="'+str(student.tcn.idcard_type_name)+'" '
+                                                        'NufasaKayitliOlduğuIl="'+student.tcn.register_vilage+'" NufusaKAyitliOlduguIlce="'+student.tcn.register_town+'" '
+                                                        'NufusaKayitliOlduğuMahalle="'+student.tcn.register_distinct+'" Cinsiyet="'+student.tcn.gender_name+'" VerilenOdaNo="'+student.room_id_id+'" '
+                                                        'NufusCilt="'+student.tcn.nufus_cilt+'" NufusAileSira="'+student.tcn.nufus_ailesira+'" NufusSiraNo="'+student.tcn.nufus_sirano+'" MedeniHali="'+student.tcn.medeni_hali_name+'" />')
             file.write('</Konaklama>')
             file.close()
             file2.close()
         student_list=StudentInfoModel.objects.filter(company=request.user.company_id)
         return render(request,'operation_panel/create_egm_xml.html',{'student_list':student_list,'title':'Öğrenci'})
     else:
-        return redirect('https://dormoni.com/user_panel/login/')
+        return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def notification(request=None,company=None):#TODO: mantığı unuttum bi ara yapıcam
     if request.user.has_perm('user_panel.add_user'):
@@ -202,4 +202,4 @@ def notification(request=None,company=None):#TODO: mantığı unuttum bi ara yap
                 if item not in NotificationInfoModel.objects.values_list('title', 'text').filter(company=company):
                     new_notification=NotificationInfoModel(title=item[0],text=item[1],company=company,day=datetime.date.today())
                     new_notification.save()
-    else: redirect('https://dormoni.com/user_panel/login/')
+    else: redirect('http://127.0.0.1:8000/user_panel/login/')

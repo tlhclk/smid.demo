@@ -5,10 +5,10 @@
 
 <section>
     <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
-        <li><a href="https://dormoni.com/stock_panel/room_table/"><i class="fa fa-home"></i> Oda Tablosu</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/stock_panel/room_table/"><i class="fa fa-home"></i> Oda Tablosu</a></li>
           <li class="active">Oda Planı</li>
-        <li class="pull-right"><a class="btn btn-primary"  href="https://dormoni.com/stock_panel/room_add/">Oda Ekle</a></li>
+        <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/stock_panel/room_add/">Oda Ekle</a></li>
 
       </ol>
     </section>
@@ -46,23 +46,23 @@
                         <div class="col-lg-2">
                             {% if room.situation == 'dolu' %}
                                 <div class="panel panel-block" style="background: #CF4232" data-filter-tags="#CF4232" >
-                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                <div class="panel-heading"><b><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
                                 {% for student in room.people_list %}
-                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                    <div class="panel-footer"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
                                 {% endfor %}
                                 </div>
                             {% elif room.situation == 'bos' %}
                                 <div class="panel panel-block" style="background: #FAC023" data-filter-tags="#FAC023" >
-                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                <div class="panel-heading"><b><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
                                 {% for student in room.people_list %}
-                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                    <div class="panel-footer"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
                                 {% endfor %}
                                 </div>
                             {% else %}
                                 <div class="panel panel-block" style="background: #068675" data-filter-tags="#068675" >
-                                <div class="panel-heading"><b><a href="https://dormoni.com/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
+                                <div class="panel-heading"><b><a href="http://127.0.0.1:8000/stock_panel/room/{{ room.id }}">{{ room.no }}</a></b></div>
                                 {% for student in room.people_list %}
-                                    <div class="panel-footer"><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
+                                    <div class="panel-footer"><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }} - {{ student.full_name }}</a></div>
                                 {% endfor %}
                                 </div>
                             {% endif %}

@@ -81,9 +81,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Tatil Listesi</li>
-          <li class="pull-right"><a class="btn btn-primary" href="https://dormoni.com/operation_panel/personal_add/">Yeni Tatil Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary" href="http://127.0.0.1:8000/operation_panel/personal_add/">Yeni Tatil Kaydı</a></li>
       </ol>
 
     </section>
@@ -104,8 +104,8 @@ $(document).ready(function() {
     <tbody>
     {% for vacation in vacation_list %}
           <tr><td>{{ vacation.person.tcnname }}</td><td>{{ vacation.person.tcn.last_name }}</td><td>{{ vacation.start_day }} </td><td>{{ vacation.end_day }}</td><td>{{ vacation.reason }} </td>
-          <td><a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/operation_panel/vacation_edit/{{ vacation.id }}">Düzenle</a>
-                          <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/operation_panel/vacation_delete/{{ vacation.id }}">Sil</a>
+          <td><a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/operation_panel/vacation_edit/{{ vacation.id }}">Düzenle</a>
+                          <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/operation_panel/vacation_delete/{{ vacation.id }}">Sil</a>
                 </td>
             </tr>
                 {% endfor %}

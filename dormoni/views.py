@@ -19,7 +19,7 @@ def home_page(request):
         total=sum([int(room.people) for room in RoomInfoModel.objects.filter(company=request.user.company_id)])
         registred = len(StudentInfoModel.objects.filter(company=request.user.company_id))# TODO: ajaxa dönücek
         return render(request,'home_page.html',{'title':'Ana Sayfa','empty':total - registred,'registred':registred})
-    else: return redirect('https://dormoni.com/user_panel/login/')
+    else: return redirect('http://127.0.0.1:8000/user_panel/login/')
 
 def main_page(request):
     return render(request,'main_page.html',{'title':'Ana Sayfa'})

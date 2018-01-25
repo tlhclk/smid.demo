@@ -81,9 +81,9 @@ $(document).ready(function() {
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Öğrenci Listesi</li>
-          <li class="pull-right"><a class="btn btn-primary"  href="https://dormoni.com/person_panel/person_id_add/">Yeni Öğrenci Kaydı</a></li>
+          <li class="pull-right"><a class="btn btn-primary"  href="http://127.0.0.1:8000/person_panel/person_id_add/">Yeni Öğrenci Kaydı</a></li>
       </ol>
 
     </section>
@@ -94,14 +94,14 @@ $(document).ready(function() {
                 <th>Öğrenci No</th><th>Adı</th><th>Oda Numarası</th><th>Kayıt Tarihi</th><th>Borcu</th><th></th>
             </tr></thead><tbody>
                 {% for student in student_list %}<tr>
-                <td><a href="https://dormoni.com/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_id.no }}</td><td>{{ student.start_day }}</td><td>{{ student.payment_info.0.periodicpaymentmodel.rest }}</td>
+                <td><a href="http://127.0.0.1:8000/person_panel/student/{{ student.id }}">{{ student.id }}</a></td><td>{{ student.full_name }}</td><td>{{ student.room_id.no }}</td><td>{{ student.start_day }}</td><td>{{ student.payment_info.0.periodicpaymentmodel.rest }}</td>
 
 
                 <td>
 
-              <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/person_panel/student_edit/{{ student.id }}">Düzenle</a>
+              <a class="btn btn1 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_edit/{{ student.id }}">Düzenle</a>
 
-                <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="https://dormoni.com/person_panel/student_delete/{{ student.id }}">Sil</a>
+                <a class="btn btn2 buttons-html5" tabindex="0" aria-control="myTable" href="http://127.0.0.1:8000/person_panel/student_delete/{{ student.id }}">Sil</a>
                 </td>
 
 
