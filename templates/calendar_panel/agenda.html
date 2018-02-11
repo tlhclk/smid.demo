@@ -19,7 +19,7 @@
 {% block content %}
     <section>
       <ol class="breadcrumb">
-        <li><a href="http://127.0.0.1:8000/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
+        <li><a href="https://dormoni.com/home/"><i class="fa fa-home"></i> Ana Sayfa</a></li>
           <li class="active">Ajanda</li>
       </ol>
 
@@ -37,7 +37,7 @@
             <div class="panel-body">
             <ul style="list-style-type: none; padding: 0">
                 {% for event in event_list %}
-                 <li style="background-color: #3c8dbc; border-radius: 5px;padding: 0 1% 0 1%;"><p><a href="http://127.0.0.1:8000/person_panel/{{ event.tcn }}" style="color: black">{{ event.full_name }}</a> - {{ event.birth_day }}</p></li>
+                 <li style="background-color: #3c8dbc; border-radius: 5px;padding: 0 1% 0 1%;"><p><a href="https://dormoni.com/person_panel/{{ event.tcn }}" style="color: black">{{ event.full_name }}</a> - {{ event.birth_day }}</p></li>
 
                 {% endfor %}
             </ul>
