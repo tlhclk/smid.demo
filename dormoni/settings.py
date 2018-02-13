@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'account_panel',
     'operation_panel',
     'calendar_panel',
+
     'localflavor',
     'phonenumber_field',
     'django_cloudflare_push',
